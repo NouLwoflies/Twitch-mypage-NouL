@@ -97,19 +97,23 @@
             fetchSheetData(loginID);
         }
 
-        async function fetchSheetData(targetUser) {
+async function fetchSheetData(targetUser) {
             const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
             try {
                 const res = await fetch(url);
                 const csvText = await res.text();
                 const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
-                const userData = rows.find(row => row[0].toLowerCase() === targetUser.toLowerCase());
+                
+                // ★修正ポイント：B列(index 1)でユーザーIDを照合します
+                const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
 
                 if (userData) {
-                    // スプレッドシートの並びに合わせて取得
-                    document.getElementById('display-name').innerText = userData[1]; // B列: user_name
-                    document.getElementById('display-bits').innerText = userData[5]; // F列: クリスタル
-                    document.getElementById('display-level').innerText = userData[6]; // G列: Lv.
+                    // ★修正ポイント：A列(0)をPLAYER名として表示します
+                    document.getElementById('display-name').innerText = userData[0]; 
+                    
+                    // その他の列（F列以降）もスライドして設定
+                    document.getElementById('display-bits').innerText = userData[5] || '0'; // F列: クリスタル
+                    document.getElementById('display-level').innerText = userData[6] || '0'; // G列: Lv.
                     
                     const currentExp = parseInt(userData[7]) || 0; // H列: 現在EXP
                     const nextExp = parseInt(userData[8]) || 1;    // I列: 必要EXP
@@ -120,16 +124,16 @@
                     const percent = Math.min((currentExp / nextExp) * 100, 100);
                     setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-                    // Tierバッジ有効化 (データが入っていれば光らせる)
+                    // Tierバッジ有効化
                     if(userData[2] && userData[2] !== "0") document.getElementById('t1-badge').classList.add('tier-active');
                     if(userData[3] && userData[3] !== "0") document.getElementById('t2-badge').classList.add('tier-active');
                     if(userData[4] && userData[4] !== "0") document.getElementById('t3-badge').classList.add('tier-active');
 
+                    document.getElementById('loading-msg').style.display = 'none';
+                    document.getElementById('data-display').style.display = 'block';
+
                 } else {
-                    alert("データ未登録です。配信で遊んでね！");
+                    alert("スプレッドシートのB列にあなたのTwitch IDが見つかりませんでした！確認してみてね。");
                 }
             } catch (e) { console.error(e); }
         }
-    </script>
-</body>
-</html>

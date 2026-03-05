@@ -10,6 +10,7 @@
             --twitch-purple: #9146ff;
             --accent-orange: #e67e22;
             --text-navy: #2c3e50;
+            --border-light: #eee;
             --bg-card: rgba(255, 255, 255, 0.95);
         }
 
@@ -20,38 +21,49 @@
             overflow: hidden; touch-action: pan-y;
         }
 
-        /* スワイプ構造 */
+        /* 構造 */
         .viewport { width: 100vw; height: 100vh; overflow: hidden; position: relative; }
         .main-wrapper { display: flex; width: 300vw; height: 100vh; transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1); }
-        .page-section { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding-top: 30px; box-sizing: border-box; overflow-y: auto; padding-bottom: 120px; }
+        .page-section { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding-top: 25px; box-sizing: border-box; overflow-y: auto; padding-bottom: 110px; }
         
-        .card { background: var(--bg-card); border-radius: 30px; border: 3px solid #ffcc80; padding: 25px 20px; width: 88%; max-width: 360px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); color: var(--text-navy); }
+        .card { background: var(--bg-card); border-radius: 30px; border: 3px solid #ffcc80; padding: 20px; width: 88%; max-width: 360px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); color: var(--text-navy); }
 
-        /* --- 修正ポイント：紫のログインボタン --- */
-        .btn-twitch { background: var(--twitch-purple); color: white; border: none; border-radius: 15px; padding: 15px; width: 100%; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 0 #772ce8; margin-bottom: 20px; }
-        .btn-twitch:active { transform: translateY(2px); box-shadow: none; }
+        /* ログインボタン */
+        .btn-twitch { background: var(--twitch-purple); color: white; border: none; border-radius: 15px; padding: 12px; width: 100%; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 0 #772ce8; margin-bottom: 10px; }
 
-        /* --- 修正ポイント：キラキラ5000円ボタン --- */
+        /* ステータス行の薄い線 */
+        .status-row { 
+            display: flex; justify-content: space-between; 
+            padding: 10px 5px; 
+            border-bottom: 1px solid var(--border-light); /* ←ここに薄い線を追加 */
+            font-weight: 800; font-size: 0.9rem;
+        }
+
+        /* レベル数字の調整 */
+        .level-num { font-size: 2rem; font-weight: 900; color: var(--accent-orange); line-height: 1.1; } /* ←でかすぎたのを修正 */
+
+        /* ガチャボタン類 */
+        .section-title { font-size: 0.7rem; font-weight: 800; margin: 15px 0 8px; color: #bbb; display: flex; align-items: center; justify-content: center; }
+        .section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
+        
+        .btn-orange { background: var(--accent-orange); color: white; border: none; border-radius: 12px; padding: 12px; width: 100%; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 #d35400; margin-bottom: 5px; }
+        .sub-btn { background: white; border: 2px solid #ffcc80; color: #ff8c00; padding: 8px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem; }
+        .btn-blue { background: #4cc9f0; color: white; border: none; border-radius: 10px; padding: 8px; font-weight: 800; cursor: pointer; box-shadow: 0 3px 0 #3f37c9; }
+        
+        /* 金ピカ5000円 */
         .btn-gold {
-            background: linear-gradient(45deg, #ffd700, #ffae00, #fff3b0, #ffae00);
-            background-size: 400% 400%; animation: gold-flow 3s ease infinite;
-            color: #5d4037; border: 2px solid #fff; border-radius: 12px; padding: 10px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(45deg, #ffd700, #ffae00, #fff3b0, #ffae00); background-size: 400% 400%; animation: gold-flow 3s ease infinite;
+            color: #5d4037; border: 1px solid #fff; border-radius: 10px; padding: 8px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 215, 0, 0.5);
         }
         @keyframes gold-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* その他のボタン */
-        .btn-orange { background: var(--accent-orange); color: white; border: none; border-radius: 15px; padding: 14px; width: 100%; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 #d35400; }
-        .sub-btn { background: white; border: 2px solid #ffcc80; color: #ff8c00; padding: 10px; border-radius: 12px; font-weight: 700; cursor: pointer; }
-        .btn-blue { background: #4cc9f0; color: white; border: none; border-radius: 12px; padding: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 3px 0 #3f37c9; }
-
-        .section-title { font-size: 0.75rem; font-weight: 800; margin: 20px 0 10px; color: #ccc; display: flex; align-items: center; justify-content: center; }
-        .section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
-        .tier-badge { padding: 4px 10px; border-radius: 15px; font-size: 0.7rem; background: #f0f0f0; color: #bbb; font-weight: 700; border: 1px solid #eee; }
-        .tier-active { background: var(--twitch-purple); color: white; }
-
-        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 75%; max-width: 280px; height: 65px; background: white; border-radius: 35px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.1); z-index: 1000; }
-        .nav-item { border: none; background: none; font-size: 1.4rem; color: #ddd; }
+        /* ナビゲーション */
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 300px; height: 60px; background: white; border-radius: 30px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1); z-index: 1000; border: 1px solid #eee; }
+        .nav-item { border: none; background: none; font-size: 1.3rem; color: #ddd; }
         .nav-item.active { color: var(--accent-orange); }
+
+        /* 仮の内容リスト用 */
+        .list-item { text-align: left; padding: 10px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -61,34 +73,40 @@
         <section class="page-section">
             <div class="card">
                 <h1>🦊 推し事の書 🦊</h1>
-                <div id="login-area">
-                    <button class="btn-twitch" onclick="login()">👾 Twitchでログイン</button>
-                </div>
+                <div id="login-area"><button class="btn-twitch" onclick="login()">👾 Twitchでログイン</button></div>
                 <div id="status-area" style="display:none;">
-                    <div class="tier-badge-container" style="display:flex; justify-content:center; gap:10px; margin-bottom:15px;">
-                        <span id="t1-badge" class="tier-badge">Tier 1</span>
-                        <span id="t2-badge" class="tier-badge">Tier 2</span>
-                        <span id="t3-badge" class="tier-badge">Tier 3</span>
+                    <div style="display:flex; justify-content:center; gap:8px; margin-bottom:10px;">
+                        <span id="t1-badge" class="tier-badge" style="padding:3px 8px; border-radius:10px; background:#f0f0f0; color:#ccc; font-size:0.7rem; font-weight:700;">Tier 1</span>
+                        <span id="t2-badge" class="tier-badge" style="padding:3px 8px; border-radius:10px; background:#f0f0f0; color:#ccc; font-size:0.7rem; font-weight:700;">Tier 2</span>
+                        <span id="t3-badge" class="tier-badge" style="padding:3px 8px; border-radius:10px; background:#f0f0f0; color:#ccc; font-size:0.7rem; font-weight:700;">Tier 3</span>
                     </div>
-                    <div class="status-row" style="display:flex; justify-content:space-between; margin:10px 0; font-weight:800;"><span>PLAYER</span><span id="display-name">---</span></div>
-                    <div class="status-row" style="display:flex; justify-content:space-between; margin:10px 0; font-weight:800;"><span>RANK</span><span id="display-rank" style="color:var(--accent-orange)">---</span></div>
-                    <div class="status-row" style="display:flex; justify-content:space-between; margin:10px 0; font-weight:800;"><span style="color:#00b4d8;">CRYSTAL</span><span id="display-crystal" style="color:#00b4d8;">---</span></div>
                     
-                    <div style="text-align: left; margin: 20px 0;">
+                    <div class="status-row"><span>PLAYER</span><span id="display-name">---</span></div>
+                    <div class="status-row"><span>RANK</span><span id="display-rank" style="color:var(--accent-orange)">---</span></div>
+                    <div class="status-row"><span style="color:#00b4d8;">CRYSTAL</span><span id="display-crystal" style="color:#00b4d8;">---</span></div>
+                    
+                    <div style="text-align: left; margin: 15px 0;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-end;">
-                            <div><span style="font-size:0.8rem; font-weight:900; color:var(--accent-orange)">LV</span><span id="display-level" style="font-size:2.8rem; font-weight:900; color:var(--accent-orange); line-height:1;">0</span></div>
-                            <div style="font-size:0.8rem; font-weight:800; color:#ff8c00;"><span id="display-current-exp">0</span> / <span id="display-next">0</span> EXP</div>
+                            <div><span style="font-size:0.8rem; font-weight:900; color:var(--accent-orange)">LV</span><span id="display-level" class="level-num">0</span></div>
+                            <div style="font-size:0.75rem; font-weight:800; color:#ff8c00;"><span id="display-current-exp">0</span> / <span id="display-next">0</span> EXP</div>
                         </div>
-                        <div style="background:#fdf2e2; height:14px; border-radius:7px; margin-top:6px; overflow:hidden;">
+                        <div style="background:#fdf2e2; height:12px; border-radius:6px; margin-top:5px; overflow:hidden; border:1px solid #eee;">
                             <div id="exp-bar" style="background:linear-gradient(to right, #ffb347, #ff4500); height:100%; width:0%; transition:1.5s ease;"></div>
                         </div>
                     </div>
 
                     <div class="section-title">DAILY MISSION</div>
-                    <button class="btn-orange" onclick="playGacha('login')">🎁 1日1回ログインガチャ</button>
+                    <button class="btn-orange" onclick="playGacha('login')">🎁 ログインガチャ</button>
+
+                    <div class="section-title">TIER GACHA</div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px; margin-bottom:10px;">
+                        <button class="sub-btn" onclick="playGacha('tier', 1)">T1引く</button>
+                        <button class="sub-btn" onclick="playGacha('tier', 2)">T2引く</button>
+                        <button class="sub-btn" onclick="callTier3()">T3引く</button>
+                    </div>
 
                     <div class="section-title">CRYSTAL GACHA</div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
                         <button class="btn-blue" onclick="playBitsGacha(100)">💎 100</button>
                         <button class="btn-blue" onclick="playBitsGacha(500)">💎 500</button>
                         <button class="sub-btn" onclick="playBitsGacha(1000)">🔮 1000</button>
@@ -97,8 +115,28 @@
                 </div>
             </div>
         </section>
-        <section class="page-section"><div class="card"><h1 style="color:var(--twitch-purple);">🏆 BATTLE PASS</h1><div id="reward-list"></div></div></section>
-        <section class="page-section"><div class="card"><h1 style="color:#7f8c8d;">📜 GACHA LOG</h1><div id="log-content"></div></div></section>
+
+        <section class="page-section">
+            <div class="card">
+                <h1 style="color:var(--twitch-purple);">🏆 BATTLE PASS</h1>
+                <div id="reward-list">
+                    <div class="list-item"><b>LV 5</b>：限定アイコン枠 🦊</div>
+                    <div class="list-item"><b>LV 10</b>：クリスタル ×500 💎</div>
+                    <div class="list-item"><b>LV 15</b>：特別な称号「古参」 ✨</div>
+                    <div class="list-item" style="color:#ccc;">LV 20：？？？ 🔒</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="card">
+                <h1 style="color:#7f8c8d;">📜 GACHA LOG</h1>
+                <div id="log-content">
+                    <div class="list-item"><small>2026/03/05 14:20</small><br><b>ログインガチャ</b>：10 EXP</div>
+                    <div class="list-item"><small>2026/03/05 12:05</small><br><b>100円ガチャ</b>：かけら(銅)</div>
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 
@@ -109,29 +147,24 @@
 </nav>
 
 <script>
+    // JS部分は以前と同じですが、login関数の修正とデータの流し込みを確実に行います
     const CLIENT_ID = '3x3nwbmhvpdx1bxzs9d540ga31ud6b';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwvnNqZbUMZKskqan4HJtexJCf37oG1s2xJHHJCBNchdm8G5Ri_qBgQyHrayYXMwwEy/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxvnNqZbUMZKskqan4HJtexJCf37oG1s2xJHHJCBNchdm8G5Ri_qBgQyHrayYXMwwEy/exec';
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI/gviz/tq?tqx=out:csv&sheet=Users';
-    
-    let loginID = "", currentPage = 0;
+    let loginID = "", currentPage = 0, globalT1=0, globalT2=0, globalT3=0;
 
-    // --- ログイン処理の復活 ---
     function login() {
         const rootUrl = window.location.origin + window.location.pathname;
         window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(rootUrl)}&response_type=token&scope=user:read:email`;
     }
 
-    // URLからトークンを取得してログイン後の処理
     window.onload = function() {
         const hash = window.location.hash;
         if (hash) {
             const token = new URLSearchParams(hash.substring(1)).get('access_token');
             if (token) {
-                fetch('https://api.twitch.tv/helix/users', {
-                    headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` }
-                })
-                .then(r => r.json())
-                .then(d => {
+                fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` } })
+                .then(r => r.json()).then(d => {
                     loginID = d.data[0].login;
                     document.getElementById('login-area').style.display = 'none';
                     document.getElementById('status-area').style.display = 'block';
@@ -147,7 +180,7 @@
         document.querySelectorAll('.nav-item').forEach((n, i) => i === index ? n.classList.add('active') : n.classList.remove('active'));
     }
 
-    // スワイプ処理
+    // スワイプ
     let startX = 0;
     document.addEventListener('touchstart', e => { startX = e.touches[0].pageX; });
     document.addEventListener('touchend', e => {
@@ -158,7 +191,6 @@
         }
     });
 
-    // データ取得と反映
     async function fetchFullData() {
         const res = await fetch(SHEET_URL);
         const txt = await res.text();
@@ -169,6 +201,7 @@
             document.getElementById('display-rank').innerText = user[8] || "サポーター";
             document.getElementById('display-crystal').innerText = user[5];
             document.getElementById('display-level').innerText = user[7];
+            
             const totalExp = parseInt(user[6]) || 0;
             const level = parseInt(user[7]) || 1;
             const progress = getLevelProgress(totalExp, level);
@@ -176,10 +209,11 @@
             document.getElementById('display-next').innerText = progress.next;
             setTimeout(() => { document.getElementById('exp-bar').style.width = Math.min((progress.current/progress.next)*100, 100) + '%'; }, 500);
             
-            // Tier判定
-            if(parseInt(user[2]) > 0) document.getElementById('t1-badge').classList.add('tier-active');
-            if(parseInt(user[3]) > 0) document.getElementById('t2-badge').classList.add('tier-active');
-            if(parseInt(user[4]) > 0) document.getElementById('t3-badge').classList.add('tier-active');
+            // Tier反映
+            globalT1=parseInt(user[2]); globalT2=parseInt(user[3]); globalT3=parseInt(user[4]);
+            if(globalT1 > 0) document.getElementById('t1-badge').style.background = "var(--twitch-purple)", document.getElementById('t1-badge').style.color = "white";
+            if(globalT2 > 0) document.getElementById('t2-badge').style.background = "var(--twitch-purple)", document.getElementById('t2-badge').style.color = "white";
+            if(globalT3 > 0) document.getElementById('t3-badge').style.background = "var(--twitch-purple)", document.getElementById('t3-badge').style.color = "white";
         }
     }
 
@@ -200,6 +234,12 @@
             fetch(`${GAS_URL}?user=${loginID}&bitsGacha=${amount}`)
                 .then(r => r.text()).then(m => { alert(m); location.reload(); });
         }
+    }
+    
+    function callTier3() {
+        let msg = globalT3 >= 1 ? "T3のかけらを使用" : (globalT2 >= 3 ? "T2のかけら3つを使用" : (globalT1 >= 9 ? "T1のかけら9つを使用" : ""));
+        if(!msg) return alert("かけらが足りません");
+        if(confirm(msg + "してガチャを引きますか？")) playGacha('tier', 3);
     }
 </script>
 </body>

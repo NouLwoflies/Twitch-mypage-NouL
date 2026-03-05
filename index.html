@@ -114,28 +114,42 @@
         }
 
         // GAS側のレベル設計と完全に一致させたフロントエンド計算ロジック
-        function getLevelProgress(totalExp, level) {
-            const cfg = [
-                {l:10, c:100}, {l:20, c:500}, {l:30, c:1000}, {l:40, c:1500}, {l:50, c:2000},
-                {l:60, c:3000}, {l:70, c:4000}, {l:80, c:5000}, {l:90, c:7000}, {l:100, c:9000}
-            ];
-            let minExpForThisLevel = 0;
-            let currentLevelLimit = 1;
+      function getLevelProgress(totalExp, level) {
+    // レベルごとの「1レベル上げるのに必要なEXP」の設定
+    const cfg = [
+        {l:10, c:100}, {l:20, c:500}, {l:30, c:1000}, {l:40, c:1500}, {l:50, c:2000},
+        {l:60, c:3000}, {l:70, c:4000}, {l:80, c:5000}, {l:90, c:7000}, {l:100, c:9000}
+    ];
 
-            for (let range of cfg) {
-                while (currentLevelLimit < range.l) {
-                    if (currentLevelLimit < level) {
-                        minExpForThisLevel += range.c;
-                        currentLevelLimit++;
-                    } else {
-                        // 現在のレベルの「余りEXP」と「次のレベルへの必要量」を返す
-                        return { current: totalExp - minExpForThisLevel, next: range.c };
-                    }
-                }
+    let accumulatedExp = 0; // そのレベルに到達するまでに必要な累計EXP
+    let currentLevelStep = 1;
+    let nextExpRequirement = 100; // 次の1レベルに必要な量
+
+    // 今のレベルに到達するまでの「累計」を正しく算出する
+    for (let range of cfg) {
+        while (currentLevelStep < range.l) {
+            if (currentLevelStep < level) {
+                accumulatedExp += range.c;
+                currentLevelStep++;
+                nextExpRequirement = range.c; // 次のレベルに必要な量も更新
+            } else {
+                nextExpRequirement = range.c;
+                // ここでループを抜ける
+                return { 
+                    current: Math.max(0, totalExp - accumulatedExp), 
+                    next: nextExpRequirement 
+                };
             }
-            // Lv.100以降
-            return { current: (totalExp - 330900) % 10000, next: 10000 };
         }
+    }
+
+    // Lv.100以降の計算
+    const expAfter100 = totalExp - 330900;
+    return { 
+        current: Math.max(0, expAfter100 % 10000), 
+        next: 10000 
+    };
+}
 
         async function playGacha(amount) {
             if (!loginID || !confirm(amount + "円ガチャを引きますか？")) return;

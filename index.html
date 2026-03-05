@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GIRLS STATUS - OFFICIAL</title>
+    <title>推し事の書</title>
     <style>
         body { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); color: #5d00a8; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
         .card { background: rgba(255, 255, 255, 0.95); border: 4px solid #ffb347; padding: 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(224, 176, 255, 0.5); text-align: center; width: 340px; }
         h1 { color: #ff8c00; font-size: 1.8rem; margin-bottom: 20px; text-shadow: 1px 1px 0px #fff; }
         .status-item { font-size: 1.1rem; margin: 10px 0; font-weight: bold; display: flex; justify-content: space-between; border-bottom: 1px dashed #e0b0ff; }
         .crystal { color: #00b4d8; font-size: 1.3rem; }
-        .tier-container { display: flex; justify-content: space-around; margin: 20px 0; }
         .tier-badge { padding: 5px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; background: #eee; color: #aaa; }
         .tier-active { background: #9146ff; color: white; box-shadow: 0 0 10px rgba(145, 70, 255, 0.5); }
         .exp-container { text-align: left; margin: 20px 0; }
@@ -22,19 +21,15 @@
     </style>
 </head>
 <body>
-
     <div class="card">
         <h1>GIRLS STATUS</h1>
-        
-        <div id="login-area">
-            <button class="login-btn" onclick="login()">Twitchでログイン 💜</button>
-        </div>
-
+        <div id="login-area"><button class="login-btn" onclick="login()">Twitchでログイン 🧡</button></div>
         <div id="status-area" style="display:none;">
             <div class="status-item"><span>PLAYER:</span> <span id="display-name">---</span></div>
+            <div class="status-item"><span style="color:#ff8c00;">RANK:</span> <span id="display-rank">---</span></div>
             <div class="status-item"><span class="crystal">CRYSTAL:</span> <span id="display-bits" class="crystal">0</span></div>
-
-            <div class="tier-container">
+            
+            <div style="display: flex; justify-content: space-around; margin: 15px 0;">
                 <div id="t1-badge" class="tier-badge">Tier 1</div>
                 <div id="t2-badge" class="tier-badge">Tier 2</div>
                 <div id="t3-badge" class="tier-badge">Tier 3</div>
@@ -43,97 +38,110 @@
             <div class="exp-container">
                 <div class="exp-text">
                     <span>Lv. <span id="display-level">0</span></span>
-                    <span>EXP: <span id="display-exp">0</span> / <span id="display-next">0</span></span>
+                    <span><span id="display-current-exp">0</span> / <span id="display-next">0</span></span>
                 </div>
                 <div class="exp-outline"><div id="exp-bar" class="exp-fill"></div></div>
             </div>
 
-            <div style="margin-top:20px; border-top: 2px dashed #ffb347; padding-top:10px;">
+            <div style="margin-top:15px; border-top: 2px dashed #ffb347; padding-top:10px;">
                 <p style="font-size:0.8rem; font-weight:bold;">💎 CRYSTAL GACHA</p>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 5px;">
-                    <button onclick="playGacha(100)" class="sub-btn">100円ガチャ</button>
-                    <button onclick="playGacha(500)" class="sub-btn">500円ガチャ</button>
-                    <button onclick="playGacha(1000)" class="sub-btn">1000円ガチャ</button>
-                    <button onclick="playGacha(5000)" class="sub-btn">5000円ガチャ</button>
+                    <button onclick="playGacha(100)" class="sub-btn">100円</button>
+                    <button onclick="playGacha(500)" class="sub-btn">500円</button>
+                    <button onclick="playGacha(1000)" class="sub-btn">1000円</button>
+                    <button onclick="playGacha(5000)" class="sub-btn">5000円</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ★★★ 【設定箇所】ここをあなたのIDに書き換えてください ★★★
         const CLIENT_ID = '3x3nwbmhvpdx1bxzs9d540ga31ud6b'; 
         const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbw2hcYPefjHSPm57QWlDyB5lZ50IZ5adxsEfWIcXkqjp1LPBrL4apiRY0PUI1aSV2Tf/exec'; // ←ここにメモしたURLを貼る！
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbw2ehSicM4WgbS7NHSbqPZkSvEoJRRgGJFGuep0pG50oRB4RHCYtd-Mz_WNawOQAOo9/exec';
         const REDIRECT_URI = window.location.origin + window.location.pathname;
+        let loginID = "";
 
-        let loginID = ""; // Twitchの英名IDを保存用
-
-        function login() {
-            const url = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
-            window.location.href = url;
-        }
+        function login() { window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`; }
 
         window.onload = function() {
-            const hash = window.location.hash;
-            if (hash) {
-                const params = new URLSearchParams(hash.substring(1));
-                const token = params.get('access_token');
-                if (token) {
-                    document.getElementById('login-area').style.display = 'none';
-                    document.getElementById('status-area').style.display = 'block';
-                    getUserInfo(token);
-                }
+            const params = new URLSearchParams(window.location.hash.substring(1));
+            const token = params.get('access_token');
+            if (token) {
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('status-area').style.display = 'block';
+                getUserInfo(token);
             }
         };
 
         async function getUserInfo(token) {
-            const res = await fetch('https://api.twitch.tv/helix/users', {
-                headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` }
-            });
+            const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` } });
             const data = await res.json();
-            loginID = data.data[0].login; // TwitchのID(小文字)を取得
+            loginID = data.data[0].login;
             fetchSheetData(loginID);
         }
 
         async function fetchSheetData(targetUser) {
             const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
-            try {
-                const res = await fetch(url);
-                const csvText = await res.text();
-                const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+            const res = await fetch(url);
+            const csvText = await res.text();
+            const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+            const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
+
+            if (userData) {
+                // 列定義: 5=Crystal, 6=TotalExp, 7=Level, 8=Rank
+                const totalExp = parseInt(userData[6]) || 0;
+                const level = parseInt(userData[7]) || 1;
                 
-                // B列(1)でTwitch IDを照合
-                const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
+                document.getElementById('display-name').innerText = userData[0];
+                document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
+                document.getElementById('display-bits').innerText = userData[5];
+                document.getElementById('display-level').innerText = level;
 
-                if (userData) {
-                    document.getElementById('display-name').innerText = userData[0]; // A列:名前
-                    document.getElementById('display-bits').innerText = userData[5]; // F列:クリスタル
-                    document.getElementById('display-level').innerText = userData[6]; // G列:Lv.
-                    document.getElementById('display-exp').innerText = userData[7];   // H列:現在EXP
-                    document.getElementById('display-next').innerText = userData[8];  // I列:必要EXP
+                // 経験値バー計算
+                const progress = getLevelProgress(totalExp, level);
+                document.getElementById('display-current-exp').innerText = progress.current;
+                document.getElementById('display-next').innerText = progress.next;
+                
+                const percent = Math.min((progress.current / progress.next) * 100, 100);
+                setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-                    const percent = Math.min((parseInt(userData[7]) / parseInt(userData[8])) * 100, 100);
-                    setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
-
-                    if(userData[2] != "0") document.getElementById('t1-badge').classList.add('tier-active');
-                    if(userData[3] != "0") document.getElementById('t2-badge').classList.add('tier-active');
-                    if(userData[4] != "0") document.getElementById('t3-badge').classList.add('tier-active');
-                }
-            } catch (e) { console.error(e); }
+                // バッジ点灯 (2=T1, 3=T2, 4=T3)
+                if(userData[2] != "0") document.getElementById('t1-badge').classList.add('tier-active');
+                if(userData[3] != "0") document.getElementById('t2-badge').classList.add('tier-active');
+                if(userData[4] != "0") document.getElementById('t3-badge').classList.add('tier-active');
+            }
         }
 
-        // ガチャボタンの処理
-        async function playGacha(amount) {
-            if (!loginID) return alert("ログインし直してください");
-            if (!confirm(amount + "円ガチャを引きますか？")) return;
+        // GAS側のレベル設計と完全に一致させたフロントエンド計算ロジック
+        function getLevelProgress(totalExp, level) {
+            const cfg = [
+                {l:10, c:100}, {l:20, c:500}, {l:30, c:1000}, {l:40, c:1500}, {l:50, c:2000},
+                {l:60, c:3000}, {l:70, c:4000}, {l:80, c:5000}, {l:90, c:7000}, {l:100, c:9000}
+            ];
+            let minExpForThisLevel = 0;
+            let currentLevelLimit = 1;
 
-            // GASを叩く
-            const response = await fetch(`${GAS_URL}?user=${loginID}&gacha=${amount}`);
-            const resultText = await response.text();
-            
-            alert(resultText); // 結果を表示
-            location.reload(); // データを更新
+            for (let range of cfg) {
+                while (currentLevelLimit < range.l) {
+                    if (currentLevelLimit < level) {
+                        minExpForThisLevel += range.c;
+                        currentLevelLimit++;
+                    } else {
+                        // 現在のレベルの「余りEXP」と「次のレベルへの必要量」を返す
+                        return { current: totalExp - minExpForThisLevel, next: range.c };
+                    }
+                }
+            }
+            // Lv.100以降
+            return { current: (totalExp - 330900) % 10000, next: 10000 };
+        }
+
+        async function playGacha(amount) {
+            if (!loginID || !confirm(amount + "円ガチャを引きますか？")) return;
+            const res = await fetch(`${GAS_URL}?user=${loginID}&gacha=${amount}`);
+            alert(await res.text());
+            location.reload(); // ガチャ後に数値を更新するためリロード
         }
     </script>
 </body>

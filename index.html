@@ -7,18 +7,43 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         body { 
-            background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=1000&q=80'); 
-            background-size: cover; background-position: center; background-attachment: fixed;
-            /* お洒落なモダンフォントを適用 */
+            /* ▼▼▼ ここに用意した画像のURLを貼る ▼▼▼ */
+            background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69aae5d7&is=69a99457&hm=2bf9e90c392f467c24ae0e7f2c35df035cfe5f8ff68e100964cd3756f7f48d6a&=&format=webp&quality=lossless&width=896&height=565'); 
+            
+            /* 画像を画面いっぱいに表示し、固定する設定 */
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            /* 万が一画像が読み込めなかった時のための白 */
+            background-color: #ffffff; 
+
             font-family: 'M PLUS 1p', sans-serif; 
             color: #5d00a8; 
             display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; 
         }
-        .card { 
-            background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px); 
-            border: 3px solid #ffb347; padding: 30px; border-radius: 24px; 
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3); text-align: center; width: 350px; 
+
+        /* ==========================================
+           🌟 背景を薄くするための白いオーバーレイ
+           ========================================== */
+        body::before {
+            content: "";
+            position: fixed; /* 画面全体に固定 */
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* ▼▼▼ ここで「白さ」を調整 ▼▼▼ */
+            /* rgba(255, 255, 255, 0.7) の「0.7」を大きくするとより白く（薄く）なります */
+            background-color: rgba(255, 255, 255, 0.7); 
+            z-index: -1; /* 背景画像とカードの間に配置 */
         }
+        .card { 
+            /* カード自体は少し透けさせて背景を見せる */
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(8px); 
+            border: 3px solid #ffb347; padding: 30px; border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+            text-align: center; width: 350px; 
+        }
+        /* --- 以下、デザインとロジックは以前のまま継承 --- */
         h1 { 
             color: #ff8c00; font-size: 1.8rem; margin-bottom: 20px; 
             font-weight: 800; letter-spacing: 2px;
@@ -27,61 +52,46 @@
         .status-item { 
             font-size: 0.95rem; margin: 12px 0; font-weight: 700; 
             display: flex; justify-content: space-between; 
-            border-bottom: 1px solid #eee; padding-bottom: 6px; 
+            border-bottom: 1px solid #f5f5f5; padding-bottom: 6px; 
         }
         .crystal { color: #00b4d8; }
-        .tier-badge { 
-            padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; 
-            background: #f0f0f0; color: #bbb; font-weight: 700; transition: 0.3s;
-        }
-        .tier-active { background: #9146ff; color: white; box-shadow: 0 4px 10px rgba(145, 70, 255, 0.3); }
-        
+        .tier-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; background: #f0f0f0; color: #bbb; font-weight: 700; }
+        .tier-active { background: #9146ff; color: white; box-shadow: 0 4px 10px rgba(145, 70, 255, 0.2); }
         .exp-container { text-align: left; margin: 20px 0; }
         .exp-text { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 800; color: #ff8c00; }
         .exp-outline { background: #fdf2e2; height: 14px; border-radius: 7px; margin-top: 6px; overflow: hidden; }
         .exp-fill { background: linear-gradient(to right, #ffb347, #ff4500); height: 100%; width: 0%; transition: 1.5s ease; }
-        
-        /* ボタンのデザインをパキッとさせて「おしゃれ」に */
         .login-btn { 
             background: #9146ff; color: white; border: none; padding: 14px; border-radius: 12px; 
             font-weight: 800; cursor: pointer; width: 100%; font-family: inherit; font-size: 1rem; 
-            margin-bottom: 15px; transition: 0.2s; box-shadow: 0 4px 15px rgba(145, 70, 255, 0.3);
+            margin-bottom: 15px; transition: 0.2s; box-shadow: 0 4px 15px rgba(145, 70, 255, 0.2);
         }
-        .login-btn:hover { background: #772ce8; transform: translateY(-2px); }
-        
+        .login-btn:hover { background: #772ce8; transform: translateY(-1px); }
         .sub-btn { 
             background: white; border: 2px solid #ffb347; color: #ff8c00; padding: 10px; border-radius: 12px; 
             cursor: pointer; font-size: 0.85rem; font-family: inherit; font-weight: 700; transition: 0.2s; 
         }
         .sub-btn:hover { background: #ffb347; color: white; }
-        
-        .section-title { 
-            font-size: 0.75rem; font-weight: 800; margin: 20px 0 10px; color: #aaa; 
-            display: flex; align-items: center; justify-content: center; letter-spacing: 2px;
-        }
+        .section-title { font-size: 0.75rem; font-weight: 800; margin: 20px 0 10px; color: #ccc; display: flex; align-items: center; justify-content: center; letter-spacing: 2px; }
         .section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>推し事の書</h1>
-
         <div id="login-area">
-            <p style="font-weight: 700;">Twitch IDでログインして<br>ステータスを確認しよう</p>
-            <button class="login-btn" onclick="login()">Twitch LOGIN 🧡</button>
+            <p style="font-weight: 700;">Twitchでログインして<br>ステータスを確認しよう</p>
+            <button class="login-btn" onclick="login()">Twitch ログイン💜</button>
         </div>
-
         <div id="status-area" style="display:none;">
             <div class="status-item"><span>PLAYER</span> <span id="display-name">---</span></div>
             <div class="status-item"><span>RANK</span> <span id="display-rank" style="color:#ff8c00;">---</span></div>
             <div class="status-item"><span class="crystal">CRYSTAL</span> <span id="display-bits" class="crystal">0</span></div>
-            
             <div style="display: flex; justify-content: space-around; margin: 15px 0;">
                 <div id="t1-badge" class="tier-badge">Tier 1</div>
                 <div id="t2-badge" class="tier-badge">Tier 2</div>
                 <div id="t3-badge" class="tier-badge">Tier 3</div>
             </div>
-
             <div class="exp-container">
                 <div class="exp-text">
                     <span>LEVEL <span id="display-level">0</span></span>
@@ -89,17 +99,14 @@
                 </div>
                 <div class="exp-outline"><div id="exp-bar" class="exp-fill"></div></div>
             </div>
-
-            <div class="section-title">DAILY BONUS</div>
-            <button onclick="playGacha('login')" class="login-btn" style="background: #ff8c00; box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);"> 🎁 1日1回ログインEXPガチャ</button>
-
-            <div class="section-title">Tier　ガチャ</div>
+            <div class="section-title">DAILY MISSION</div>
+            <button onclick="playGacha('login')" class="login-btn" style="background: #ff8c00;">🎁１日１回ログインガチャ</button>
+            <div class="section-title">TIER ガチャ</div>
             <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px;">
                 <button onclick="playGacha('tier', 1)" class="sub-btn">T1</button>
                 <button onclick="playGacha('tier', 2)" class="sub-btn">T2</button>
-                <button onclick="playGacha('tier', 3)" class="sub-btn">T3</button>
+                <button onclick="callTier3()" class="sub-btn">T3</button>
             </div>
-
             <div class="section-title">CRYSTAL ガチャ</div>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                 <button onclick="playGacha('crystal', 100)" class="sub-btn">100</button>
@@ -109,14 +116,14 @@
             </div>
         </div>
     </div>
-
     <script>
-        /* ※Scriptは以前の動作を完全継承しています */
+        // 設定値
         const CLIENT_ID = '3x3nwbmhvpdx1bxzs9d540ga31ud6b'; 
         const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbxKcZzx87c5sHhdMdSUPKwbf0HPCWqCVs8bhLYZ6HSvJefxdkRHaUWrgqO9mv0FFezm/exec';
         const REDIRECT_URI = window.location.origin + window.location.pathname;
         let loginID = "";
+        let globalT1 = 0, globalT2 = 0, globalT3 = 0;
 
         function login() { window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`; }
 
@@ -136,7 +143,7 @@
                 const data = await res.json();
                 loginID = data.data[0].login;
                 fetchSheetData(loginID);
-            } catch (e) { alert("Twitch LOGIN ERROR"); }
+            } catch (e) { console.error("Login Error"); }
         }
 
         async function fetchSheetData(targetUser) {
@@ -160,9 +167,13 @@
                 const percent = Math.min((progress.current / progress.next) * 100, 100);
                 setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-                if(userData[2] != "0") document.getElementById('t1-badge').classList.add('tier-active');
-                if(userData[3] != "0") document.getElementById('t2-badge').classList.add('tier-active');
-                if(userData[4] != "0") document.getElementById('t3-badge').classList.add('tier-active');
+                globalT1 = parseInt(userData[2]) || 0;
+                globalT2 = parseInt(userData[3]) || 0;
+                globalT3 = parseInt(userData[4]) || 0;
+
+                if(globalT1 > 0) document.getElementById('t1-badge').classList.add('tier-active');
+                if(globalT2 > 0) document.getElementById('t2-badge').classList.add('tier-active');
+                if(globalT3 > 0) document.getElementById('t3-badge').classList.add('tier-active');
             }
         }
 
@@ -179,14 +190,28 @@
         }
 
         async function playGacha(mode, val = 0) {
-            if (!loginID || !confirm("ガチャを引きますか？")) return;
+            if (!loginID) return;
             let query = `?user=${loginID}`;
             if (mode === 'login') query += `&type=login`;
             else query += `&gacha=${val}`;
 
             const res = await fetch(GAS_URL + query);
-            alert(await res.text());
-            location.reload();
+            const msg = await res.text();
+            alert(msg);
+            if (!msg.includes("今日はもう")) location.reload();
+        }
+
+        // Tier 3 ガチャは確認を挟む
+        function callTier3() {
+            let msg = "";
+            if (globalT3 >= 1) msg = "Tier 3 のかけらを1つ使います。";
+            else if (globalT2 >= 3) msg = "Tier 2 のかけらを3つ使います。";
+            else if (globalT1 >= 9) msg = "Tier 1 のかけらを9つ使います。";
+            else { alert("かけらが足りません。"); return; }
+            
+            if(confirm(msg + "ガチャを引きますか？")) {
+                playGacha('tier', 3);
+            }
         }
     </script>
 </body>

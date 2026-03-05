@@ -6,12 +6,11 @@
     <title>推し事の書</title>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* --- 画像のデザインを完全再現するためのベース --- */
         :root {
             --accent-orange: #e67e22;
             --twitch-purple: #9146ff;
             --text-navy: #2c3e50;
-            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-card: rgba(255, 255, 255, 0.95);
         }
 
         body { 
@@ -21,7 +20,6 @@
             overflow: hidden; touch-action: pan-y;
         }
 
-        /* 3画面を横に並べるためのコンテナ */
         .viewport { width: 100vw; height: 100vh; overflow: hidden; position: relative; }
         .main-wrapper {
             display: flex; width: 300vw; height: 100vh;
@@ -31,129 +29,77 @@
         .page-section {
             width: 100vw; height: 100vh;
             display: flex; justify-content: center; align-items: flex-start;
-            padding-top: 40px; box-sizing: border-box; overflow-y: auto;
+            padding-top: 30px; box-sizing: border-box; overflow-y: auto; padding-bottom: 120px;
         }
 
-        /* 画像のカードデザインを再現 */
         .card { 
-            background: var(--bg-card); border-radius: 30px;
-            border: 2px solid #ffcc80; padding: 30px 20px;
-            width: 85%; max-width: 360px; text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            color: var(--text-navy);
-            margin-bottom: 120px; /* ナビ用の余白 */
+            background: var(--bg-card); border-radius: 30px; border: 3px solid #ffcc80; padding: 25px 20px;
+            width: 88%; max-width: 360px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); color: var(--text-navy);
         }
 
-        /* --- 画像のパーツ再現 --- */
-        h1 { font-size: 1.5rem; color: var(--accent-orange); margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .status-row { display: flex; justify-content: space-between; font-weight: 800; margin: 12px 0; border-bottom: 1px dashed #ddd; padding-bottom: 5px; }
+        h1 { font-size: 1.4rem; color: var(--accent-orange); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; border-bottom: 2px solid #ffcc80; padding-bottom: 10px; }
+        
+        .status-row { display: flex; justify-content: space-between; font-weight: 800; margin: 10px 0; border-bottom: 1px dashed #eee; padding-bottom: 5px; font-size: 0.9rem; }
         .crystal-text { color: #2980b9; }
-        .level-num { font-size: 3rem; font-weight: 900; color: var(--accent-orange); line-height: 1; }
-        
-        .btn-orange { background: var(--accent-orange); color: white; border: none; border-radius: 15px; padding: 15px; width: 100%; font-weight: 800; font-size: 1rem; cursor: pointer; margin: 15px 0; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .btn-outline { background: white; border: 2px solid #ffcc80; border-radius: 12px; padding: 10px; font-weight: 800; color: var(--accent-orange); font-size: 0.8rem; cursor: pointer; }
-　　　　　.status-item { font-size: 0.95rem; margin: 12px 0; font-weight: 700; display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding-bottom: 6px; }
-        .crystal { color: #00b4d8; }
-        .tier-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; background: #f0f0f0; color: #bbb; font-weight: 700; }
-        .tier-active { background: #9146ff; color: white; box-shadow: 0 4px 10px rgba(145, 70, 255, 0.2); }
-        .exp-container { text-align: left; margin: 20px 0; }
-        .exp-text { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 800; color: #ff8c00; }
-        .exp-outline { background: #fdf2e2; height: 14px; border-radius: 7px; margin-top: 6px; overflow: hidden; }
-        .exp-fill { background: linear-gradient(to right, #ffb347, #ff4500); height: 100%; width: 0%; transition: 1.5s ease; }
-        
-        /* --- ボタン共通デザイン --- */
-        .login-btn { background: #9146ff; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; font-family: inherit; font-size: 1rem; margin-bottom: 15px; transition: 0.2s; box-shadow: 0 4px 15px rgba(145, 70, 255, 0.2); }
-        .login-btn:hover { background: #772ce8; transform: translateY(-1px); }
-        .sub-btn { background: white; border: 2px solid #ffb347; color: #ff8c00; padding: 10px; border-radius: 12px; cursor: pointer; font-size: 0.85rem; font-family: inherit; font-weight: 700; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; /* アイコンと文字の間隔 */ }
-        .sub-btn:hover { background: #ffb347; color: white; }
-        .section-title { font-size: 0.75rem; font-weight: 800; margin: 20px 0 10px; color: #ccc; display: flex; align-items: center; justify-content: center; letter-spacing: 2px; }
+
+        /* EXP & レベルエリア */
+        .level-container { text-align: left; margin: 20px 0; }
+        .level-header { display: flex; justify-content: space-between; align-items: flex-end; }
+        .level-num { font-size: 2.8rem; font-weight: 900; color: var(--accent-orange); line-height: 1; }
+        .exp-text { font-size: 0.75rem; font-weight: 800; color: #999; }
+        .exp-outline { background: #eee; height: 12px; border-radius: 6px; margin-top: 8px; overflow: hidden; border: 1px solid #ddd; }
+        .exp-fill { background: linear-gradient(90deg, #ffcc80, #e67e22); height: 100%; width: 0%; transition: 1.5s ease-out; }
+
+        /* セクションタイトル（横線） */
+        .section-title { font-size: 0.7rem; font-weight: 800; color: #bbb; margin: 20px 0 10px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
         .section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
 
-        /* ▼▼▼ Tierアイコンのスタイル ▼▼▼ */
-        .tier-icon {
-            width: 18px;  /* アイコンの横幅 */
-            height: 18px; /* アイコンの縦幅 */
-            object-fit: contain; /* 画像を枠内に収める */
+        .btn-main { background: var(--accent-orange); color: white; border: none; border-radius: 15px; padding: 14px; width: 100%; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 0 #d35400; margin-bottom: 10px; }
+        .btn-sub { background: white; border: 2px solid #ffcc80; border-radius: 12px; padding: 10px 5px; font-weight: 800; color: var(--accent-orange); font-size: 0.75rem; cursor: pointer; }
+        
         /* ナビゲーション */
-        .bottom-nav {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 80%; max-width: 300px; height: 60px;
-            background: rgba(255, 255, 255, 0.95); border-radius: 30px;
-            display: flex; justify-content: space-around; align-items: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1); z-index: 1000;
-        }
-        .nav-item { border: none; background: none; font-size: 1.2rem; color: #ccc; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { color: var(--accent-orange); transform: scale(1.2); }
+        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 75%; max-width: 280px; height: 65px; background: rgba(255, 255, 255, 0.98); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.1); z-index: 1000; border: 1px solid #eee; }
+        .nav-item { border: none; background: none; font-size: 1.4rem; color: #ddd; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--accent-orange); transform: scale(1.1); }
+
+        .reward-box { border: 2px solid #eee; border-radius: 15px; padding: 15px; margin-bottom: 10px; text-align: left; background: white; }
     </style>
 </head>
 <body>
 
 <div class="viewport">
     <div class="main-wrapper" id="master-container">
-        
         <section class="page-section">
             <div class="card">
                 <h1>🦊 推し事の書 🦊</h1>
-                <div id="login-area"><button class="btn-orange" onclick="login()">Twitchでログイン</button></div>
-                
+                <div id="login-area"><button class="btn-main" onclick="login()">Twitchでログイン</button></div>
                 <div id="status-area" style="display:none;">
                     <div class="status-row"><span>PLAYER</span><span id="display-name">---</span></div>
                     <div class="status-row"><span>RANK</span><span id="display-rank" style="color:var(--accent-orange)">---</span></div>
                     <div class="status-row"><span class="crystal-text">CRYSTAL</span><span id="display-crystal" class="crystal-text">---</span></div>
                     
-                    <div style="text-align: left; margin: 20px 0;">
-                        <div style="display:flex; align-items:flex-end; gap:10px;">
-                            <span style="font-size:0.8rem; font-weight:800; color:var(--accent-orange)">LEVEL</span>
-                            <span id="display-level" class="level-num">0</span>
+                    <div class="level-container">
+                        <div class="level-header">
+                            <div><span style="font-size:0.8rem; font-weight:900; color:var(--accent-orange);">LV</span><span id="display-level" class="level-num">0</span></div>
+                            <div class="exp-text"><span id="display-current-exp">0</span> / <span id="display-next">0</span> EXP</div>
                         </div>
-                        <div style="background:#eee; height:10px; border-radius:5px; margin-top:5px; overflow:hidden;">
-                            <div id="exp-bar" style="background:var(--accent-orange); width:0%; height:100%; transition:1s;"></div>
-                        </div>
+                        <div class="exp-outline"><div id="exp-bar" class="exp-fill"></div></div>
                     </div>
 
-                    <div style="font-size:0.7rem; font-weight:800; color:#ccc; margin-top:20px;">DAILY MISSION</div>
-                    <button class="btn-orange" onclick="playGacha('login')">🎁 1日1回ログインガチャ</button>
+                    <div class="section-title">DAILY MISSION</div>
+                    <button class="btn-main" onclick="playGacha('login')">🎁 1日1回ログインガチャ</button>
 
-                    <div style="font-size:0.7rem; font-weight:800; color:#ccc; margin-top:20px;">TIER ガチャ</div>
-                    <div class="grid-3">
-                        <button class="btn-outline" onclick="playGacha('tier', 1)">Tier 1</button>
-                        <button class="btn-outline" onclick="playGacha('tier', 2)">Tier 2</button>
-                        <button class="btn-outline" onclick="playGacha('tier', 3)">Tier 3</button>
-                    </div>
-
-                    <div style="font-size:0.7rem; font-weight:800; color:#ccc; margin-top:20px;">CRYSTAL ガチャ</div>
-                    <div class="grid-2">
-                        <button class="btn-outline" onclick="playBitsGacha(100)">100円</button>
-                        <button class="btn-outline" onclick="playBitsGacha(500)">500円</button>
-                        <button class="btn-outline" onclick="playBitsGacha(1000)">1000円</button>
-                        <button class="btn-outline" onclick="playBitsGacha(5000)">5000円</button>
+                    <div class="section-title">TIER GACHA</div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
+                        <button class="btn-sub" onclick="playGacha('tier', 1)">Tier 1</button>
+                        <button class="btn-sub" onclick="playGacha('tier', 2)">Tier 2</button>
+                        <button class="btn-sub" onclick="playGacha('tier', 3)">Tier 3</button>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section class="page-section">
-            <div class="card">
-                <h1 style="color:var(--twitch-purple)">🏆 BATTLE PASS</h1>
-                <div id="reward-list">
-                    <div style="padding:15px; border:2px solid #eee; border-radius:15px; margin-bottom:10px; text-align:left;">
-                        <span style="background:var(--twitch-purple); color:white; padding:2px 8px; border-radius:5px; font-size:0.7rem;">Lv.10</span>
-                        <div style="font-weight:800; margin-top:5px;">限定PC壁紙</div>
-                        <div id="msg-lv10" style="font-size:0.7rem; color:#ccc;">🔒 未達成</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="page-section">
-            <div class="card">
-                <h1 style="color:#7f8c8d">📜 GACHA LOG</h1>
-                <div id="log-content" style="text-align:left; font-size:0.8rem; line-height:1.6;">履歴読み込み中...</div>
-            </div>
-        </section>
-
+        <section class="page-section"><div class="card"><h1>🏆 BATTLE PASS</h1><div id="reward-list"></div></div></section>
+        <section class="page-section"><div class="card"><h1>📜 GACHA LOG</h1><div id="log-content"></div></div></section>
     </div>
 </div>
 
@@ -164,124 +110,71 @@
 </nav>
 
 <script>
-    // --- 基本設定 ---
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwvnNqZbUMZKskqan4HJtexJCf37oG1s2xJHHJCBNchdm8G5Ri_qBgQyHrayYXMwwEy/exec';
+    const CLIENT_ID = '3x3nwbmhvpdx1bxzs9d540ga31ud6b';
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI/gviz/tq?tqx=out:csv&sheet=Users';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxvnNqZbUMZKskqan4HJtexJCf37oG1s2xJHHJCBNchdm8G5Ri_qBgQyHrayYXMwwEy/exec';
     let loginID = "", currentPage = 0;
 
-    // --- スワイプ & ページ切り替え ---
     function updatePage(index) {
         currentPage = index;
         document.getElementById('master-container').style.transform = `translateX(-${index * 100}vw)`;
-        const navs = document.querySelectorAll('.nav-item');
-        navs.forEach((n, i) => i === index ? n.classList.add('active') : n.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach((n, i) => i === index ? n.classList.add('active') : n.classList.remove('active'));
     }
 
     let startX = 0;
     document.addEventListener('touchstart', e => { startX = e.touches[0].pageX; });
     document.addEventListener('touchend', e => {
         let diff = e.changedTouches[0].pageX - startX;
-        if (Math.abs(diff) > 50) {
+        if (Math.abs(diff) > 60) {
             if (diff < 0 && currentPage < 2) updatePage(currentPage + 1);
             if (diff > 0 && currentPage > 0) updatePage(currentPage - 1);
         }
     });
 
-    // --- ログイン & データ取得 (既存ロジックを維持) ---
-    function login() { /* Twitch連携URL */ window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=3x3nwbmhvpdx1bxzs9d540ga31ud6b&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname)}&response_type=token&scope=user:read:email`; }
+    function login() { window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname)}&response_type=token&scope=user:read:email`; }
 
     window.onload = function() {
         const token = new URLSearchParams(window.location.hash.substring(1)).get('access_token');
         if (token) {
             document.getElementById('login-area').style.display = 'none';
             document.getElementById('status-area').style.display = 'block';
-            fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': '3x3nwbmhvpdx1bxzs9d540ga31ud6b', 'Authorization': `Bearer ${token}` } })
-                .then(r => r.json()).then(d => { loginID = d.data[0].login; loadSheet(); });
+            fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` } })
+                .then(r => r.json()).then(d => { loginID = d.data[0].login; fetchUserData(); });
         }
     };
 
-    function loadSheet() {
-        fetch(SHEET_URL).then(r => r.text()).then(txt => {
-            const rows = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')));
-            const user = rows.find(r => r[1] && r[1].toLowerCase() === loginID.toLowerCase());
-            if (user) {
-                document.getElementById('display-name').innerText = user[0];
-                document.getElementById('display-rank').innerText = user[8] || "サポーター";
-                document.getElementById('display-crystal').innerText = user[5]; // 6列目：bits fragments
-                document.getElementById('display-level').innerText = user[7];
-                const exp = parseInt(user[6]);
-                const lv = parseInt(user[7]);
-                // EXPバーの計算などは適宜追加
-                document.getElementById('exp-bar').style.width = "50%"; // 仮
-            }
-        });
+    async function fetchUserData() {
+        const res = await fetch(SHEET_URL);
+        const txt = await res.text();
+        const rows = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')));
+        const user = rows.find(r => r[1] && r[1].toLowerCase().trim() === loginID.toLowerCase());
+        
+        if (user) {
+            document.getElementById('display-name').innerText = user[0];
+            document.getElementById('display-rank').innerText = user[8] || "サポーター";
+            document.getElementById('display-crystal').innerText = user[5];
+            document.getElementById('display-level').innerText = user[7];
+
+            const totalExp = parseInt(user[6]) || 0;
+            const level = parseInt(user[7]) || 1;
+            const progress = getLevelProgress(totalExp, level);
+            document.getElementById('display-current-exp').innerText = progress.current;
+            document.getElementById('display-next').innerText = progress.next;
+            setTimeout(() => { document.getElementById('exp-bar').style.width = Math.min((progress.current/progress.next)*100, 100) + '%'; }, 500);
+        }
     }
-　　　async function fetchSheetData(targetUser) {
-            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
-            const res = await fetch(url);
-            const csvText = await res.text();
-            const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
-            const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
 
-            if (userData) {
-                document.getElementById('display-name').innerText = userData[0];
-                document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
-                document.getElementById('display-bits').innerText = userData[5];
-                document.getElementById('display-level').innerText = userData[7];
+    function getLevelProgress(totalExp, level) {
+        const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
+        let acc = 0, curL = 1;
+        for (let r of cfg) { while (curL < r.l) { if (curL < level) { acc += r.c; curL++; } else return { current: Math.max(0, totalExp - acc), next: r.c }; } }
+        return { current: (totalExp - 330900) % 10000, next: 10000 };
+    }
 
-                const totalExp = parseInt(userData[6]) || 0;
-                const level = parseInt(userData[7]) || 1;
-                const progress = getLevelProgress(totalExp, level);
-                document.getElementById('display-current-exp').innerText = progress.current;
-                document.getElementById('display-next').innerText = progress.next;
-                const percent = Math.min((progress.current / progress.next) * 100, 100);
-                setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
-
-                globalT1 = parseInt(userData[2]) || 0;
-                globalT2 = parseInt(userData[3]) || 0;
-                globalT3 = parseInt(userData[4]) || 0;
-
-                if(globalT1 > 0) document.getElementById('t1-badge').classList.add('tier-active');
-                if(globalT2 > 0) document.getElementById('t2-badge').classList.add('tier-active');
-                if(globalT3 > 0) document.getElementById('t3-badge').classList.add('tier-active');
-            }
-        }
- function getLevelProgress(totalExp, level) {
-            const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
-            let acc = 0, curL = 1;
-            for (let r of cfg) {
-                while (curL < r.l) {
-                    if (curL < level) { acc += r.c; curL++; }
-                    else { return { current: Math.max(0, totalExp - acc), next: r.c }; }
-                }
-            }
-            return { current: (totalExp - 330900) % 10000, next: 10000 };
-        }
-
-        async function playGacha(mode, val = 0) {
-            if (!loginID) return;
-            let query = `?user=${loginID}`;
-            if (mode === 'login') query += `&type=login`;
-            else query += `&gacha=${val}`;
-
-            const res = await fetch(GAS_URL + query);
-            const msg = await res.text();
-            alert(msg);
-            if (!msg.includes("今日はもう")) location.reload();
-        }
-
-        // Tier 3 ガチャは確認を挟む
-        function callTier3() {
-            let msg = "";
-            if (globalT3 >= 1) msg = "Tier 3 のかけらを1つ使います。";
-            else if (globalT2 >= 3) msg = "Tier 2 のかけらを3つ使います。";
-            else if (globalT1 >= 9) msg = "Tier 1 のかけらを9つ使います。";
-            else { alert("かけらが足りません。"); return; }
-            
-            if(confirm(msg + "ガチャを引きますか？")) {
-                playGacha('tier', 3);
-            }
-        }
+    function playGacha(type, val) {
+        fetch(`${GAS_URL}?user=${loginID}&${type === 'login' ? 'type=login' : 'gacha='+val}`)
+            .then(r => r.text()).then(m => { alert(m); location.reload(); });
+    }
 </script>
 </body>
 </html>

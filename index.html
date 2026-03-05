@@ -1,16 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-    <title>Status Page Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLAYER STATUS</title>
     <style>
-        body { background: #1a0033; color: #ff8c00; font-family: sans-serif; text-align: center; padding-top: 50px; }
-        .box { border: 2px solid #ff8c00; display: inline-block; padding: 20px; border-radius: 10px; }
+        /* 全体の背景：濃い紫から少し明るい紫へのグラデーション */
+        body {
+            background: radial-gradient(circle at center, #2d005f 0%, #1a0033 100%);
+            color: #ff8c00;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* ステータスカード：枠線を光らせる */
+        .card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #ff8c00;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.3), inset 0 0 15px rgba(138, 43, 226, 0.5);
+            text-align: center;
+            min-width: 300px;
+            backdrop-filter: blur(10px); /* 背景をぼかす */
+        }
+
+        h1 {
+            font-size: 2rem;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff8c00;
+        }
+
+        .status-item {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            color: #e0b0ff; /* 文字は少し明るい薄紫 */
+        }
+
+        /* Twitchログインボタンのプレースホルダー */
+        .login-btn {
+            margin-top: 30px;
+            background: #6441a5; /* Twitchの紫 */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #4b367c;
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #4b367c;
+            background: #7d5bbe;
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>STATUS PAGE</h1>
-        <p>オレンジ×紫のサイト準備中...</p>
+    <div class="card">
+        <h1>PLAYER STATUS</h1>
+        <div class="status-item">NAME: ???</div>
+        <div class="status-item">LEVEL: --</div>
+        <button class="login-btn">Twitchでログイン</button>
     </div>
 </body>
 </html>

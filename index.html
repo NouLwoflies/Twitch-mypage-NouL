@@ -216,12 +216,72 @@
             }
         });
     }
+　　　async function fetchSheetData(targetUser) {
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
+            const res = await fetch(url);
+            const csvText = await res.text();
+            const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+            const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
 
-    // ガチャ実行
-    function playGacha(type, val) {
-        let url = `${GAS_URL}?user=${loginID}&${type === 'login' ? 'type=login' : 'gacha='+val}`;
-        fetch(url).then(r => r.text()).then(m => { alert(m); location.reload(); });
-    }
+            if (userData) {
+                document.getElementById('display-name').innerText = userData[0];
+                document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
+                document.getElementById('display-bits').innerText = userData[5];
+                document.getElementById('display-level').innerText = userData[7];
+
+                const totalExp = parseInt(userData[6]) || 0;
+                const level = parseInt(userData[7]) || 1;
+                const progress = getLevelProgress(totalExp, level);
+                document.getElementById('display-current-exp').innerText = progress.current;
+                document.getElementById('display-next').innerText = progress.next;
+                const percent = Math.min((progress.current / progress.next) * 100, 100);
+                setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
+
+                globalT1 = parseInt(userData[2]) || 0;
+                globalT2 = parseInt(userData[3]) || 0;
+                globalT3 = parseInt(userData[4]) || 0;
+
+                if(globalT1 > 0) document.getElementById('t1-badge').classList.add('tier-active');
+                if(globalT2 > 0) document.getElementById('t2-badge').classList.add('tier-active');
+                if(globalT3 > 0) document.getElementById('t3-badge').classList.add('tier-active');
+            }
+        }
+ function getLevelProgress(totalExp, level) {
+            const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
+            let acc = 0, curL = 1;
+            for (let r of cfg) {
+                while (curL < r.l) {
+                    if (curL < level) { acc += r.c; curL++; }
+                    else { return { current: Math.max(0, totalExp - acc), next: r.c }; }
+                }
+            }
+            return { current: (totalExp - 330900) % 10000, next: 10000 };
+        }
+
+        async function playGacha(mode, val = 0) {
+            if (!loginID) return;
+            let query = `?user=${loginID}`;
+            if (mode === 'login') query += `&type=login`;
+            else query += `&gacha=${val}`;
+
+            const res = await fetch(GAS_URL + query);
+            const msg = await res.text();
+            alert(msg);
+            if (!msg.includes("今日はもう")) location.reload();
+        }
+
+        // Tier 3 ガチャは確認を挟む
+        function callTier3() {
+            let msg = "";
+            if (globalT3 >= 1) msg = "Tier 3 のかけらを1つ使います。";
+            else if (globalT2 >= 3) msg = "Tier 2 のかけらを3つ使います。";
+            else if (globalT1 >= 9) msg = "Tier 1 のかけらを9つ使います。";
+            else { alert("かけらが足りません。"); return; }
+            
+            if(confirm(msg + "ガチャを引きますか？")) {
+                playGacha('tier', 3);
+            }
+        }
 </script>
 </body>
 </html>

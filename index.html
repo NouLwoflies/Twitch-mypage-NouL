@@ -3,73 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLAYER STATUS</title>
+    <title>GIRLS STATUS</title>
     <style>
-        /* 全体の背景：濃い紫から少し明るい紫へのグラデーション */
+        /* 背景：白を基調に、薄いパステルパープルのグラデーション */
         body {
-            background: radial-gradient(circle at center, #2d005f 0%, #1a0033 100%);
-            color: #ff8c00;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%), 
+                        radial-gradient(circle at 10% 20%, rgba(224, 176, 255, 0.3) 0%, rgba(224, 176, 255, 0) 90%);
+            background-blend-mode: screen;
+            color: #5d00a8; /* 文字は濃い紫で引き締める */
+            font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden;
         }
 
-        /* ステータスカード：枠線を光らせる */
+        /* ステータスカード：白くて丸い、ふんわりしたデザイン */
         .card {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #ff8c00;
+            background: rgba(255, 255, 255, 0.9);
+            border: 4px solid #ffb347; /* 可愛らしいパステルオレンジの枠 */
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(255, 140, 0, 0.3), inset 0 0 15px rgba(138, 43, 226, 0.5);
+            border-radius: 30px; /* もっと丸く */
+            box-shadow: 0 10px 25px rgba(224, 176, 255, 0.5); /* 紫のふんわりした影 */
             text-align: center;
-            min-width: 300px;
-            backdrop-filter: blur(10px); /* 背景をぼかす */
+            min-width: 320px;
+            position: relative;
         }
 
+        /* タイトル：ポップなオレンジ */
         h1 {
-            font-size: 2rem;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #ff8c00;
+            font-size: 2.2rem;
+            color: #ff8c00;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 0px rgba(224, 176, 255, 0.5); /* 紫の影でポップに */
+            font-weight: bold;
         }
 
+        /* ステータス項目 */
         .status-item {
-            font-size: 1.2rem;
-            margin: 10px 0;
-            color: #e0b0ff; /* 文字は少し明るい薄紫 */
+            font-size: 1.3rem;
+            margin: 15px 0;
+            font-weight: bold;
+            border-bottom: 2px dashed #e0b0ff; /* 点線で可愛く */
+            padding-bottom: 5px;
         }
 
-        /* Twitchログインボタンのプレースホルダー */
+        /* Twitchログインボタン：公式の紫を保ちつつ、丸く可愛く */
         .login-btn {
-            margin-top: 30px;
-            background: #6441a5; /* Twitchの紫 */
+            margin-top: 35px;
+            background: #9146ff; /* Twitchの明るい紫 */
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 5px;
+            padding: 15px 30px;
+            border-radius: 50px; /* 完全な丸 */
             font-weight: bold;
+            font-size: 1.1rem;
             cursor: pointer;
-            box-shadow: 0 4px 0 #4b367c;
-            transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(145, 70, 255, 0.4);
+            transition: 0.3s;
         }
 
         .login-btn:hover {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #4b367c;
-            background: #7d5bbe;
+            transform: scale(1.05); /* ぷるんと大きくなる */
+            background: #a970ff;
+        }
+
+        /* 装飾用の丸（可愛い雰囲気用） */
+        .deco-circle {
+            position: absolute;
+            background: rgba(255, 179, 71, 0.2);
+            border-radius: 50%;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
+    <div class="deco-circle" style="width: 100px; height: 100px; top: -50px; left: -50px;"></div>
+    <div class="deco-circle" style="width: 80px; height: 80px; bottom: -40px; right: -40px; background: rgba(224, 176, 255, 0.2);"></div>
+
     <div class="card">
-        <h1>PLAYER STATUS</h1>
+        <h1>GIRLS STATUS</h1>
         <div class="status-item">NAME: ???</div>
         <div class="status-item">LEVEL: --</div>
-        <button class="login-btn">Twitchでログイン</button>
+        <button class="login-btn">Twitchでログイン 💜</button>
     </div>
 </body>
 </html>

@@ -3,90 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GIRLS STATUS</title>
+    <title>PLAYER STATUS</title>
     <style>
-        /* 背景：白を基調に、薄いパステルパープルのグラデーション */
+        /* 明るく可愛い女の子向けのデザイン */
         body {
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%), 
-                        radial-gradient(circle at 10% 20%, rgba(224, 176, 255, 0.3) 0%, rgba(224, 176, 255, 0) 90%);
-            background-blend-mode: screen;
-            color: #5d00a8; /* 文字は濃い紫で引き締める */
-            font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            color: #5d00a8;
+            font-family: sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
         }
-
-        /* ステータスカード：白くて丸い、ふんわりしたデザイン */
         .card {
             background: rgba(255, 255, 255, 0.9);
-            border: 4px solid #ffb347; /* 可愛らしいパステルオレンジの枠 */
+            border: 4px solid #ffb347;
             padding: 40px;
-            border-radius: 30px; /* もっと丸く */
-            box-shadow: 0 10px 25px rgba(224, 176, 255, 0.5); /* 紫のふんわりした影 */
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(224, 176, 255, 0.5);
             text-align: center;
             min-width: 320px;
-            position: relative;
         }
-
-        /* タイトル：ポップなオレンジ */
-        h1 {
-            font-size: 2.2rem;
-            color: #ff8c00;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 0px rgba(224, 176, 255, 0.5); /* 紫の影でポップに */
-            font-weight: bold;
-        }
-
-        /* ステータス項目 */
-        .status-item {
-            font-size: 1.3rem;
-            margin: 15px 0;
-            font-weight: bold;
-            border-bottom: 2px dashed #e0b0ff; /* 点線で可愛く */
-            padding-bottom: 5px;
-        }
-
-        /* Twitchログインボタン：公式の紫を保ちつつ、丸く可愛く */
-        .login-btn {
-            margin-top: 35px;
-            background: #9146ff; /* Twitchの明るい紫 */
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px; /* 完全な丸 */
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(145, 70, 255, 0.4);
-            transition: 0.3s;
-        }
-
-        .login-btn:hover {
-            transform: scale(1.05); /* ぷるんと大きくなる */
-            background: #a970ff;
-        }
-
-        /* 装飾用の丸（可愛い雰囲気用） */
-        .deco-circle {
-            position: absolute;
-            background: rgba(255, 179, 71, 0.2);
-            border-radius: 50%;
-            z-index: -1;
-        }
+        h1 { color: #ff8c00; margin-bottom: 25px; text-shadow: 2px 2px 0px rgba(224, 176, 255, 0.2); }
+        .status-item { font-size: 1.3rem; margin: 15px 0; font-weight: bold; border-bottom: 2px dashed #e0b0ff; padding-bottom: 5px; }
+        .login-btn { background: #9146ff; color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        #status-area { display: none; }
+        .loading { color: #ffb347; font-style: italic; }
     </style>
 </head>
 <body>
-    <div class="deco-circle" style="width: 100px; height: 100px; top: -50px; left: -50px;"></div>
-    <div class="deco-circle" style="width: 80px; height: 80px; bottom: -40px; right: -40px; background: rgba(224, 176, 255, 0.2);"></div>
 
     <div class="card">
         <h1>GIRLS STATUS</h1>
-        <div class="status-item">NAME: ???</div>
-        <div class="status-item">LEVEL: --</div>
-        <button class="login-btn">Twitchでログイン 💜</button>
+        
+        <div id="login-area">
+            <p>Twitchでログインして<br>自分のステータスを確認しよう！</p>
+            <button class="login-btn" onclick="login()">Twitchでログイン 💜</button>
+        </div>
+
+        <div id="status-area">
+            <div id="loading-msg" class="loading">データ読み込み中...</div>
+            <div id="data-display" style="display:none;">
+                <div class="status-item">PLAYER: <span id="display-name">---</span></div>
+                <div class="status-item">LEVEL: <span id="display-level">--</span></div>
+                <div class="status-item">FRAGMENTS: <span id="display-bits">--</span></div>
+                <p style="font-size: 0.8rem; color: #999; margin-top:20px;">※情報は自動更新されます</p>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // ★★★ 【設定箇所】ここを自分のIDに書き換えてください ★★★
+        const CLIENT_ID = '3x3nwbmhvpdx1bxzs9d540ga31ud6b'; 
+        const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
+        const REDIRECT_URI = window.location.origin + window.location.pathname;
+
+        // 1. Twitchログイン画面へ飛ばす
+        function login() {
+            const url = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
+            window.location.href = url;
+        }
+
+        // 2. ページ読み込み時にURLの「トークン」をチェック
+        window.onload = function() {
+            const hash = window.location.hash;
+            if (hash) {
+                const params = new URLSearchParams(hash.substring(1));
+                const token = params.get('access_token');
+                if (token) {
+                    document.getElementById('login-area').style.display = 'none';
+                    document.getElementById('status-area').style.display = 'block';
+                    getUserInfo(token);
+                }
+            }
+        };
+
+        // 3. Twitchからログイン中のユーザー名を取得
+        async function getUserInfo(token) {
+            try {
+                const res = await fetch('https://api.twitch.tv/helix/users', {
+                    headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const loginID = data.data[0].login; // TwitchのID（英名）
+                const displayName = data.data[0].display_name; // 表示名
+
+                document.getElementById('display-name').innerText = displayName;
+                fetchSheetData(loginID);
+            } catch (e) {
+                alert("ログインに失敗しました。再試行してください。");
+            }
+        }
+
+        // 4. スプレッドシートからその人の行を探す
+        async function fetchSheetData(targetUser) {
+            // スプレッドシートをCSV形式で取得（Usersシートを指定）
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
+            
+            try {
+                const res = await fetch(url);
+                const csvText = await res.text();
+                
+                // CSVを一行ずつに分解
+                const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+                
+                // 1列目(A列)がユーザー名の行を探す
+                const userData = rows.find(row => row[0].toLowerCase() === targetUser.toLowerCase());
+
+                if (userData) {
+                    // 表示を更新（2列目がレベル、6列目が断片と想定）
+                    document.getElementById('display-level').innerText = userData[1] || '0';
+                    document.getElementById('display-bits').innerText = userData[5] || '0';
+                    
+                    document.getElementById('loading-msg').style.display = 'none';
+                    document.getElementById('data-display').style.display = 'block';
+                } else {
+                    document.getElementById('loading-msg').innerText = "データが見つかりませんでした。";
+                }
+            } catch (e) {
+                document.getElementById('loading-msg').innerText = "シートの読み込みに失敗しました。";
+            }
+        }
+    </script>
 </body>
 </html>

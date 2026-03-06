@@ -101,46 +101,51 @@
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
         /* 所持数バーのスタイル */
 　　　　/* 画面上部に固定される所持数エリア */
-        .inventory-bar { 
+       /* --- 所持バー：ナビと統一＋完全1列＋画像対応 --- */
+.inventory-bar { 
     position: fixed; 
-    top: 20px;       /* 上から少し浮かせる */
+    top: 20px; 
     left: 50%; 
     transform: translateX(-50%);
-    width: 85%;      /* ナビと同じ幅 */
-    max-width: 320px; /* ナビと同じ最大幅 */
-    height: 60px;    /* ナビ(65px)に近い高さ */
+    width: 90%;      /* 少し幅を広げて1列を安定させます */
+    max-width: 360px; 
+    height: 60px; 
     background: rgba(255, 255, 255, 0.95); 
-    border-radius: 35px; /* ナビと同じ丸み */
+    border-radius: 35px; 
     display: flex; 
+    flex-direction: row; /* 横並び強制 */
+    flex-wrap: nowrap;   /* 折り返し禁止 */
     justify-content: space-around; 
     align-items: center; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15); /* ナビと同じ影 */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
     z-index: 2000; 
-    border: 2px solid #fff; /* ナビと同じ白枠 */
-    padding: 0 10px;
+    border: 2px solid #fff; 
+    padding: 0 15px;
     box-sizing: border-box;
 }
-/* 各所持数アイテム（リストのミニ版デザイン） */
-    .inv-item { 
+
+.inv-item { 
     display: flex; 
-    flex-direction: column; 
+    flex-direction: row; /* 画像と数字を横に並べる */
     align-items: center; 
-    background: none; /* 枠線を消してスッキリさせる */
-    border: none;
+    gap: 4px; /* 画像と数字の隙間 */
     flex: 1;
+    justify-content: center;
     min-width: 0;
 }
-.inv-label { 
-    font-size: 0.5rem; /* ナビのテキストサイズに合わせる */
-    color: #ff8c00; 
-    font-weight: 900; 
-    margin-bottom: 2px;
-    white-space: nowrap;
+
+/* かけら・クリスタルの画像サイズ */
+.inv-icon {
+    width: 22px; 
+    height: 22px; 
+    object-fit: contain;
 }
+
 .inv-val { 
     font-size: 0.9rem; 
     font-weight: 900; 
     color: #2c3e50; 
+    white-space: nowrap;
 }
 /* ページ全体の開始位置を調整（バーに被らないように） */
         .viewport { padding-top: 70px; /* バーの高さ分だけ下げる */}
@@ -189,19 +194,24 @@
     </style>
 </head>
 <body>
-  <div class="inventory-bar">
+ <div class="inventory-bar">
     <div class="inv-item">
-        <span class="inv-label">CRYSTAL</span>
+        <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png" class="inv-icon" alt="crystal">
         <span id="inv-bits" class="inv-val">0</span>
-        <span class="inv-label">TIER 1</span>
+    </div>
+    <div class="inv-item">
+        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon" alt="T1">
         <span id="inv-t1" class="inv-val">0</span>
-        <span class="inv-label">TIER 2</span>
+    </div>
+    <div class="inv-item">
+        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" style="filter: hue-rotate(180deg);" class="inv-icon" alt="T2">
         <span id="inv-t2" class="inv-val">0</span>
-        <span class="inv-label">TIER 3</span>
+    </div>
+    <div class="inv-item">
+        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" style="filter: hue-rotate(280deg);" class="inv-icon" alt="T3">
         <span id="inv-t3" class="inv-val">0</span>
     </div>
-  </div>
-
+</div>
 <div class="viewport">
     <div class="main-wrapper" id="master-container">
         

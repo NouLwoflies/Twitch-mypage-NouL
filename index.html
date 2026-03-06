@@ -110,47 +110,59 @@
         .btn-premium::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.6), transparent); transform: rotate(45deg); animation: shine 2s infinite; }
         @keyframes shine { 0% { transform: translateX(-150%) rotate(45deg); } 100% { transform: translateX(150%) rotate(45deg); } }
         /* 共通：プレミアムボタンの光沢アニメーション */
-        .btn-bronze, .btn-silver, .btn-gold {
+        .btn-bronze, .btn-silver, .btn-gold, .btn-premium {
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* ボタンの外に光を出さない */
     color: white !important;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    z-index: 1; /* ボタン内の重なりを制御 */
 }
 
-.btn-bronze::after, .btn-silver::after, .btn-gold::after {
+/* 光の要素をボタン内部に限定 */
+.btn-bronze::after, .btn-silver::after, .btn-gold::after, .btn-premium::after {
     content: "";
     position: absolute;
     top: -50%;
-    left: -50%;
-    width: 200%;
+    left: -150%; /* 開始位置を左側に */
+    width: 100%; /* 光の幅を少し絞る */
     height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+    background: linear-gradient(
+        to right, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.4) 50%, 
+        rgba(255, 255, 255, 0) 100%
+    );
     transform: rotate(45deg);
-    animation: shine 3s infinite;
+    animation: shine-inside 3s infinite;
+    z-index: 2; /* 背景より上に表示 */
+    pointer-events: none; /* クリックを邪魔しない */
 }
 
-/* 銅ボタン */
+/* アニメーションの定義（ボタンの幅の中だけで動かす） */
+@keyframes shine-inside {
+    0% { left: -150%; }
+    50% { left: 150%; }
+    100% { left: 150%; }
+}
+
+/* --- 各ボタンの個別色設定 --- */
 .btn-bronze {
     background: linear-gradient(135deg, #d2691e, #8b4513) !important;
     box-shadow: 0 4px 0 #5d2e0d;
 }
 
-/* 銀ボタン */
 .btn-silver {
     background: linear-gradient(135deg, #bdc3c7, #7f8c8d) !important;
     box-shadow: 0 4px 0 #4f5b5c;
 }
 
-/* 金ボタン（最上位） */
 .btn-gold {
     background: linear-gradient(135deg, #ffd700, #daa520) !important;
     box-shadow: 0 4px 0 #916f1b;
-    color: #fff !important;
 }
 
-/* アニメーションの速度調整（金は少し早く光るなど） */
+/* 金は少しリッチに速く光らせる */
 .btn-gold::after { animation-duration: 2s; }
-
         /* ナビゲーション */
         .bottom-nav {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);

@@ -99,7 +99,86 @@
         .list-item { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; text-align: left; border: 2px solid #f0f0f0; }
         .badge { background: var(--twitch-purple); color: white; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 900; }
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
+        /* 所持数バーのスタイル */
+　　　　/* 画面上部のアイテム所持数バー */
+　　　　.inventory-bar {
+  　　　　　　　　  display: flex;
+   　　　　　　　　　 justify-content: space-around;
+   　　　　　　　　　　　 background: rgba(44, 62, 80, 0.95); /* 濃い紺色 */
+   　　　　　　　　　　　 border-bottom: 3px solid #ffb347;
+   　　　　　　　　　　　 padding: 10px 0;
+   　　　　　　　　　 position: sticky;
+   　　　　　　　　　 top: 0;
+ 　　　　　　　　　   z-index: 1100;
+　　　　　　　　　　　　}
 
+　　　　.inv-item {
+　　　　　　    display: flex;
+ 　　　　　　　　   flex-direction: column;
+   　　　　　　　 align-items: center;
+　　　　　　　　　}
+
+　　　　.inv-label {
+  　　　　　　　  font-size: 0.6rem;
+　　　　　　　　    color: #ffb347;
+  　　　　　　　  font-weight: 900;
+　　　　　　　　　　　}
+
+　　　　.inv-val {
+  　　　　　　　　  color: white;
+    　　　　　　　font-weight: 900;
+　　　　　　　    font-size: 0.9rem;
+　　　　　　　　　　　}
+
+　　　　　　　/* ガチャボタン：角丸四角形（リッチ版） */
+　　　.gacha-box {
+   　　　　　　 background: #fff;
+ 　　　　　　　　   border: 2px solid #f0f0f0;
+  　　　　　　　　　  border-radius: 20px;
+   　　　　　　　　　 padding: 15px;
+  　　　　　　　  margin-bottom: 15px;
+  　　　　　　　　  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+　　　　　　}
+
+　　　　　.gacha-title {
+ 　　　　　　　   font-size: 1rem;
+ 　　　　　　　   font-weight: 900;
+　　　　　　　    color: #2c3e50;
+  　　　　　　　  margin-bottom: 10px;
+　　　　　　　　　　}　　　　　　　
+
+　　　　.draw-button {
+   　　　　 width: 100%;
+   　　　　　　 background: linear-gradient(135deg, #ffb347, #ff8c00);
+   　　　　　　　 border-radius: 15px; /* 角丸四角形 */
+  　　　　　　　  padding: 12px;
+  　　　　　　　　  color: white;
+ 　　　　　　　　　   border: none;
+ 　　　　　　　   box-shadow: 0 4px 0 #cc7000; /* 立体感 */
+ 　　　　　　   transition: all 0.1s;
+　　　　}
+
+　　　　　.draw-button:active {
+   　　　　 transform: translateY(3px);
+ 　　　　　　   box-shadow: 0 1px 0 #cc7000;
+　　　　　　}
+　
+　　　　.draw-label {
+ 　　　　　   display: block;
+ 　　　　　　　　   font-size: 0.75rem;
+  　　　　　　　　　  font-weight: 800;
+ 　　　　　　　   opacity: 0.9;
+  　　　　　　  margin-bottom: 2px;
+　　　　　　}
+
+　　　　.draw-cost {
+    　　　　display: flex;
+   　　　　　　　 align-items: center;
+  　　　　　　　　  justify-content: center;
+ 　　　　　　　   gap: 5px;
+  　　　　　　font-size: 1.3rem;
+  　　　　  font-weight: 900;
+　　　　　　}
         /* ナビゲーション */
         .bottom-nav {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
@@ -178,34 +257,60 @@
                     <button onclick="playGacha('login')" class="login-btn" style="background: #ff8c00;">🎁 1日1回ログインガチャ</button>
                 </div>
         </section>
-　　　　<section class="page-section">
-  　　　　  <div class="card">
-    　　　　    <h1 style="color:#ff8c00">ガチャ</h1>
-            
-　　　　　　　　 <div class="list-item">
-         　　　　   <div style="font-weight:800; color:var(--twitch-purple);">🎫 Tierかけら交換</div>
-          　　　　  <p style="font-size:0.7rem; color:#666;">サブスク等で貰った「かけら」を豪華景品に！</p>
-          　　　　  <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top:5px;">
-              　　　　  <button onclick="playGacha('tier', 1)" class="sub-btn">T1用</button>
-             　　　　   <button onclick="playGacha('tier', 2)" class="sub-btn">T2用</button>
-             　　　　   <button onclick="playGacha('tier', 3)" class="sub-btn">T3用</button>
-       　　　　     </div>
-     　　　　   </div>
-            
-     　　　　   <div class="list-item">
-       　　　　     <div style="font-weight:800; color:var(--crystal-blue);">💎 クリスタルガチャ</div>
-        　　　　    <p style="font-size:0.7rem; color:#666;">貯まったクリスタルで運試し。高額ほどレア率UP！</p>
-       　　　　     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top:5px;">
-          　　　　      <button onclick="playGacha('crystal', 100)" class="sub-btn">100円</button>
-          　　　　      <button onclick="playGacha('crystal', 500)" class="sub-btn">500円</button>
-           　　　　     <button onclick="playGacha('crystal', 1000)" class="sub-btn" style="border-color: var(--crystal-blue);">1000円</button>
-           　　　　     <button onclick="playGacha('crystal', 5000)" class="sub-btn btn-premium">5000円</button>
-        　　　　    </div>
-   　　　　     </div>
+        <div class="inventory-bar">
+  　　　　　　  <div class="inv-item">
+      　　　　　　　  <span class="inv-label">CRYSTAL</span>
+       　　　　　　　　 <span id="inv-bits" class="inv-val">0</span>
+  　　　　　　  </div>
+    　　　　　　<div class="inv-item">
+      　　　　　　　　  <span class="inv-label">TIER 1</span>
+       　　　　　　　　 <span id="inv-t1" class="inv-val">0</span>
+　 　　　　　　  </div>
+  　　　　　　　  <div class="inv-item">
+    　　　　　　　　　    <span class="inv-label">TIER 2</span>
+       　　　　　　　　 <span id="inv-t2" class="inv-val">0</span>
+    　　　　　　</div>
+   　　　　　　 <div class="inv-item">
+       　　　　　　　　　 <span class="inv-label">TIER 3</span>
+     　　　　　　　　　   <span id="inv-t3" class="inv-val">0</span>
+  　　　　　　  </div>
+　　　　　　</div
+<section class="page-section">
+    <div class="card">
+        <h1>🎰 GACHA</h1>
 
-      　　　　 
- 　　　　   </div>
-　　　　</section>
+        <div class="gacha-box" style="border-color: gold; background: #fffdf0;">
+            <div class="gacha-title" style="color: #d4af37;">ULTIMATE</div>
+            <button class="draw-button btn-premium" onclick="playGacha('crystal', 5000)">
+                <span class="draw-label">1回引く</span>
+                <div class="draw-cost">💎 5,000</div>
+            </button>
+        </div>
+
+        <div class="gacha-box">
+            <div class="gacha-title">ROYAL</div>
+            <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 1000)">
+                <span class="draw-label">1回引く</span>
+                <div class="draw-cost">💎 1,000</div>
+            </button>
+        </div>
+
+
+
+        <div class="gacha-box">
+            <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
+            <button class="draw-button" style="background: var(--twitch-purple); box-shadow: 0 4px 0 #5c26cc;" onclick="callTier3()">
+                <span class="draw-label">1回引く</span>
+                <div class="draw-cost" style="font-size: 0.9rem;">
+                    <span>🔻9</span> <span>🔹3</span> <span>🔸1</span>
+                </div>
+            </button>
+        </div>
+
+
+
+    </div>
+</section>
 
         <section class="page-section">
             <div class="card">

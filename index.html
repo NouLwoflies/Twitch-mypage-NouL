@@ -11,7 +11,7 @@
             height: -webkit-fill-available;
             margin: 0;
             padding: 0;
-            overflow: hidden; 
+            overflow: hidden;
             position: fixed;
             width: 100%;
         }
@@ -21,10 +21,9 @@
             --crystal-blue: #00d4ff;
             --bg-glass: rgba(255, 255, 255, 0.85);
         }
-
-        body { 
+        body {
             margin: 0; padding: 0; font-family: 'Mochiy Pop One', sans-serif;
-            background-image: url('https://cdn.discordapp.com/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69aae5d7&is=69a99457&hm=2bf9e90c392f467c24ae0e7f2c35df035cfe5f8ff68e100964cd3756f7f48d6a'); 
+            background-image: url('https://cdn.discordapp.com/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69aae5d7&is=69a99457&hm=2bf9e90c392f467c24ae0e7f2c35df035cfe5f8ff68e100964cd3756f7f48d6a');
             background-size: cover; background-position: center; background-attachment: fixed;
             overflow: hidden; touch-action: pan-y;
         }
@@ -32,113 +31,78 @@
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(255, 255, 255, 0.4); z-index: -1;
         }
-
-        .inventory-bar { 
+        /* インベントリバー */
+        .inventory-bar {
             position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 380px; height: 40px; 
-            background: #ffffff !important; border: 2px solid #f0f0f0 !important; 
-            border-radius: 27px !important; display: flex !important; 
-            align-items: center !important; justify-content: space-around !important; 
-            padding: 0 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+            width: 92%; max-width: 380px; height: 40px;
+            background: #ffffff !important; border: 2px solid #f0f0f0 !important;
+            border-radius: 27px !important; display: flex !important;
+            align-items: center !important; justify-content: space-around !important;
+            padding: 0 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             z-index: 9999 !important; box-sizing: border-box;
         }
-
         .inv-item { display: flex !important; align-items: center !important; gap: 4px; flex: 1; justify-content: center; background: transparent !important; border: none !important; }
         .inv-item:not(:last-child) { border-right: 1px solid #f0f0f0 !important; }
         .inv-icon { width: 24px !important; height: 24px !important; object-fit: contain !important; display: inline-block !important; }
         .inv-val { font-size: 0.8rem; font-weight: 900; color: #2c3e50; }
 
-        .viewport { 
+        /* コンテナ */
+        .viewport {
             width: 100vw; height: 100vh; overflow: hidden; position: relative;
             padding-top: 70px; padding-bottom: 100px; box-sizing: border-box;
         }
         .main-wrapper {
-            display: flex; width: 500vw; height: 100%; 
+            display: flex; width: 500vw; height: 100%;
             transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);
         }
-
         .page-section {
-            width: 100vw; height: 100%; 
-            display: flex; justify-content: center; align-items: flex-start; 
+            width: 100vw; height: 100%;
+            display: flex; justify-content: center; align-items: flex-start;
             flex-shrink: 0; box-sizing: border-box; padding: 10px 15px;
         }
-
-        .card { 
-            background: var(--bg-glass); border-radius: 25px; border: 3px solid #ffb347; 
-            padding: 20px; width: 100%; max-width: 350px; 
+        .card {
+            background: var(--bg-glass); border-radius: 25px; border: 3px solid #ffb347;
+            padding: 20px; width: 100%; max-width: 350px;
             height: calc(100vh - 180px);
-            display: flex; flex-direction: column; 
+            display: flex; flex-direction: column;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1); box-sizing: border-box; position: relative;
         }
-
         .card h1 { font-family: 'Mochiy Pop One', sans-serif; flex-shrink: 0; margin-top: 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-bottom: 3px solid #ffb347; padding-bottom: 5px; color: #ff8c00; font-size: 1.4rem; margin-bottom: 15px; font-weight: 800; }
-        
-        .card-body {
-            flex-grow: 1;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch;
-            padding-right: 10px;
-        }
-
+        .card-body { flex-grow: 1; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-right: 10px; }
         .card-body::-webkit-scrollbar { width: 6px; }
         .card-body::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 10px; }
 
-        .status-item { 
-            font-size: 0.95rem; 
-            margin: 15px 0; 
-            font-weight: 700; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: flex-start; 
-            border-bottom: 1px solid #f5f5f5; 
-            padding-bottom: 8px; 
-        }
-
-        .status-item span:first-child {
-            font-size: 0.7rem;
-            color: #888;
-            font-weight: 900;
-            margin-bottom: 2px;
-        }
-
-        /* --- ランク名の枠線修正版 --- */
+        /* ランク・ステータス表示 */
+        .status-item { font-size: 0.95rem; margin: 15px 0; font-weight: 700; display: flex; flex-direction: column; align-items: flex-start; border-bottom: 1px solid #f5f5f5; padding-bottom: 8px; }
+        .status-item span:first-child { font-size: 0.7rem; color: #888; font-weight: 900; margin-bottom: 2px; }
         #display-rank {
-            display: inline-block;
-            font-family: 'Mochiy Pop One', sans-serif;
-            font-weight: 900;
-            font-size: 1.35rem;
+            display: inline-block; font-family: 'Mochiy Pop One', sans-serif; font-weight: 700; font-size: 1.35rem;
             background: linear-gradient(to bottom, #fff5d1 0%, #ffbb00 45%, #d4af37 55%, #8a6d3b 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            /* 複数回影を重ねることで確実に縁取りを作る */
-            filter: drop-shadow(1px 1px 0px #6a5d21) 
-                    drop-shadow(-1px -1px 0px #6a5d21) 
-                    drop-shadow(1px -1px 0px #6a5d21) 
-                    drop-shadow(-1px 1px 0px #6a5d21);
-            transform: skewX(-5deg);
-            margin-left: 5px;
-            padding: 2px 5px;
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(1px 1px 0px #6a5d21) drop-shadow(-1px -1px 0px #6a5d21) drop-shadow(1px -1px 0px #6a5d21) drop-shadow(-1px 1px 0px #6a5d21);
+            transform: skewX(-5deg); margin-left: 5px; padding: 2px 5px;
         }
-
         .exp-container { text-align: left; margin: 20px 0; }
         .level-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px; }
         #display-level { font-size: 2.2rem; font-weight: 900; color: #ff8c00; line-height: 1; }
         .exp-outline { background: #fdf2e2; height: 14px; border-radius: 7px; overflow: hidden; }
         .exp-fill { background: linear-gradient(to right, #ffb347, #ff4500); height: 100%; width: 0%; transition: 1.5s ease; }
 
+        /* ボタン・ガチャ */
         button { transition: all 0.1s; cursor: pointer; border: none; font-family: inherit; }
         button:active { transform: scale(0.94); }
         .login-btn { background: #9146ff; color: white; border-radius: 12px; padding: 14px; width: 100%; font-weight: 800; font-size: 1rem; margin-bottom: 15px; }
-        
         .list-item { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; text-align: left; border: 2px solid #f0f0f0; }
         .badge { background: var(--twitch-purple); color: white; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 900; }
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
-
         .gacha-box { background: #fff; border: 2px solid #f0f0f0; border-radius: 20px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .gacha-title { font-size: 1rem; font-weight: 900; color: #2c3e50; margin-bottom: 10px; }
         .draw-button { width: 100%; border-radius: 15px; padding: 12px; color: white; font-weight: 900; }
+        .btn-premium { background: linear-gradient(135deg, #fffcf0 0%, #fff5d1 100%) !important; border: 2px solid gold !important; color: #d4af37 !important; position: relative; overflow: hidden; }
+        .btn-premium::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.6), transparent); transform: rotate(45deg); animation: shine 2s infinite; }
+        @keyframes shine { 0% { transform: translateX(-150%) rotate(45deg); } 100% { transform: translateX(150%) rotate(45deg); } }
 
+        /* ナビゲーション */
         .bottom-nav {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
             width: 85%; max-width: 320px; height: 65px;
@@ -146,26 +110,19 @@
             display: flex; justify-content: space-around; align-items: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; border: 2px solid #fff;
         }
-        .nav-item { 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: none; border: none; color: #ccc; transition: 0.2s; width: 20%;
-        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; background: none; border: none; color: #ccc; transition: 0.2s; width: 20%; }
         .nav-item.active { color: var(--accent-orange); }
         .nav-icon-emu { font-size: 1.4rem; margin-bottom: 2px; }
         .nav-text { font-size: 0.55rem; font-weight: 900; margin-top: 2px; }
-
-        .btn-premium { background: linear-gradient(135deg, #fffcf0 0%, #fff5d1 100%) !important; border: 2px solid gold !important; color: #d4af37 !important; position: relative; overflow: hidden; }
-        .btn-premium::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.6), transparent); transform: rotate(45deg); animation: shine 2s infinite; }
-        @keyframes shine { 0% { transform: translateX(-150%) rotate(45deg); } 100% { transform: translateX(150%) rotate(45deg); } }
     </style>
 </head>
 <body>
 
 <div class="inventory-bar">
     <div class="inv-item">💎<span id="inv-bits" class="inv-val">0</span></div>
-    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon"><span id="inv-t1" class="inv-val">0</span></div>
-    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon"><span id="inv-t2" class="inv-val">0</span></div>
-    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon"><span id="inv-t3" class="inv-val">0</span></div>
+    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png" class="inv-icon"><span id="inv-t1" class="inv-val">0</span></div>
+    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png" class="inv-icon"><span id="inv-t2" class="inv-val">0</span></div>
+    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png" class="inv-icon"><span id="inv-t3" class="inv-val">0</span></div>
 </div>
 
 <div class="viewport">
@@ -174,9 +131,9 @@
         <section class="page-section">
             <div class="card">
                 <h1>
-                    <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69ab997a&is=69aa47fa&hm=0fd68dec025d30fa9da370fe1d41c53d0218f8a535a9b68ca662907167a0c268&" height="24">
+                    <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png" height="24">
                     ステータス 
-                    <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69ab997a&is=69aa47fa&hm=fa6d5ab1196dad92bb53423935072a7b8d4ea4381edb8625ecd52dd121d16001&" height="24">
+                    <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png" height="24">
                 </h1>
                 <div class="card-body">
                     <div id="login-area">
@@ -202,169 +159,66 @@
 
         <section class="page-section">
             <div class="card">
-                      <h1>🎰 ガチャ 🎰</h1>
-
-                   <div class="card-body">
-
-                    <div class="gacha-box">
-
-                        <div class="gacha-title">100円ガチャ</div>
-
-                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 100)">
-
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-
-                            <div>💎 200</div>
-
-                        </button>
-
-                    </div>
-
-                    <div class="gacha-box">
-
-                        <div class="gacha-title">500円ガチャ</div>
-
-                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 500)">
-
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-
-                            <div>💎 1000</div>
-
-                        </button>
-
-                    </div>
-
-                    <div class="gacha-box">
-
-                        <div class="gacha-title">1000円ガチャ</div>
-
-                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 1000)">
-
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-
-                            <div>💎 2000</div>
-
-                        </button>
-
-                    </div>
-
-                    <div class="gacha-box" style="border-color: gold; background: #fffdf0;">
-
-                        <div class="gacha-title" style="color: #d4af37;">5000円ガチャ</div>
-
-                        <button class="draw-button btn-premium" onclick="playGacha('crystal', 5000)">
-
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-
-                            <div>💎 10000</div>
-
-                        </button>
-
-                    </div>
-
-                    <div class="gacha-box">
-
-    <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
-
-    <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428151691186196/582_20260306193906.png?ex=69ac0055&is=69aaaed5&hm=896d656a05129a1265f4773512f8de82a8ce5c90a6f80f9aa6a861a1f07d35c9&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000000 !important; box-shadow: 0 4px 0 #c2006b; position: relative; height: 70px;" onclick="callTier1()">
-
-        <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-
-        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon"> 1</div>
-
-    </button>
-
-</div>
-
-
-
-<div class="gacha-box">
-
-    <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
-
-    <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428149791162419/582_20260306193854.png?ex=69ac0055&is=69aaaed5&hm=b9d42a81aaf7ad6c6a678248bae86335b5528fd90000df9866cf0d08861e8aab&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000000 !important; box-shadow: 0 4px 0 #0044aa; position: relative; height: 70px;" onclick="callTier2()">
-
-        <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-
-        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1 </div>
-
-    </button>
-
-</div>
-
-
-
-<div class="gacha-box">
-
-    <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
-
-    <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428150957047909/582_20260306193859.png?ex=69ac0055&is=69aaaed5&hm=09dedeb48383943bc39134bd32e094344d8da741750377f31a44d451f3556e26&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000000 !important; box-shadow: 0 4px 0 #888800; position: relative; height: 70px;" onclick="callTier3()">
-
-        <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-
-        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">9 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1</div>
-
-    </button>
-
-</div>
-
-                </div>
-
-            </div>
-
-        </section>
-        <section class="page-section">
-            <div class="card">
-                <h1 style="color:var(--twitch-purple)">🏆 バトルパス 🏆</h1>
-                <div class="card-body" id="reward-list">
-                    </div>
-            </div>
-        </section>
-
-        <section class="page-section">
-            <div class="card">
-                <h1 style="color:#2ecc71">📖 ガイド 📖</h1>
+                <h1>🎰 ガチャ 🎰</h1>
                 <div class="card-body">
-                    <div class="list-item">
-                        <div style="font-weight:800; color:var(--accent-orange);">💎 クリスタルの貯め方</div>
-                        <div style="font-size:0.75rem; margin-top:5px;">配信でのBits等に応じて付与されます。</div>
+                    <div class="gacha-box">
+                        <div class="gacha-title">100円ガチャ</div>
+                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 100)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 200</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box">
+                        <div class="gacha-title">500円ガチャ</div>
+                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 500)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 1000</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box">
+                        <div class="gacha-title">1000円ガチャ</div>
+                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 1000)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 2000</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box" style="border-color: gold; background: #fffdf0;">
+                        <div class="gacha-title" style="color: #d4af37;">5000円ガチャ</div>
+                        <button class="draw-button btn-premium" onclick="playGacha('crystal', 5000)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 10000</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box">
+                        <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
+                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428151691186196/582_20260306193906.png'); background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
+                            <div style="font-size:0.7rem;">1回引く</div><div><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png" class="inv-icon"> 1</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box">
+                        <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
+                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428149791162419/582_20260306193854.png'); background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000; box-shadow: 0 4px 0 #0044aa; height: 70px;" onclick="callTier2()">
+                            <div style="font-size:0.7rem;">1回引く</div><div><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png" class="inv-icon">1 </div>
+                        </button>
+                    </div>
+                    <div class="gacha-box">
+                        <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
+                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428150957047909/582_20260306193859.png'); background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
+                            <div style="font-size:0.7rem;">1回引く</div><div><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png" class="inv-icon">9 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png" class="inv-icon">1</div>
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="page-section">
-            <div class="card">
-                <h1 style="color:#7f8c8d">📜 履歴 📜</h1>
-                <div class="card-body" id="log-content" style="text-align:left; font-size:0.75rem;">
-                    履歴はありません
-                </div>
-            </div>
-        </section>
+        <section class="page-section"><div class="card"><h1 style="color:var(--twitch-purple)">🏆 バトルパス 🏆</h1><div class="card-body" id="reward-list"></div></div></section>
+        <section class="page-section"><div class="card"><h1 style="color:#2ecc71">📖 ガイド 📖</h1><div class="card-body"><div class="list-item"><div style="font-weight:800; color:var(--accent-orange);">💎 クリスタルの貯め方</div><div style="font-size:0.75rem; margin-top:5px;">配信でのBits等に応じて付与されます。</div></div></div></div></section>
+        <section class="page-section"><div class="card"><h1 style="color:#7f8c8d">📜 履歴 📜</h1><div class="card-body" id="log-content" style="text-align:left; font-size:0.75rem;">履歴はありません</div></div></section>
     </div>
 </div>
 
 <nav class="bottom-nav">
-    <button class="nav-item active" onclick="go(0)">
-        <span class="nav-icon-emu">👤</span>
-        <span class="nav-text">ステータス</span>
-    </button>
-    <button class="nav-item" onclick="go(1)">
-        <span class="nav-icon-emu">🎰</span>
-        <span class="nav-text">ガチャ</span>
-    </button>
-    <button class="nav-item" onclick="go(2)">
-        <span class="nav-icon-emu">🏆</span>
-        <span class="nav-text">パス</span>
-    </button>
-    <button class="nav-item" onclick="go(3)">
-        <span class="nav-icon-emu">📖</span>
-        <span class="nav-text">ガイド</span>
-    </button>
-    <button class="nav-item" onclick="go(4)">
-        <span class="nav-icon-emu">📜</span>
-        <span class="nav-text">履歴</span>
-    </button>
+    <button class="nav-item active" onclick="go(0)"><span class="nav-icon-emu">👤</span><span class="nav-text">ステータス</span></button>
+    <button class="nav-item" onclick="go(1)"><span class="nav-icon-emu">🎰</span><span class="nav-text">ガチャ</span></button>
+    <button class="nav-item" onclick="go(2)"><span class="nav-icon-emu">🏆</span><span class="nav-text">パス</span></button>
+    <button class="nav-item" onclick="go(3)"><span class="nav-icon-emu">📖</span><span class="nav-text">ガイド</span></button>
+    <button class="nav-item" onclick="go(4)"><span class="nav-icon-emu">📜</span><span class="nav-text">履歴</span></button>
 </nav>
 
 <script>
@@ -387,7 +241,6 @@
     }
 
     window.onload = function() {
-        // バトルパスの土台作成
         let html = "";
         for(let lv=10; lv<=100; lv+=10){
             html += `<div id="rw-${lv}" class="list-item"><span class="badge">Lv.${lv}</span><div style="font-weight:500; margin-top:5px;">作成中</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>`;
@@ -437,7 +290,6 @@
             const percent = Math.min((progress.current / progress.next) * 100, 100);
             setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-            // バトルパス開放チェック
             for(let lv=10; lv<=100; lv+=10) { if(level >= lv) unlock(lv, "✅ 達成済み！"); }
 
             globalT1 = parseInt(userData[2]) || 0;
@@ -465,22 +317,19 @@
 
     async function playGacha(mode, val = 0) {
         if (!loginID) { alert("先にログインしてください！"); return; }
-        let query = `?user=${encodeURIComponent(loginID)}`;
-        if (mode === 'login') query += `&type=login`;
-        else query += `&type=gacha&gachaType=${val}`;
-
+        let query = `?user=${encodeURIComponent(loginID)}&type=${mode === 'login' ? 'login' : 'gacha'}&gachaType=${val}`;
         try {
             const res = await fetch(GAS_URL + query);
             const msg = await res.text();
             alert(msg);
-            if (!msg.includes("今日はもう") && !msg.includes("足りない") && !msg.includes("ERROR")) {
-                location.reload();
-            }
+            if (!msg.includes("今日はもう") && !msg.includes("足りない") && !msg.includes("ERROR")) { location.reload(); }
         } catch (e) { alert("通信エラーが発生しました。"); }
     }
     
     function callTier1() { if (globalT1 >= 1) { if(confirm("T1のかけらを消費しますか？")) playGacha('tier', 1); } else { alert("足りません"); } }
-    
+    function callTier2() { if (globalT2 >= 1 || globalT1 >= 3) { if(confirm("素材を消費しますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
+    function callTier3() { if (globalT3 >= 1 || globalT2 >= 3 || globalT1 >= 9) { if(confirm("素材を消費しますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
+
     async function fetchLogs() {
         try {
             const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);

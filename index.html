@@ -41,7 +41,7 @@
             transform: translateX(-50%);
             width: 92%; 
             max-width: 380px; 
-            height: 54px; 
+            height: 40px; 
             background: #ffffff !important; 
             border: 2px solid #f0f0f0 !important; 
             border-radius: 27px !important; 
@@ -112,19 +112,21 @@
 
 /* --- カード：ここが高さ制限の肝 --- */
 /* --- カードとスクロールの修正 --- */
-        .card { 
-            background: var(--bg-glass); 
-            border-radius: 25px;
-            border: 3px solid #ffb347; 
-            padding: 20px;
-            width: 100%; 
-            max-width: 350px; 
-            max-height: 100%; /* 親のviewport内に収める */
-            display: flex;
-            flex-direction: column; /* 縦に並べる */
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1); 
-            box-sizing: border-box;
-        }
+       .card { 
+    background: var(--bg-glass); 
+    border-radius: 25px;
+    border: 3px solid #ffb347; 
+    padding: 20px;
+    width: 100%; 
+    max-width: 350px; 
+    /* 👇 上下のバー（約160px分）を避けて、カードの高さを自動計算します */
+    height: calc(100vh - 180px); 
+    display: flex;
+    flex-direction: column; 
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1); 
+    box-sizing: border-box;
+    position: relative;
+}
 
         /* カード内のタイトルは固定 */
         .card h1 { flex-shrink: 0; margin-top: 0; }

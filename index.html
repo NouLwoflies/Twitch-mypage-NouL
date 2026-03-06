@@ -107,8 +107,11 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
-    /* 文字をパキッとさせる影 */
-    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.15));
+　　　　　　filter: drop-shadow(1px 1px 0px #888) 
+            drop-shadow(-1px -1px 0px #888)
+            drop-shadow(1px -1px 0px #888)
+            drop-shadow(-1px 1px 0px #888)
+            drop-shadow(2px 2px 3px rgba(0,0,0,0.3)); /* 最後にうっすら黒い影で浮かせる */
     
     /* 少しロゴっぽく傾ける */
     transform: skewX(-5deg);

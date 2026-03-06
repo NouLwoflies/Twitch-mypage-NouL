@@ -20,11 +20,14 @@
             overflow: hidden; touch-action: pan-y;
         }
         .page-section {
-            width: 100vw; height: 100vh; 
-            display: flex; justify-content: center; align-items: flex-start; 
-             padding-top: 30px; 
-             overflow: hidden; /* ここも止める */
-           }
+ 　　　　　　   width: 100vw; 
+ 　　　　　　　   height: 100vh; 
+  　　　　　　　  display: flex; 
+  　　　　　　　　  justify-content: center; 
+   　　　　　　　　 align-items: center; /* ← 上寄せ(flex-start)から中央(center)に変更 */
+  　　　　　　　  box-sizing: border-box;
+    　　　　　　　　padding-bottom: 100px; /* 下のナビに被らないための余白 */
+　　　　　　}
 
         /* 背景の白透過 */
         body::before {

@@ -101,6 +101,47 @@
         .btn-premium { background: linear-gradient(135deg, #fffcf0 0%, #fff5d1 100%) !important; border: 2px solid gold !important; color: #d4af37 !important; position: relative; overflow: hidden; }
         .btn-premium::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.6), transparent); transform: rotate(45deg); animation: shine 2s infinite; }
         @keyframes shine { 0% { transform: translateX(-150%) rotate(45deg); } 100% { transform: translateX(150%) rotate(45deg); } }
+        * 共通：プレミアムボタンの光沢アニメーション */
+.btn-bronze, .btn-silver, .btn-gold {
+    position: relative;
+    overflow: hidden;
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.btn-bronze::after, .btn-silver::after, .btn-gold::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+/* 銅ボタン */
+.btn-bronze {
+    background: linear-gradient(135deg, #d2691e, #8b4513) !important;
+    box-shadow: 0 4px 0 #5d2e0d;
+}
+
+/* 銀ボタン */
+.btn-silver {
+    background: linear-gradient(135deg, #bdc3c7, #7f8c8d) !important;
+    box-shadow: 0 4px 0 #4f5b5c;
+}
+
+/* 金ボタン（最上位） */
+.btn-gold {
+    background: linear-gradient(135deg, #ffd700, #daa520) !important;
+    box-shadow: 0 4px 0 #916f1b;
+    color: #fff !important;
+}
+
+/* アニメーションの速度調整（金は少し早く光るなど） */
+.btn-gold::after { animation-duration: 2s; }
 
         /* ナビゲーション */
         .bottom-nav {
@@ -161,32 +202,33 @@
             <div class="card">
                 <h1>🎰 ガチャ 🎰</h1>
                 <div class="card-body">
-                    <div class="gacha-box">
-                        <div class="gacha-title">100円ガチャ</div>
-                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 100)">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 200</div>
-                        </button>
-                    </div>
-                    <div class="gacha-box">
-                        <div class="gacha-title">500円ガチャ</div>
-                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 500)">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 1000</div>
-                        </button>
-                    </div>
-                    
-                    <div class="gacha-box" style="border-color: gold; background: #fffdf0;">
-                        <div class="gacha-title"style="color: #d4af37;">1000円ガチャ</div>
-                        <button class="draw-button　btn-premium" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 1000)">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 2000</div>
-                        </button>
-                    </div>
-                    
-                    <div class="gacha-box" style="border-color: gold; background: #fffdf0;">
-                        <div class="gacha-title" style="color: #d4af37;">5000円ガチャ</div>
-                        <button class="draw-button btn-premium"style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;"  onclick="playGacha('crystal', 5000)">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 10000</div>
-                        </button>
-                    </div>
+                   <div class="gacha-box">
+        <div class="gacha-title">100円ガチャ</div>
+        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('bits', 100)">
+            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💠 200</div>
+        </button>
+    </div>
+
+    <div class="gacha-box" style="border-color: #cd7f32; background: #fffaf5;">
+        <div class="gacha-title" style="color: #a0522d;">500円ガチャ</div>
+        <button class="draw-button btn-bronze" onclick="playGacha('bits', 1000)">
+            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💠 1000</div>
+        </button>
+    </div>
+
+    <div class="gacha-box" style="border-color: #c0c0c0; background: #f8f8f8;">
+        <div class="gacha-title" style="color: #707070;">1000円ガチャ</div>
+        <button class="draw-button btn-silver" onclick="playGacha('bits', 2000)">
+            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💠 2000</div>
+        </button>
+    </div>
+
+    <div class="gacha-box" style="border-color: #ffd700; background: #fffdf0;">
+        <div class="gacha-title" style="color: #b8860b;">5000円ガチャ</div>
+        <button class="draw-button btn-gold" onclick="playGacha('bits', 10000)">
+            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💠 10000</div>
+        </button>
+    </div>
                     
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>

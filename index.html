@@ -427,7 +427,7 @@
             const logs = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')))
                             .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase()).reverse().slice(0, 10);
             let html = "";
-            logs.forEach(l => { html += `<div style="border-bottom:1px solid #eee; padding:8px 0;"><b>${l[3]}</b>: ${l[4]}</div>`; });
+            logs.forEach(l => { html += `<div style="border-bottom:1px solid #eee; padding:8px 0;"><b>${l[6]}</b>: ${l[4]}</div>`; });
             document.getElementById('log-content').innerHTML = html || "履歴なし";
         } catch (e) { console.error("Log fetch error"); }
     }

@@ -142,7 +142,18 @@
             display: flex; justify-content: space-around; align-items: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; border: 2px solid #fff;
         }
-        .nav-item { font-size: 1.5rem; color: #ccc;　display: flex; flex-direction: column; align-items: center; background: none; }
+      .nav-item { 
+    display: flex;
+    flex-direction: column; /* 上下に並べる */
+    align-items: center;    /* 真ん中に寄せる */
+    justify-content: center;
+    background: none; 
+    border: none;
+    color: #ccc; 
+    font-family: 'Mochiy Pop One', sans-serif; /* フォントを統一 */
+    transition: 0.2s;
+    width: 20%; /* 均等に配置 */
+}
         .nav-item.active { color: var(--accent-orange); }
         .nav-text { font-size: 0.55rem; font-weight: 900; margin-top: 2px; }
 
@@ -291,11 +302,26 @@
 </div>
 
 <nav class="bottom-nav">
-    <button class="nav-item active" onclick="go(0)">👤<span class="nav-text">ステータス</span></button>
-    <button class="nav-item" onclick="go(1)">🎰<span class="nav-text">ガチャ</span></button>
-    <button class="nav-item" onclick="go(2)">🏆<span class="nav-text">バトルパス</span></button>
-    <button class="nav-item" onclick="go(3)">📖<span class="nav-text">ガイド</span></button>
-    <button class="nav-item" onclick="go(4)">📜<span class="nav-text">履歴</span></button>
+    <button class="nav-item active" onclick="go(0)">
+        <span class="nav-icon-emu">👤</span>
+        <span class="nav-text">ステータス</span>
+    </button>
+    <button class="nav-item" onclick="go(1)">
+        <span class="nav-icon-emu">🎰</span>
+        <span class="nav-text">ガチャ</span>
+    </button>
+    <button class="nav-item" onclick="go(2)">
+        <span class="nav-icon-emu">🏆</span>
+        <span class="nav-text">バトルパス</span>
+    </button>
+    <button class="nav-item" onclick="go(3)">
+        <span class="nav-icon-emu">📖</span>
+        <span class="nav-text">ガイド</span>
+    </button>
+    <button class="nav-item" onclick="go(4)">
+        <span class="nav-icon-emu">📜</span>
+        <span class="nav-text">履歴</span>
+    </button>
 </nav>
 
 <script>

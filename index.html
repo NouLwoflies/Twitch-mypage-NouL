@@ -270,10 +270,25 @@
                     </button>
                 </div>
                 <div class="gacha-box">
+                    <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
+                    <button class="draw-button" style="background: var(--twitch-purple); box-shadow: 0 4px 0 #5c26cc;" onclick="callTier1()">
+                        <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
+                        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">
+                            1</div>
+                    </button>
+                </div>
+                <div class="gacha-box">
+                    <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
+                    <button class="draw-button" style="background: var(--twitch-purple); box-shadow: 0 4px 0 #5c26cc;" onclick="callTier2()">
+                        <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
+                        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1 </div>
+                    </button>
+                </div>
+                <div class="gacha-box">
                     <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
                     <button class="draw-button" style="background: var(--twitch-purple); box-shadow: 0 4px 0 #5c26cc;" onclick="callTier3()">
                         <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-                        <div style="font-size:0.9rem;">🔻9 / 🔹3 / 🔸1</div>
+                        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">9 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1</div>
                     </button>
                 </div>
             </div>
@@ -432,7 +447,19 @@
             }
         } catch (e) { alert("通信エラーが発生しました。"); }
     }
-
+     function callTier1() {
+        let msg = "";
+        if (globalT2 >= 1) msg = "Tier 1 のかけらを1つ使います。";
+        else { alert("かけらが足りません。"); return; }
+        if(confirm(msg + "ガチャを引きますか？")) { playGacha('tier', 1); }
+    }
+     function callTier2() {
+        let msg = "";
+        if (globalT2 >= 1) msg = "Tier 2 のかけらを1つ使います。";
+        else if (globalT1 >= 3) msg = "Tier 1 のかけらを1つ使います。";
+        else { alert("かけらが足りません。"); return; }
+        if(confirm(msg + "ガチャを引きますか？")) { playGacha('tier', 2); }
+    }
     function callTier3() {
         let msg = "";
         if (globalT3 >= 1) msg = "Tier 3 のかけらを1つ使います。";

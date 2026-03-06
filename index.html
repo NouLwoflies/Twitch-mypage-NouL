@@ -15,7 +15,7 @@
 
         body { 
             margin: 0; padding: 0; font-family: 'M PLUS 1p', sans-serif;
-            background-image: url('https://cdn.discordapp.com/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69aae5d7&is=69a99457&hm=2bf9e90c392f467c24ae0e7f2c35df035cfe5f8ff68e100964cd3756f7f48d6a'); 
+            background-image: url('https://cdn.discordapp.com/attachments/866687772056092682/1479124828115046450/525_20241011150841.png'); 
             background-size: cover; background-position: center; background-attachment: fixed;
             overflow: hidden; touch-action: pan-y;
         }
@@ -24,52 +24,54 @@
             background-color: rgba(255, 255, 255, 0.4); z-index: -1;
         }
 
-     /* --- 所持数エリア：一本の白いバーに統合 --- */
-.inventory-bar { 
-    position: fixed; 
-    top: 20px; 
-    left: 50%; 
-    transform: translateX(-50%);
-    width: 90%; 
-    max-width: 380px; 
-    height: 54px; 
-    /* 下のリストと同じデザインをバー全体に適用 */
-    background: white; 
-    border: 2px solid #f0f0f0; 
-    border-radius: 27px; /* 綺麗なカプセル型 */
-    display: flex; 
-    align-items: center; 
-    justify-content: space-around; 
-    padding: 0 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
-    z-index: 2000; 
-    box-sizing: border-box;
-}
+        /* --- 【修正版】一本の白いバーのデザイン --- */
+        .inventory-bar { 
+            position: fixed; 
+            top: 15px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 92%; 
+            max-width: 380px; 
+            height: 54px; 
+            background: #ffffff !important; 
+            border: 2px solid #f0f0f0 !important; 
+            border-radius: 27px !important; 
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: space-around !important; 
+            padding: 0 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+            z-index: 9999 !important; 
+            box-sizing: border-box;
+        }
 
-.inv-item { 
-    display: flex; 
-    align-items: center; 
-    gap: 4px; 
-    flex: 1;
-    justify-content: center;
-}
+        .inv-item { 
+            display: flex !important; 
+            align-items: center !important; 
+            gap: 4px; 
+            flex: 1;
+            justify-content: center;
+            background: transparent !important;
+            border: none !important;
+        }
 
-/* 境界線（仕切り）が欲しい場合はここを有効に */
-.inv-item:not(:last-child) {
-    border-right: 1px solid #f5f5f5; 
-}
+        .inv-item:not(:last-child) {
+            border-right: 1px solid #f0f0f0 !important;
+        }
 
-.inv-icon {
-    width: 22px; 
-    height: 22px; 
-    object-fit: contain;
-}
+        .inv-icon {
+            width: 24px !important; 
+            height: 24px !important; 
+            object-fit: contain !important;
+            display: inline-block !important;
+        }
 
-.inv-val { 
-    font-size: 0.85rem; 
-    font-weight: 900; 
-    color: #2c3e50; 
-}
+        .inv-val { 
+            font-size: 0.8rem; 
+            font-weight: 900; 
+            color: #2c3e50; 
+        }
+
         /* --- 画面構造 --- */
         .viewport { width: 100vw; height: 100vh; overflow: hidden; position: relative; padding-top: 85px; box-sizing: border-box;}
         .main-wrapper {
@@ -131,7 +133,6 @@
         .nav-item.active { color: var(--accent-orange); }
         .nav-text { font-size: 0.55rem; font-weight: 900; margin-top: 2px; }
 
-        /* プレミアム演出 */
         .btn-premium { background: linear-gradient(135deg, #fffcf0 0%, #fff5d1 100%) !important; border: 3px solid gold !important; color: #d4af37 !important; position: relative; overflow: hidden; }
         .btn-premium::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.6), transparent); transform: rotate(45deg); animation: shine 2s infinite; }
         @keyframes shine { 0% { transform: translateX(-150%) rotate(45deg); } 100% { transform: translateX(150%) rotate(45deg); } }
@@ -153,7 +154,7 @@
         <span id="inv-t2" class="inv-val">0</span>
     </div>
     <div class="inv-item">
-        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">
+        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">
         <span id="inv-t3" class="inv-val">0</span>
     </div>
 </div>
@@ -302,7 +303,6 @@
             document.getElementById('display-bits').innerText = userData[5];
             document.getElementById('display-level').innerText = userData[7];
             
-            // 上部カードの更新
             document.getElementById('inv-bits').innerText = userData[5];
             document.getElementById('inv-t1').innerText = userData[2];
             document.getElementById('inv-t2').innerText = userData[3];
@@ -368,13 +368,15 @@
     }
 
     async function fetchLogs() {
-        const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
-        const txt = await res.text();
-        const logs = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')))
-                        .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase()).reverse().slice(0, 10);
-        let html = "";
-        logs.forEach(l => { html += `<div style="border-bottom:1px solid #eee; padding:5px 0;"><b>${l[3]}</b>: ${l[4]}</div>`; });
-        document.getElementById('log-content').innerHTML = html || "履歴なし";
+        try {
+            const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
+            const txt = await res.text();
+            const logs = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')))
+                            .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase()).reverse().slice(0, 10);
+            let html = "";
+            logs.forEach(l => { html += `<div style="border-bottom:1px solid #eee; padding:5px 0;"><b>${l[3]}</b>: ${l[4]}</div>`; });
+            document.getElementById('log-content').innerHTML = html || "履歴なし";
+        } catch (e) { console.error("Log fetch error"); }
     }
 </script>
 </body>

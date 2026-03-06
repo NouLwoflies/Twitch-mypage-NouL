@@ -420,17 +420,38 @@
     function callTier2() { if (globalT2 >= 1 || globalT1 >= 3) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
     function callTier3() { if (globalT3 >= 1 || globalT2 >= 3 || globalT1 >= 9) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
 
-    async function fetchLogs() {
-        try {
-            const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
-            const txt = await res.text();
-            const logs = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')))
-                            .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase()).reverse().slice(0, 10);
-            let html = "";
-            logs.forEach(l => { html += `<div style="border-bottom:1px solid #eee; padding:8px 0;"><b>${l[6]}</b>: ${l[4]}</div>`; });
-            document.getElementById('log-content').innerHTML = html || "履歴なし";
-        } catch (e) { console.error("Log fetch error"); }
+   async function fetchLogs() {
+    try {
+        const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
+        const txt = await res.text();
+        
+        const logs = txt.split('\n')
+            .map(r => r.split(',').map(c => c.replace(/"/g,'')))
+            .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase())
+            .reverse() 
+            .slice(0, 10);
+
+        let html = "";
+        logs.forEach(l => {
+            // l[0]: A列（日付）
+            // l[4]: E列（結果・当たったもの）
+
+            html += `
+                <div style="border-bottom: 1px solid #eee; padding: 12px 5px; display: flex; flex-direction: column; gap: 4px;">
+                    <div style="font-size: 0.65rem; color: #999; font-weight: bold;">
+                        📅 ${l[0]}
+                    </div>
+                    <div style="font-size: 0.95rem; color: #2c3e50; font-weight: 800;">
+                        ${l[4]}
+                    </div>
+                </div>`;
+        });
+        
+        document.getElementById('log-content').innerHTML = html || "履歴はありません";
+    } catch (e) { 
+        console.error("Log fetch error"); 
     }
+}
 </script>
 </body>
 </html>

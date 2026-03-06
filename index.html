@@ -101,10 +101,27 @@
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
         /* 所持数バーのスタイル */
 　　　　/* 画面上部に固定される所持数エリア */
-        .inventory-bar { position: fixed; top: 15px;  left: 50%;  transform: translateX(-50%); width: 92%; max-width: 380px; display: flex; flex-direction: row; flex-wrap: nowrap; justify-content:space-around; gap: 5px;  padding: 10px ; background: var(--bg-glass); backdrop-filter: blur(10px); border-radius: 20px; /* 角丸をカードに合わせる */
-             border: 2px solid #ffb347; box-shadow: 0 4px 15px rgba(0,0,0,0.1);z-index: 2000; /* 一番手前に */}
+        .inventory-bar { 
+    position: fixed; 
+    top: 20px;       /* 上から少し浮かせる */
+    left: 50%; 
+    transform: translateX(-50%);
+    width: 85%;      /* ナビと同じ幅 */
+    max-width: 320px; /* ナビと同じ最大幅 */
+    height: 60px;    /* ナビ(65px)に近い高さ */
+    background: rgba(255, 255, 255, 0.95); 
+    border-radius: 35px; /* ナビと同じ丸み */
+    display: flex; 
+    justify-content: space-around; 
+    align-items: center; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15); /* ナビと同じ影 */
+    z-index: 2000; 
+    border: 2px solid #fff; /* ナビと同じ白枠 */
+    padding: 0 10px;
+    box-sizing: border-box;
+}
 /* 各所持数アイテム（リストのミニ版デザイン） */
-        .inv-item { background: white; border: 1px solid #f0f0f0; border-radius: 12px; padding: 5px 10px; display: flex;  flex-direction: column; align-items: center; flex: 1;  max-width: 80px;}
+        .inv-item { font-size: 1.5rem; color: #ccc; display: flex; flex-direction: column; align-items: center; background: none; }
         .inv-label { font-size: 0.55rem;  color: #ff8c00; font-weight: 800; letter-spacing: -0.02em;}
         .inv-val {font-size: 0.9rem; font-weight: 900; color: #2c3e50;}
 /* ページ全体の開始位置を調整（バーに被らないように） */

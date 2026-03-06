@@ -448,17 +448,17 @@
     
     function callTier1() {
         if (globalT1 >= 1) {
-            if(confirm("Tier 1 のかけらを1つ使います。ガチャを引きますか？")) { playGacha('tier', 100); }
+            if(confirm("Tier 1 のかけらを1つ使います。ガチャを引きますか？")) { playGacha('tier', 1); }
         } else { alert("かけらが足りません。"); }
     }
     function callTier2() {
         if (globalT2 >= 1 || globalT1 >= 3) {
-            if(confirm("Tier 2 のかけら(またはT1×3)を使います。ガチャを引きますか？")) { playGacha('tier', 500); }
+            if(confirm("Tier 2 のかけら(またはT1×3)を使います。ガチャを引きますか？")) { playGacha('tier', 2); }
         } else { alert("かけらが足りません。"); }
     }
     function callTier3() {
         if (globalT3 >= 1 || globalT2 >= 3 || globalT1 >= 9) {
-            if(confirm("Tier 3 のかけら(またはT1×9,T2×3)を使います。ガチャを引きますか？")) { playGacha('tier', 1000); }
+            if(confirm("Tier 3 のかけら(またはT1×9,T2×3)を使います。ガチャを引きますか？")) { playGacha('tier', 3); }
         } else { alert("素材が足りません。"); }
     }
 

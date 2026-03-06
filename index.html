@@ -166,20 +166,35 @@
 
         <section class="page-section">
             <div class="card">
-                <h1>🎰 GACHA</h1>
-                <div class="card-body">
-                    <div class="gacha-box" style="border-color: gold; background: #fffdf0;">
-                        <div class="gacha-title" style="color: #d4af37;">ULTIMATE</div>
-                        <button class="draw-button btn-premium" onclick="playGacha('crystal', 5000)">
+                <h1>🎰 ガチャ 🎰</h1>
+            
+                    <div class="gacha-box">
+                        <div class="gacha-title">100円ガチャ</div>
+                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 100)">
                             <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-                            <div>💎 5,000</div>
+                            <div>💎 100</div>
                         </button>
                     </div>
                     <div class="gacha-box">
-                        <div class="gacha-title">ROYAL</div>
+                        <div class="gacha-title">500円ガチャ</div>
+                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 500)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
+                            <div>💎 500</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box">
+                        <div class="gacha-title">1000円ガチャ</div>
                         <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('crystal', 1000)">
                             <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
                             <div>💎 1,000</div>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                    <div class="gacha-box" style="border-color: gold; background: #fffdf0;">
+                        <div class="gacha-title" style="color: #d4af37;">5000円ガチャ</div>
+                        <button class="draw-button btn-premium" onclick="playGacha('crystal', 5000)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
+                            <div>💎 5,000</div>
                         </button>
                     </div>
                     <div class="gacha-box">
@@ -209,7 +224,7 @@
 
         <section class="page-section">
             <div class="card">
-                <h1 style="color:var(--twitch-purple)">🏆 バトルパス</h1>
+                <h1 style="color:var(--twitch-purple)">🏆 バトルパス 🏆</h1>
                 <div class="card-body" id="reward-list">
                     <div id="rw-10" class="list-item"><span class="badge">Lv.10</span><div style="font-weight:800; margin-top:5px;">限定PC壁紙</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>
                     <div id="rw-20" class="list-item"><span class="badge">Lv.20</span><div style="font-weight:800; margin-top:5px;">配信で名前呼び</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>
@@ -227,7 +242,7 @@
 
         <section class="page-section">
             <div class="card">
-                <h1 style="color:#2ecc71">📖 HOW TO PLAY</h1>
+                <h1 style="color:#2ecc71">📖 ガイド 📖</h1>
                 <div class="card-body">
                     <div class="list-item">
                         <div style="font-weight:800; color:var(--accent-orange);">💎 クリスタルの貯め方</div>
@@ -239,7 +254,7 @@
 
         <section class="page-section">
             <div class="card">
-                <h1 style="color:#7f8c8d">📜 GACHA LOG</h1>
+                <h1 style="color:#7f8c8d">📜 履歴 📜</h1>
                 <div class="card-body" id="log-content" style="text-align:left; font-size:0.75rem;">
                     履歴はありません
                 </div>
@@ -251,7 +266,7 @@
 <nav class="bottom-nav">
     <button class="nav-item active" onclick="go(0)">👤<span class="nav-text">STATUS</span></button>
     <button class="nav-item" onclick="go(1)">🎰<span class="nav-text">ガチャ</span></button>
-    <button class="nav-item" onclick="go(2)">🏆<span class="nav-text">パス</span></button>
+    <button class="nav-item" onclick="go(2)">🏆<span class="nav-text">バトルパス</span></button>
     <button class="nav-item" onclick="go(3)">📖<span class="nav-text">ガイド</span></button>
     <button class="nav-item" onclick="go(4)">📜<span class="nav-text">履歴</span></button>
 </nav>

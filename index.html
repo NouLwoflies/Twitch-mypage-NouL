@@ -121,9 +121,27 @@
     box-sizing: border-box;
 }
 /* 各所持数アイテム（リストのミニ版デザイン） */
-        .inv-item { font-size: 1.5rem; color: #ccc; display: flex; flex-direction: column; align-items: center; background: none; }
-        .inv-label { font-size: 0.55rem;  color: #ff8c00; font-weight: 800; letter-spacing: -0.02em;}
-        .inv-val {font-size: 0.9rem; font-weight: 900; color: #2c3e50;}
+    .inv-item { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    background: none; /* 枠線を消してスッキリさせる */
+    border: none;
+    flex: 1;
+    min-width: 0;
+}
+.inv-label { 
+    font-size: 0.5rem; /* ナビのテキストサイズに合わせる */
+    color: #ff8c00; 
+    font-weight: 900; 
+    margin-bottom: 2px;
+    white-space: nowrap;
+}
+.inv-val { 
+    font-size: 0.9rem; 
+    font-weight: 900; 
+    color: #2c3e50; 
+}
 /* ページ全体の開始位置を調整（バーに被らないように） */
         .viewport { padding-top: 70px; /* バーの高さ分だけ下げる */}
 　　　　　　/* ガチャボタン：角丸四角形（リッチ版） */

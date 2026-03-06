@@ -393,8 +393,18 @@
             const percent = Math.min((progress.current / progress.next) * 100, 100);
             setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-            if(level >= 10) unlock(10, "✅ 合言葉: おしおし！");
-            if(level >= 20) unlock(20, "✅ DiscordでDMしてね");
+            if(level >= 10) unlock(10, "✅ 作成中");
+            if(level >= 20) unlock(20, "✅ 作成中");
+            if(level >= 30) unlock(30, "✅ 作成中");
+            if(level >= 40) unlock(40, "✅ 作成中");
+            if(level >= 50) unlock(50, "✅ 作成中");
+            if(level >= 60) unlock(60, "✅ 作成中");
+            if(level >= 70) unlock(70, "✅ 作成中");
+            if(level >= 80) unlock(80, "✅ 作成中");
+            if(level >= 90) unlock(90, "✅ 作成中");
+            if(level >= 100) unlock(100, "✅ 作成中");
+            if(level >= 110) unlock(110, "✅ 作成中");
+            
 
             globalT1 = parseInt(userData[2]) || 0;
             globalT2 = parseInt(userData[3]) || 0;

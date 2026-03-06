@@ -101,7 +101,7 @@
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
         /* 所持数バーのスタイル */
 　　　　/* 画面上部に固定される所持数エリア */
-        .inventory-bar { position: fixed; top: 15px;  left: 50%;  transform: translateX(-50%); width: 92%; max-width: 380px; display: flex; justify-content:space-around; gap: 5px;  padding: 10px ; background: var(--bg-glass); backdrop-filter: blur(10px); border-radius: 20px; /* 角丸をカードに合わせる */
+        .inventory-bar { position: fixed; top: 15px;  left: 50%;  transform: translateX(-50%); width: 92%; max-width: 380px; display: flex; flex-direction: row; flex-wrap: nowrap; justify-content:space-around; gap: 5px;  padding: 10px ; background: var(--bg-glass); backdrop-filter: blur(10px); border-radius: 20px; /* 角丸をカードに合わせる */
              border: 2px solid #ffb347; box-shadow: 0 4px 15px rgba(0,0,0,0.1);z-index: 2000; /* 一番手前に */}
 /* 各所持数アイテム（リストのミニ版デザイン） */
         .inv-item { background: white; border: 1px solid #f0f0f0; border-radius: 12px; padding: 5px 10px; display: flex;  flex-direction: column; align-items: center; flex: 1;  max-width: 80px;}

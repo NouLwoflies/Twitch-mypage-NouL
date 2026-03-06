@@ -101,48 +101,47 @@
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
         /* 所持数バーのスタイル */
 　　　　/* 画面上部に固定される所持数エリア */
-       /* --- 所持バー：ナビと統一＋完全1列＋画像対応 --- */
+     /* --- 所持バー：完全にナビと統一し、1列にする --- */
 .inventory-bar { 
     position: fixed; 
     top: 20px; 
     left: 50%; 
     transform: translateX(-50%);
-    width: 90%;      /* 少し幅を広げて1列を安定させます */
-    max-width: 360px; 
+    width: 85%;      /* 下のナビ(85%)と合わせる */
+    max-width: 320px; /* 下のナビ(320px)と合わせる */
     height: 60px; 
     background: rgba(255, 255, 255, 0.95); 
     border-radius: 35px; 
     display: flex; 
-    flex-direction: row; /* 横並び強制 */
-    flex-wrap: nowrap;   /* 折り返し禁止 */
+    flex-direction: row; /* 横並び */
     justify-content: space-around; 
     align-items: center; 
     box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
     z-index: 2000; 
     border: 2px solid #fff; 
-    padding: 0 15px;
+    padding: 0 10px;
     box-sizing: border-box;
 }
 
 .inv-item { 
     display: flex; 
-    flex-direction: row; /* 画像と数字を横に並べる */
+    flex-direction: row; /* アイコンと数字を横に並べる */
     align-items: center; 
-    gap: 4px; /* 画像と数字の隙間 */
+    gap: 2px;            /* 隙間を狭く */
     flex: 1;
     justify-content: center;
     min-width: 0;
 }
 
-/* かけら・クリスタルの画像サイズ */
 .inv-icon {
-    width: 22px; 
-    height: 22px; 
+    width: 24px;   /* ここでサイズ調整（今は24px） */
+    height: 24px; 
     object-fit: contain;
+    flex-shrink: 0; /* 画像が潰れないように固定 */
 }
 
 .inv-val { 
-    font-size: 0.9rem; 
+    font-size: 0.8rem; /* 数字を少し小さくして1列を維持 */
     font-weight: 900; 
     color: #2c3e50; 
     white-space: nowrap;
@@ -200,15 +199,15 @@
         <span id="inv-bits" class="inv-val">0</span>
     </div>
     <div class="inv-item">
-        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon" alt="T1"style="width: 32px; height: 32px;" class="inv-icon">
+        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png" class="inv-icon" alt="T1">
         <span id="inv-t1" class="inv-val">0</span>
     </div>
     <div class="inv-item">
-        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" style="filter: hue-rotate(180deg);" class="inv-icon" alt="T2"style="width: 32px; height: 32px;" class="inv-icon">
+        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png" class="inv-icon" alt="T2">
         <span id="inv-t2" class="inv-val">0</span>
     </div>
     <div class="inv-item">
-        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" style="filter: hue-rotate(280deg);" class="inv-icon" alt="T3"style="width: 32px; height: 32px;" class="inv-icon">
+        <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png" class="inv-icon" alt="T3">
         <span id="inv-t3" class="inv-val">0</span>
     </div>
 </div>

@@ -234,8 +234,8 @@
                 </div>
                 <div id="status-area" style="display:none;">
                     <div class="status-item"><span>PLAYER</span> <span id="display-name">---</span></div>
+                    <div class="status-item"><span>USER ID</span> <span id="display-id">---</span></div>
                     <div class="status-item"><span>RANK</span> <span id="display-rank" style="color:#ff8c00;">---</span></div>
-                    <div class="status-item"><span>CRYSTAL</span> <span id="display-bits" class="crystal-val">0</span></div>
                     <div class="exp-container">
                         <div class="level-header">
                             <div><span style="font-size:0.75rem; font-weight:800; color:#ff8c00;">LEVEL</span><span id="display-level">0</span></div>
@@ -371,6 +371,7 @@
 
         if (userData) {
             document.getElementById('display-name').innerText = userData[0];
+            document.getElementById('display-id').innerText =targetUser[1];
             document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
             document.getElementById('display-bits').innerText = userData[5];
             document.getElementById('display-level').innerText = userData[7];

@@ -232,7 +232,7 @@
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
-                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428150957047909/582_20260306193859.png?ex=69ac0055&is=69aaaed5&hm=09dedeb48383943bc39134bd32e094344d8da741750377f31a44d451f3556e26&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
+                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479427492875079770/582_20260306193621.png?ex=69abffb8&is=69aaae38&hm=7e01ff225569840a6cbb313f08adbc5fbec19c86f829b75a8ec88d04cc8ea009&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
                             <div style="font-size:0.7rem;">1回引く</div><div><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">9 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1</div>
                         </button>
                     </div>
@@ -388,6 +388,12 @@
 
     async function playGacha(mode, val = 0) {
         if (!loginID) { alert("先にログインしてください！"); return; }
+        if (mode === 'bits') {
+        const cost = val;
+        if (!confirm(`💠 ${cost} クリスタルを消費してガチャを引きますか？`)) {
+            return; // キャンセルならここで終了
+        }
+    }
         let query = `?user=${encodeURIComponent(loginID)}&type=${mode === 'login' ? 'login' : 'gacha'}&gachaType=${val}`;
         try {
             const res = await fetch(GAS_URL + query);
@@ -397,9 +403,9 @@
         } catch (e) { alert("通信エラーが発生しました。"); }
     }
     
-    function callTier1() { if (globalT1 >= 1) { if(confirm("T1のかけらを消費しますか？")) playGacha('tier', 1); } else { alert("足りません"); } }
-    function callTier2() { if (globalT2 >= 1 || globalT1 >= 3) { if(confirm("素材を消費しますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
-    function callTier3() { if (globalT3 >= 1 || globalT2 >= 3 || globalT1 >= 9) { if(confirm("素材を消費しますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
+    function callTier1() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 1); } else { alert("足りません"); } }
+    function callTier2() { if (globalT2 >= 1 || globalT1 >= 3) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
+    function callTier3() { if (globalT3 >= 1 || globalT2 >= 3 || globalT1 >= 9) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
 
     async function fetchLogs() {
         try {

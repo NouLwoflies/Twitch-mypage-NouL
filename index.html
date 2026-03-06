@@ -86,10 +86,24 @@
         .card-body::-webkit-scrollbar { width: 6px; }
         .card-body::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 10px; }
         .card-body::-webkit-scrollbar-track { background: transparent; }
+.status-item { 
+    font-size: 0.95rem; 
+    margin: 15px 0; 
+    font-weight: 700; 
+    display: flex; 
+    flex-direction: column; /* 縦並びにする */
+    align-items: flex-start; 
+    border-bottom: 1px solid #f5f5f5; 
+    padding-bottom: 8px; 
+}
 
-        /* --- 各パーツの装飾 --- */
-        .status-item { font-size: 0.95rem; margin: 12px 0; font-weight: 700; display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding-bottom: 6px; }
-        /* --- ランク専用の豪華グラデーション --- */
+/* 項目ラベル（PLAYER, RANKなど）の装飾 */
+.status-item span:first-child {
+    font-size: 0.7rem;
+    color: #888;
+    font-weight: 900;
+    margin-bottom: 2px;
+}
 #display-rank {
     display: inline-block;
     font-family: 'Mochiy Pop One', sans-serif;
@@ -241,26 +255,28 @@
                         </button>
                     </div>
                     <div class="gacha-box">
-                        <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
-                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428151691186196/582_20260306193906.png?ex=69ac0055&is=69aaaed5&hm=896d656a05129a1265f4773512f8de82a8ce5c90a6f80f9aa6a861a1f07d35c9&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000000 !important; box-shadow: #ff007f 0 4px 0 rgba(0,0,0,0.3); position: relative; height: 70px;" onclick="callTier1()">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-                            <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon"> 1</div>
-                        </button>
-                    </div>
-                    <div class="gacha-box">
-                        <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
-                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428149791162419/582_20260306193854.png?ex=69ac0055&is=69aaaed5&hm=b9d42a81aaf7ad6c6a678248bae86335b5528fd90000df9866cf0d08861e8aab&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000000 !important; box-shadow:#000080 0 4px 0 rgba(0,0,0,0.3); position: relative; height: 70px;" onclick="callTier2()">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-                            <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1 </div>
-                        </button>
-                    </div>
-                    <div class="gacha-box">
-                        <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
-                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428150957047909/582_20260306193859.png?ex=69ac0055&is=69aaaed5&hm=09dedeb48383943bc39134bd32e094344d8da741750377f31a44d451f3556e26&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000000 !important; box-shadow: #b8860b 0 4px 0 rgba(0,0,0,0.3); position: relative; height: 70px;" onclick="callTier3()">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
-                            <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">9 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1</div>
-                        </button>
-                    </div>
+    <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
+    <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428151691186196/582_20260306193906.png?ex=69ac0055&is=69aaaed5&hm=896d656a05129a1265f4773512f8de82a8ce5c90a6f80f9aa6a861a1f07d35c9&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000000 !important; box-shadow: 0 4px 0 #c2006b; position: relative; height: 70px;" onclick="callTier1()">
+        <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
+        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon"> 1</div>
+    </button>
+</div>
+
+<div class="gacha-box">
+    <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
+    <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428149791162419/582_20260306193854.png?ex=69ac0055&is=69aaaed5&hm=b9d42a81aaf7ad6c6a678248bae86335b5528fd90000df9866cf0d08861e8aab&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000000 !important; box-shadow: 0 4px 0 #0044aa; position: relative; height: 70px;" onclick="callTier2()">
+        <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
+        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1 </div>
+    </button>
+</div>
+
+<div class="gacha-box">
+    <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
+    <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479428150957047909/582_20260306193859.png?ex=69ac0055&is=69aaaed5&hm=09dedeb48383943bc39134bd32e094344d8da741750377f31a44d451f3556e26&=&format=webp&quality=lossless&width=1030&height=580'); background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000000 !important; box-shadow: 0 4px 0 #888800; position: relative; height: 70px;" onclick="callTier3()">
+        <div style="font-size:0.7rem; opacity:0.8;">1回引く</div>
+        <div style="font-size:0.9rem;"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ab9258&is=69aa40d8&hm=11002b1b9ff310e5cc6941a2740ff1a72323812ac9115577e56fb3c27111b414&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">9 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ab9258&is=69aa40d8&hm=c181a0c778bcc2279d08d099299a8f29846685ea6d7ce9cdeb52475aa7155c20&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ab9258&is=69aa40d8&hm=eaa3af023bf03c5a2858bd675506595f8a50b5c23b79f94a21e4b0e513c19a23&=&format=webp&quality=lossless&width=614&height=614" class="inv-icon">1</div>
+    </button>
+</div>
                 </div>
             </div>
         </section>

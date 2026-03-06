@@ -156,11 +156,16 @@
                     <button onclick="playGacha('login')" class="login-btn" style="background: #ff8c00;">🎁 1日1回ログインガチャ</button>
 
                     <div class="section-title">TIER GACHA</div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-                        <button onclick="playGacha('tier', 1)" class="sub-btn"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png" class="tier-icon">Tier1</button>
-                        <button onclick="playGacha('tier', 2)" class="sub-btn"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png" class="tier-icon">Tier2</button>
-                        <button onclick="callTier3()" class="sub-btn"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png" class="tier-icon">Tier3</button>
-                    </div>
+                      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 0.7rem; font-weight: 800; color: #ff8c00; margin-bottom: 5px;">
+                       <div>所持: <span id="count-t1">0</span>個</div>
+                        <div>所持: <span id="count-t2">0</span>個</div>
+                        <div>所持: <span id="count-t3">0</span>個</div>
+                            </div>
+                           <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                          <button onclick="playGacha('tier', 1)" class="sub-btn"><img src="..." class="tier-icon">Tier1</button>
+                             <button onclick="playGacha('tier', 2)" class="sub-btn"><img src="..." class="tier-icon">Tier2</button>
+                                <button onclick="callTier3()" class="sub-btn"><img src="..." class="tier-icon">Tier3</button>
+                                </div>
 
                     <div class="section-title">CRYSTAL GACHA</div>
                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
@@ -217,7 +222,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWToUT4BgiG0hsZDIQwnsH28jCTdFssbURLbIOTl6utAefvYDEgyHa3dRC_wPKZiCz/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxN2q11Rga_FyvMsxtvFbdYyKtq7W5BRE3q419K6evtq5KKxW9DqX9GcRWJhYbdYiOv/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
     
     let loginID = "";

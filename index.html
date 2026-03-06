@@ -19,6 +19,12 @@
             background-size: cover; background-position: center; background-attachment: fixed;
             overflow: hidden; touch-action: pan-y;
         }
+        .page-section {
+            width: 100vw; height: 100vh; 
+            display: flex; justify-content: center; align-items: flex-start; 
+             padding-top: 30px; 
+             overflow: hidden; /* ここも止める */
+           }
 
         /* 背景の白透過 */
         body::before {
@@ -43,7 +49,20 @@
             border: 3px solid #ffb347; padding: 25px;
             width: 88%; max-width: 360px; text-align: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1); color: #2c3e50;
+            /* --- ここが重要！ --- */
+            max-height: 70vh;    /* 画面の高さの70%までに制限（ナビに絶対届かない高さ） */
+              overflow-y: auto;    /* はみ出た分はカード内でスクロール */
+             position: relative;
+        
         }
+        /* カード内のスクロールバーのデザイン */
+          .card::-webkit-scrollbar {
+              width: 6px;
+              }
+            .card::-webkit-scrollbar-thumb {
+                background-color: rgba(255, 140, 0, 0.3); /* 薄いオレンジ */
+               border-radius: 10px;
+                 }
 
         h1 { 
             color: #ff8c00; font-size: 1.4rem; margin-bottom: 20px; font-weight: 800; 
@@ -131,9 +150,9 @@
         <section class="page-section">
             <div class="card">
                 <h1>
-                    <img src="https://media.discordapp.net/attachments/866687772056092682/1479136516478468167/mypage2.png" class="title-icon">
+                    <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69ab997a&is=69aa47fa&hm=0fd68dec025d30fa9da370fe1d41c53d0218f8a535a9b68ca662907167a0c268&">
                     推し事の書
-                    <img src="https://media.discordapp.net/attachments/866687772056092682/1479136516167958659/mypage1.png" class="title-icon">
+                    <img src="https://media.discordapp.net/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69ab997a&is=69aa47fa&hm=fa6d5ab1196dad92bb53423935072a7b8d4ea4381edb8625ecd52dd121d16001&=&format=webp&quality=lossless&width=58&height=58" class="title-icon">
                 </h1>
                 <div id="login-area">
                     <p style="font-weight: 700;">Twitchでログインして<br>ステータスを確認しよう</p>

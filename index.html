@@ -82,15 +82,24 @@
 
         /* --- 画面構造 --- */
         .viewport { width: 100vw; height: 100vh; overflow: hidden; position: relative; padding-top: 85px; box-sizing: border-box;}
-        .main-wrapper {
-            display: flex; width: 500vw; height: 100vh;
-            transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);
-        }
-        .page-section {
-            width: 100vw; height: calc(100vh - 85px); display: flex; justify-content: center; 
-            align-items: center; flex-shrink: 0; box-sizing: border-box; 
-            overflow-y: auto; padding-bottom: 120px;
-        }
+       .main-wrapper {
+    display: flex; 
+    width: 500vw; 
+    /* 画面全体から上下のナビ（約150px〜170px）を引いた高さに固定 */
+    height: calc(100vh - 160px); 
+    transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);
+    /* 縦方向にはみ出さないように強制 */
+    overflow-y: hidden; 
+}
+
+.page-section {
+    width: 100vw; 
+    height: 100%; /* wrapperの高さ(100%)を維持 */
+    display: flex; 
+    justify-content: center; 
+    align-items: flex-start; /* カードを上に寄せる */
+    flex-shrink: 0; 
+}
 
         .card { 
             background: var(--bg-glass); border-radius: 30px;
@@ -99,6 +108,37 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.1); color: #2c3e50;
             max-height: 70vh; overflow-y: auto; position: relative;
         }
+        /* --- カード内のスクロールバーのデザイン修正 --- */
+
+/* スクロールバー全体の幅と高さを設定 */
+.card::-webkit-scrollbar {
+    width: 6px;  /* 縦スクロールバーの幅 */
+    height: 6px; /* 横スクロールバーの高さ（もしあれば） */
+    background: transparent; /* バー全体の背景を透明にする（矢印や後ろの白を消す） */
+}
+
+/* スクロールバーのハンドル（動く部分）のデザイン */
+.card::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 140, 0, 0.5); /* テーマカラーのオレンジを半透明で */
+    border-radius: 3px; /* 丸みをつけて柔らかい印象に */
+    border: none; /* 枠線を消す */
+}
+
+/* ハンドルにホバー（マウスを乗せた）した時の色 */
+.card::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 140, 0, 0.8); /* 少し濃くして操作感を出す */
+}
+
+/* スクロールバーのトラック（ハンドルが動く背景部分） */
+.card::-webkit-scrollbar-track {
+    background: transparent; /* トラックの背景も透明にする（後ろの白を消す） */
+    border: none; /* 枠線を消す */
+}
+
+/* スクロールバーの矢印ボタン（上下のボタン）を非表示にする */
+.card::-webkit-scrollbar-button {
+    display: none; /* ボタンを非表示にする */
+}
 
         /* --- 装飾系 --- */
         h1 { 
@@ -238,7 +278,6 @@
                     <div id="rw-100" class="list-item"><span class="badge">Lv.100</span><div style="font-weight:800; margin-top:5px;">限定PC壁紙</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>
                     <div id="rw-110" class="list-item"><span class="badge">Lv.110</span><div style="font-weight:800; margin-top:5px;">配信で名前呼び</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>
                     <div id="rw-120" class="list-item"><span class="badge">Lv.120</span><div style="font-weight:800; margin-top:5px;">限定SNSアイコン</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>
-                </div>
                 </div>
             </div>
         </section>

@@ -89,6 +89,38 @@
         .nav-item { font-size: 1.5rem; color: #ccc; display: flex; flex-direction: column; align-items: center; background: none; }
         .nav-item.active { color: var(--accent-orange); }
         .nav-text { font-size: 0.55rem; font-weight: 900; margin-top: 2px; }
+        /* 5000円ガチャ専用：虹色に輝くアニメーション */
+@keyframes rainbow-glow {
+    0% { border-color: #ff8c00; box-shadow: 0 0 5px #ff8c00; }
+    50% { border-color: #00d4ff; box-shadow: 0 0 20px #00d4ff; }
+    100% { border-color: #ff8c00; box-shadow: 0 0 5px #ff8c00; }
+}
+
+.btn-premium {
+    background: linear-gradient(135deg, #fffcf0 0%, #fff5d1 100%) !important;
+    border: 3px solid gold !important;
+    animation: rainbow-glow 3s infinite; /* 常にキラキラ */
+    font-weight: 900 !important;
+    color: #d4af37 !important;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ボタンの中を光が走るエフェクト */
+.btn-premium::after {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.6), transparent);
+    transform: rotate(45deg);
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-150%) rotate(45deg); }
+    100% { transform: translateX(150%) rotate(45deg); }
+}
     </style>
 </head>
 <body>
@@ -131,13 +163,13 @@
                     </div>
 
                     <div class="section-title">CRYSTAL GACHA</div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <button onclick="playGacha('crystal', 100)" class="sub-btn">100円</button>
-                        <button onclick="playGacha('crystal', 500)" class="sub-btn">500円</button>
-                        <button onclick="playGacha('crystal', 1000)" class="sub-btn">1000円</button>
-                        <button onclick="playGacha('crystal', 5000)" class="sub-btn">5000円</button>
-                    </div>
-                </div>
+                       <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                              <button onclick="playGacha('crystal', 100)" class="sub-btn">100円</button>
+                              <button onclick="playGacha('crystal', 500)" class="sub-btn">500円</button>
+                              <button onclick="playGacha('crystal', 1000)" class="sub-btn" style="border-color: var(--crystal-blue); background: #e6f9ff;">💎 1000円</button>
+                              </div>
+                        <button onclick="playGacha('crystal', 5000)" class="sub-btn btn-premium" style="width:100%; margin-top:8px; height:50px;">✨ 👑 5000円ガチャ 👑 ✨</button>
+                     </div>
             </div>
         </section>
 
@@ -185,7 +217,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxvnNqZbUMZKskqan4HJtexJCf37oG1s2xJHHJCBNchdm8G5Ri_qBgQyHrayYXMwwEy/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzmOmDnBBB4w6pfkwqpMOPioAHb-jf32gIp6znn0aELjiqrXQP1d2MpNIYs1nPG-SiT/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
     
     let loginID = "";

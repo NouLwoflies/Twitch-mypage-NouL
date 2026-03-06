@@ -315,17 +315,38 @@
         return { current: (totalExp - 330900) % 10000, next: 10000 };
     }
 
-    async function playGacha(mode, val = 0) {
-        if (!loginID) return;
-        let query = `?user=${loginID}`;
-        if (mode === 'login') query += `&type=login`;
-        else if (mode === 'crystal') query += `&bitsGacha=${val}`; // クリスタルガチャ用
-        else query += `&gacha=${val}`;
+   async function playGacha(mode, val = 0) {
+         if (!loginID) {
+               alert("先にログインしてください！");
+             return;
+          }
 
-        const res = await fetch(GAS_URL + query);
-        const msg = await res.text();
-        alert(msg);
-        if (!msg.includes("今日はもう")) location.reload();
+         let query = `?user=${loginID}`;
+    
+        // エラーの原因「gachaType」を整理しました
+          if (mode === 'login') {
+              query += `&type=login`;
+           } else if (mode === 'crystal') {
+              // クリスタルガチャ（Bits消費）の場合は bitsGacha という名前でGASに送る
+              query += `&bitsGacha=${val}`;
+        } else if (mode === 'tier') {
+               // 通常のTierガチャ
+              query += `&gacha=${val}`;
+        }
+
+       try {
+          const res = await fetch(GAS_URL + query);
+            const msg = await res.text();
+            alert(msg);
+        
+              // 「今日はもう〜」というメッセージ以外（成功時）は画面を更新してデータを反映
+            if (!msg.includes("今日はもう")) {
+                 location.reload();
+            }
+        } catch (e) {
+              console.error("Gacha Error:", e);
+             alert("通信エラーが発生しました。GASの設定（全員に公開）を確認してください。");
+         }
     }
 
     function callTier3() {

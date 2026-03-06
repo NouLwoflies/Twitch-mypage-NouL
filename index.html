@@ -128,38 +128,35 @@
     overflow: hidden; /* カード自体ははみ出さない */
 }
 
-/* カードの中身だけをスクロールさせる */
-.card > * {
-    flex-shrink: 0;
-}
-
-/* 報酬リストやログなど、中身の塊だけをスクロール対象にする */
-#reward-list, #log-content, #status-area, .gacha-box-container {
-    overflow-y: auto;
-    flex-grow: 1;
-    -webkit-overflow-scrolling: touch;
-    padding-right: 5px; /* スクロールバーとの重なり防止 */
-}
-
-/* --- スクロールバーのデザイン（オレンジ・背景なし） --- */
-#reward-list::-webkit-scrollbar, 
-#log-content::-webkit-scrollbar,
 .card::-webkit-scrollbar {
-    width: 6px;
-    background: transparent;
+    width: 6px;  /* 縦スクロールバーの幅 */
+    height: 6px; /* 横スクロールバーの高さ（もしあれば） */
+    background: transparent; /* バー全体の背景を透明にする（矢印や後ろの白を消す） */
 }
 
-#reward-list::-webkit-scrollbar-thumb, 
-#log-content::-webkit-scrollbar-thumb,
+/* スクロールバーのハンドル（動く部分）のデザイン */
 .card::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 140, 0, 0.5);
-    border-radius: 10px;
+    background-color: rgba(255, 140, 0, 0.5); /* テーマカラーのオレンジを半透明で */
+    border-radius: 3px; /* 丸みをつけて柔らかい印象に */
+    border: none; /* 枠線を消す */
 }
 
-#reward-list::-webkit-scrollbar-track,
-.card::-webkit-scrollbar-track {
-    background: transparent;
+/* ハンドルにホバー（マウスを乗せた）した時の色 */
+.card::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 140, 0, 0.8); /* 少し濃くして操作感を出す */
 }
+
+/* スクロールバーのトラック（ハンドルが動く背景部分） */
+.card::-webkit-scrollbar-track {
+    background: transparent; /* トラックの背景も透明にする（後ろの白を消す） */
+    border: none; /* 枠線を消す */
+}
+
+/* スクロールバーの矢印ボタン（上下のボタン）を非表示にする */
+.card::-webkit-scrollbar-button {
+    display: none; /* ボタンを非表示にする */
+}
+
 
 /* スクロールバーの矢印ボタン（上下のボタン）を非表示にする */
 .card::-webkit-scrollbar-button {

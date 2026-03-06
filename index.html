@@ -36,14 +36,14 @@
         }
 
         /* --- 4画面スライド構造 --- */
-        .viewport { width: 100vw; height: 100vh; overflow: hidden; position: relative; }
+        .viewport { width: 100vw; height: 100vh; overflow: hidden; position: relative; padding-top: 80px; /* バーの高さ分確保 */box-sizing: border-box;}
         .main-wrapper {
             display: flex; width: 400vw; height: 100vh;
             transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);
         }
         .page-section {
-            width: 100vw; height: 100vh; display: flex; justify-content: center; 
-            align-items: flex-start; padding-top: 30px; box-sizing: border-box; 
+            width: 100vw; height: calc(100vh - 80px); display: flex; justify-content: center; 
+            align-items: center; padding-top: 30px; flex-shrink: 0; box-sizing: border-box; 
             overflow-y: auto; padding-bottom: 120px;
         }
 
@@ -101,10 +101,11 @@
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
         /* 所持数バーのスタイル */
 　　　　/* 画面上部に固定される所持数エリア */
-        .inventory-bar { position: fixed; top: 0;  left: 0;  width: 100%; display: flex; justify-content: center; gap: 8px;  padding: 12px 0; background: rgba(255, 255, 255, 0.9); /* 白透過でカードと合わせる */ backdrop-filter: blur(5px); border-bottom: 2px solid #ffb347;z-index: 2000; /* 一番手前に */}
+        .inventory-bar { position: fixed; top: 15px;  left: 50%;  transform: translateX(-50%); width: 92%; max-width: 380px; display: flex; justify-content:space-around; gap: 5px;  padding: 10px ; background: var(--bg-glass); backdrop-filter: blur(10px); border-radius: 20px; /* 角丸をカードに合わせる */
+             border: 2px solid #ffb347; box-shadow: 0 4px 15px rgba(0,0,0,0.1);z-index: 2000; /* 一番手前に */}
 /* 各所持数アイテム（リストのミニ版デザイン） */
-        .inv-item { background: white; border: 1.5px solid #f0f0f0; border-radius: 12px; padding: 5px 10px; display: flex;  flex-direction: column; align-items: center; min-width: 60px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
-        .inv-label { font-size: 0.55rem;  color: #ff8c00; font-weight: 800;  margin-bottom: 2px;}
+        .inv-item { background: white; border: 1px solid #f0f0f0; border-radius: 12px; padding: 5px 10px; display: flex;  flex-direction: column; align-items: center; flex: 1;  max-width: 80px;}
+        .inv-label { font-size: 0.55rem;  color: #ff8c00; font-weight: 800; letter-spacing: -0.02em;}
         .inv-val {font-size: 0.9rem; font-weight: 900; color: #2c3e50;}
 /* ページ全体の開始位置を調整（バーに被らないように） */
         .viewport { padding-top: 70px; /* バーの高さ分だけ下げる */}

@@ -315,39 +315,40 @@
         return { current: (totalExp - 330900) % 10000, next: 10000 };
     }
 
-   async function playGacha(mode, val = 0) {
-         if (!loginID) {
-               alert("先にログインしてください！");
-             return;
-          }
-
-         let query = `?user=${loginID}`;
-    
-        // エラーの原因「gachaType」を整理しました
-          if (mode === 'login') {
-              query += `&type=login`;
-           } else if (mode === 'crystal') {
-              // クリスタルガチャ（Bits消費）の場合は bitsGacha という名前でGASに送る
-              query += `&bitsGacha=${val}`;
-        } else if (mode === 'tier') {
-               // 通常のTierガチャ
-              query += `&gacha=${val}`;
-        }
-
-       try {
-          const res = await fetch(GAS_URL + query);
-            const msg = await res.text();
-            alert(msg);
-        
-              // 「今日はもう〜」というメッセージ以外（成功時）は画面を更新してデータを反映
-            if (!msg.includes("今日はもう")) {
-                 location.reload();
-            }
-        } catch (e) {
-              console.error("Gacha Error:", e);
-             alert("通信エラーが発生しました。GASの設定（全員に公開）を確認してください。");
-         }
+  async function playGacha(mode, val = 0) {
+    if (!loginID) {
+        alert("先にログインしてください！");
+        return;
     }
+
+    // GASへ送るためのURLの準備
+    let query = `?user=${encodeURIComponent(loginID)}`;
+    
+    if (mode === 'login') {
+        // ログインガチャの場合
+        query += `&type=login`;
+    } else {
+        // GAS側の「gachaType」という変数名に合わせます
+        // Tier(1,2,3) も Crystal(100, 500, 1000, 5000) もこの変数で送ります
+        query += `&type=gacha&gachaType=${val}`;
+    }
+
+    try {
+        console.log("Sending request to GAS:", GAS_URL + query);
+        const res = await fetch(GAS_URL + query);
+        const msg = await res.text();
+        
+        alert(msg);
+        
+        // 成功時（「今日はもう」「足りない」「エラー」以外の時）は画面を更新
+        if (!msg.includes("今日はもう") && !msg.includes("足りない") && !msg.includes("エラー")) {
+            location.reload();
+        }
+    } catch (e) {
+        console.error("Gacha Connection Error:", e);
+        alert("連携エラーが発生しました。GASの設定を確認してください。");
+    }
+}
 
     function callTier3() {
         let msg = "";

@@ -245,7 +245,14 @@
           });
 
 
-        function login() { window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`; }
+       // 今の関数のここをチェック
+function login() {
+    const scope = 'user:read:email';
+    const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${scope}`;
+    
+    // window.location.href ではなく、新しいタブで開くようにすると警告が出にくい場合も
+    window.location.assign(authUrl); 
+}
 
         window.onload = function() {
             const params = new URLSearchParams(window.location.hash.substring(1));

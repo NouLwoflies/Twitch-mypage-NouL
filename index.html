@@ -99,52 +99,23 @@
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
         .gacha-box { background: #fff; border: 2px solid #f0f0f0; border-radius: 20px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .gacha-title { font-size: 1rem; font-weight: 900; color: #2c3e50; margin-bottom: 10px; }
-       .draw-button { 
-            width: 100%; border-radius: 15px; padding: 12px; 
-            color: white; font-weight: 900; 
-            position: relative; overflow: hidden; /* これが重要：光を外に出さない */
-            border: none; cursor: pointer;
-            transition: transform 0.1s;
-        }
+     .draw-button {
+    width: 100%;
+    border-radius: 15px;
+    padding: 12px;
+    color: white !important;
+    font-weight: 900;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.1s, box-shadow 0.1s; /* 反応を速く */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
         .btn-premium { background: linear-gradient(135deg, #fffcf0 0%, #fff5d1 100%) !important; border: 2px solid gold !important; color: #d4af37 !important; position: relative; overflow: hidden; }
         .btn-premium::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.6), transparent); transform: rotate(45deg); animation: shine 2s infinite; }
         @keyframes shine { 0% { transform: translateX(-150%) rotate(45deg); } 100% { transform: translateX(150%) rotate(45deg); } }
         /* 共通：プレミアムボタンの光沢アニメーション */
-        .btn-bronze, .btn-silver, .btn-gold, .btn-premium {
-    position: relative;
-    overflow: hidden; /* ボタンの外に光を出さない */
-    color: white !important;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-    z-index: 1; /* ボタン内の重なりを制御 */
-}
-
-/* 光の要素をボタン内部に限定 */
-.btn-bronze::after, .btn-silver::after, .btn-gold::after, .btn-premium::after {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -150%; /* 開始位置を左側に */
-    width: 100%; /* 光の幅を少し絞る */
-    height: 200%;
-    background: linear-gradient(
-        to right, 
-        rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.4) 50%, 
-        rgba(255, 255, 255, 0) 100%
-    );
-    transform: rotate(45deg);
-    animation: shine-inside 3s infinite;
-    z-index: 2; /* 背景より上に表示 */
-    pointer-events: none; /* クリックを邪魔しない */
-}
-
-/* アニメーションの定義（ボタンの幅の中だけで動かす） */
-@keyframes shine-inside {
-    0% { left: -150%; }
-    50% { left: 150%; }
-    100% { left: 150%; }
-}
-
+       
 /* --- 各ボタンの個別色設定 --- */
 .btn-bronze {
     background: linear-gradient(135deg, #d2691e, #8b4513) !important;
@@ -160,9 +131,6 @@
     background: linear-gradient(135deg, #ffd700, #daa520) !important;
     box-shadow: 0 4px 0 #916f1b;
 }
-
-/* 金は少しリッチに速く光らせる */
-.btn-gold::after { animation-duration: 2s; }
         /* ナビゲーション */
         .bottom-nav {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);

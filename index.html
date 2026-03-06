@@ -152,7 +152,7 @@
                 <h1>
                     <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69ab997a&is=69aa47fa&hm=0fd68dec025d30fa9da370fe1d41c53d0218f8a535a9b68ca662907167a0c268&">
                     推し事の書
-                    <img src="https://media.discordapp.net/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69ab997a&is=69aa47fa&hm=fa6d5ab1196dad92bb53423935072a7b8d4ea4381edb8625ecd52dd121d16001&=&format=webp&quality=lossless&width=58&height=58" class="title-icon">
+                    <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69ab997a&is=69aa47fa&hm=fa6d5ab1196dad92bb53423935072a7b8d4ea4381edb8625ecd52dd121d16001&">
                 </h1>
                 <div id="login-area">
                     <p style="font-weight: 700;">Twitchでログインして<br>ステータスを確認しよう</p>
@@ -173,33 +173,40 @@
 
                     <div class="section-title">DAILY MISSION</div>
                     <button onclick="playGacha('login')" class="login-btn" style="background: #ff8c00;">🎁 1日1回ログインガチャ</button>
-
-                    <div class="section-title">TIER GACHA</div>
-                      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 0.7rem; font-weight: 800; color: #ff8c00; margin-bottom: 5px;">
-                       <div>所持: <span id="count-t1">0</span>個</div>
-                        <div>所持: <span id="count-t2">0</span>個</div>
-                        <div>所持: <span id="count-t3">0</span>個</div>
-                            </div>
-                           <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-                          <button onclick="playGacha('tier', 1)" class="sub-btn"><img src="..." class="tier-icon">Tier1</button>
-                             <button onclick="playGacha('tier', 2)" class="sub-btn"><img src="..." class="tier-icon">Tier2</button>
-                                <button onclick="callTier3()" class="sub-btn"><img src="..." class="tier-icon">Tier3</button>
-                                </div>
-
-                    <div class="section-title">CRYSTAL GACHA</div>
-                       <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                              <button onclick="playGacha('crystal', 100)" class="sub-btn">100円</button>
-                              <button onclick="playGacha('crystal', 500)" class="sub-btn">500円</button>
-                              <button onclick="playGacha('crystal', 1000)" class="sub-btn" style="border-color: var(--crystal-blue); background: #e6f9ff;">💎 1000円</button>
-                              </div>
-                        <button onclick="playGacha('crystal', 5000)" class="sub-btn btn-premium" style="width:100%; margin-top:8px; height:50px;">✨ 👑 5000円ガチャ 👑 ✨</button>
-                     </div>
-            </div>
+                </div>
         </section>
+　　　　<section class="page-section">
+  　　　　  <div class="card">
+    　　　　    <h1 style="color:#ff8c00">ガチャ</h1>
+            
+　　　　　　　　 <div class="list-item">
+         　　　　   <div style="font-weight:800; color:var(--twitch-purple);">🎫 Tierかけら交換</div>
+          　　　　  <p style="font-size:0.7rem; color:#666;">サブスク等で貰った「かけら」を豪華景品に！</p>
+          　　　　  <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top:5px;">
+              　　　　  <button onclick="playGacha('tier', 1)" class="sub-btn">T1用</button>
+             　　　　   <button onclick="playGacha('tier', 2)" class="sub-btn">T2用</button>
+             　　　　   <button onclick="playGacha('tier', 3)" class="sub-btn">T3用</button>
+       　　　　     </div>
+     　　　　   </div>
+            
+     　　　　   <div class="list-item">
+       　　　　     <div style="font-weight:800; color:var(--crystal-blue);">💎 クリスタルガチャ</div>
+        　　　　    <p style="font-size:0.7rem; color:#666;">貯まったクリスタルで運試し。高額ほどレア率UP！</p>
+       　　　　     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top:5px;">
+          　　　　      <button onclick="playGacha('crystal', 100)" class="sub-btn">100円</button>
+          　　　　      <button onclick="playGacha('crystal', 500)" class="sub-btn">500円</button>
+           　　　　     <button onclick="playGacha('crystal', 1000)" class="sub-btn" style="border-color: var(--crystal-blue);">1000円</button>
+           　　　　     <button onclick="playGacha('crystal', 5000)" class="sub-btn btn-premium">5000円</button>
+        　　　　    </div>
+   　　　　     </div>
+
+      　　　　 
+ 　　　　   </div>
+　　　　</section>
 
         <section class="page-section">
             <div class="card">
-                <h1 style="color:var(--twitch-purple)">🏆 BATTLE PASS</h1>
+                <h1 style="color:var(--twitch-purple)">🏆 バトルパス</h1>
                 <div id="reward-list">
                     <div id="rw-10" class="list-item"><span class="badge">Lv.10</span><div style="font-weight:800; margin-top:5px;">限定PC壁紙</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>
                     <div id="rw-20" class="list-item"><span class="badge">Lv.20</span><div style="font-weight:800; margin-top:5px;">配信で名前呼び</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>
@@ -233,15 +240,16 @@
 
 <nav class="bottom-nav">
     <button class="nav-item active" onclick="go(0)">👤<span class="nav-text">STATUS</span></button>
-    <button class="nav-item" onclick="go(1)">🏆<span class="nav-text">PASS</span></button>
-    <button class="nav-item" onclick="go(2)">📖<span class="nav-text">GUIDE</span></button>
-    <button class="nav-item" onclick="go(3)">📜<span class="nav-text">LOG</span></button>
+    <button class="nav-item" onclick="go(1)">🎰<span class="nav-text">ガチャ</span></button>
+    <button class="nav-item" onclick="go(2)">🏆<span class="nav-text">バトルパス</span></button>
+    <button class="nav-item" onclick="go(3)">📖<span class="nav-text">ガイド</span></button>
+    <button class="nav-item" onclick="go(4)">📜<span class="nav-text">履歴</span></button>
 </nav>
 
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxN2q11Rga_FyvMsxtvFbdYyKtq7W5BRE3q419K6evtq5KKxW9DqX9GcRWJhYbdYiOv/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwf1uFeZf_MflwNOm0liremjQXJ5ish8XXhrSDpLJKp6Xxeqi8ZQIuGr-wX3rE7wK_q/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
     
     let loginID = "";

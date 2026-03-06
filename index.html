@@ -419,6 +419,12 @@
             document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
             document.getElementById('display-bits').innerText = userData[5];
             document.getElementById('display-level').innerText = userData[7];
+            　　　　　　// fetchSheetData の中に追加
+　　　　　　　document.getElementById('inv-bits').innerText = userData[5];
+　　　　　　　document.getElementById('inv-t1').innerText = userData[2];
+　　　　　　　document.getElementById('inv-t2').innerText = userData[3];
+　　　　　　　document.getElementById('inv-t3').innerText = userData[4];
+　　　　　　　// (STATUS画面側の表示もそのまま残しておけば、両方更新されます)
 
             const totalExp = parseInt(userData[6]) || 0;
             const level = parseInt(userData[7]) || 1;

@@ -217,7 +217,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzmOmDnBBB4w6pfkwqpMOPioAHb-jf32gIp6znn0aELjiqrXQP1d2MpNIYs1nPG-SiT/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWToUT4BgiG0hsZDIQwnsH28jCTdFssbURLbIOTl6utAefvYDEgyHa3dRC_wPKZiCz/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
     
     let loginID = "";
@@ -315,38 +315,33 @@
         return { current: (totalExp - 330900) % 10000, next: 10000 };
     }
 
-  async function playGacha(mode, val = 0) {
+ async function playGacha(mode, val = 0) {
     if (!loginID) {
         alert("先にログインしてください！");
         return;
     }
 
-    // GASへ送るためのURLの準備
+    // GASへ送るためのURL
+    // GAS側が type=login と gachaType を見る設計なのでそれに合わせます
     let query = `?user=${encodeURIComponent(loginID)}`;
     
     if (mode === 'login') {
-        // ログインガチャの場合
         query += `&type=login`;
     } else {
-        // GAS側の「gachaType」という変数名に合わせます
-        // Tier(1,2,3) も Crystal(100, 500, 1000, 5000) もこの変数で送ります
+        // TierもCrystalも gachaType パラメータで送る
         query += `&type=gacha&gachaType=${val}`;
     }
 
     try {
-        console.log("Sending request to GAS:", GAS_URL + query);
         const res = await fetch(GAS_URL + query);
         const msg = await res.text();
-        
         alert(msg);
         
-        // 成功時（「今日はもう」「足りない」「エラー」以外の時）は画面を更新
-        if (!msg.includes("今日はもう") && !msg.includes("足りない") && !msg.includes("エラー")) {
-            location.reload();
+        if (!msg.includes("今日はもう") && !msg.includes("足りない") && !msg.includes("ERROR")) {
+            location.reload(); // 成功時のみ更新
         }
     } catch (e) {
-        console.error("Gacha Connection Error:", e);
-        alert("連携エラーが発生しました。GASの設定を確認してください。");
+        alert("通信エラーが発生しました。");
     }
 }
 

@@ -193,28 +193,28 @@
                    <div class="gacha-box">
         <div class="gacha-title">100円ガチャ</div>
         <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('bits', 100)">
-            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💠 200</div>
+            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 200</div>
         </button>
     </div>
 
     <div class="gacha-box" style="border-color: #cd7f32; background: #fffaf5;">
         <div class="gacha-title" style="color: #a0522d;">500円ガチャ</div>
         <button class="draw-button btn-bronze" onclick="playGacha('bits', 1000)">
-            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💠 1000</div>
+            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 1000</div>
         </button>
     </div>
 
     <div class="gacha-box" style="border-color: #c0c0c0; background: #f8f8f8;">
         <div class="gacha-title" style="color: #707070;">1000円ガチャ</div>
         <button class="draw-button btn-silver" onclick="playGacha('bits', 2000)">
-            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💠 2000</div>
+            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 2000</div>
         </button>
     </div>
 
     <div class="gacha-box" style="border-color: #ffd700; background: #fffdf0;">
         <div class="gacha-title" style="color: #b8860b;">5000円ガチャ</div>
         <button class="draw-button btn-gold" onclick="playGacha('bits', 10000)">
-            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💠 10000</div>
+            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 10000</div>
         </button>
     </div>
                     
@@ -390,7 +390,7 @@
         if (!loginID) { alert("先にログインしてください！"); return; }
         if (mode === 'bits') {
         const cost = val;
-        if (!confirm(`💠 ${cost} クリスタルを消費してガチャを引きますか？`)) {
+        if (!confirm(`💎 ${cost} クリスタルを消費してガチャを引きますか？`)) {
             return; // キャンセルならここで終了
         }
     }

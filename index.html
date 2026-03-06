@@ -2,28 +2,31 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>推し事の書</title>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --accent-orange: #ff8c00;
             --twitch-purple: #9146ff;
-            --crystal-blue: #00d4ff; /* 明るい水色 */
+            --crystal-blue: #00d4ff;
             --bg-glass: rgba(255, 255, 255, 0.85);
         }
 
         body { 
+            margin: 0; padding: 0; font-family: 'M PLUS 1p', sans-serif;
             background-image: url('https://cdn.discordapp.com/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69aae5d7&is=69a99457&hm=2bf9e90c392f467c24ae0e7f2c35df035cfe5f8ff68e100964cd3756f7f48d6a'); 
-            background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; background-color: #ffffff;
-            font-family: 'M PLUS 1p', sans-serif; color: #5d00a8; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; position: relative;
+            background-size: cover; background-position: center; background-attachment: fixed;
+            overflow: hidden; touch-action: pan-y;
         }
 
+        /* 背景の白透過 */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(255, 255, 255, 0.5); z-index: -1;
+            background-color: rgba(255, 255, 255, 0.4); z-index: -1;
         }
-   /* --- 4画面スライド構造 --- */
+
+        /* --- 4画面スライド構造 --- */
         .viewport { width: 100vw; height: 100vh; overflow: hidden; position: relative; }
         .main-wrapper {
             display: flex; width: 400vw; height: 100vh;
@@ -34,66 +37,48 @@
             align-items: flex-start; padding-top: 30px; box-sizing: border-box; 
             overflow-y: auto; padding-bottom: 120px;
         }
-          .card { 
+
+        .card { 
             background: var(--bg-glass); border-radius: 30px;
             border: 3px solid #ffb347; padding: 25px;
             width: 88%; max-width: 360px; text-align: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1); color: #2c3e50;
         }
 
-        /* --- タイトル部分の修正 --- */
         h1 { 
-            color: #ff8c00; font-size: 1.6rem; margin-bottom: 20px; font-weight: 800; 
-            letter-spacing: 2px; border-bottom: 3px solid #ffb347; 
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 5px; 
+            color: #ff8c00; font-size: 1.4rem; margin-bottom: 20px; font-weight: 800; 
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            border-bottom: 3px solid #ffb347; padding-bottom: 5px;
         }
-        /* ★タイトルの画像を小さく調整 */
-        .title-icon {
-            width: 32px;  /* ここでお好みの大きさに調整してください */
-            height: 32px;
-            object-fit: contain;
-        }
+        .title-icon { width: 28px; height: 28px; object-fit: contain; }
 
         .status-item { font-size: 0.95rem; margin: 12px 0; font-weight: 700; display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding-bottom: 6px; }
-        .crystal { color: #00b4d8; }
-                /* クリスタルとレベルの強調 */
         .crystal-val { color: var(--crystal-blue); text-shadow: 0 0 5px rgba(0,212,255,0.3); }
-        .level-display { display: flex; align-items: flex-end; justify-content: center; gap: 5px; margin: 15px 0; }
-        .level-label { font-size: 0.9rem; font-weight: 900; color: var(--accent-orange); margin-bottom: 8px; }
-        .level-num { font-size: 3.5rem; font-weight: 900; color: var(--accent-orange); line-height: 1; }
 
-        /* --- ★レベル表示の強化 --- */
+        /* レベル表示 */
         .exp-container { text-align: left; margin: 20px 0; }
         .level-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px; }
-        .level-label { font-size: 0.75rem; font-weight: 800; color: #ff8c00; letter-spacing: 1px; }
-        #display-level { font-size: 2.2rem; font-weight: 900; color: #ff8c00; line-height: 1; margin-left: 4px; }
+        .level-label { font-size: 0.75rem; font-weight: 800; color: #ff8c00; }
+        #display-level { font-size: 2.2rem; font-weight: 900; color: #ff8c00; line-height: 1; }
         .exp-numbers { font-size: 0.8rem; font-weight: 800; color: #aaa; }
-
-        .exp-outline { background: #fdf2e2; height: 14px; border-radius: 7px; margin-top: 6px; overflow: hidden; }
+        .exp-outline { background: #fdf2e2; height: 14px; border-radius: 7px; overflow: hidden; }
         .exp-fill { background: linear-gradient(to right, #ffb347, #ff4500); height: 100%; width: 0%; transition: 1.5s ease; }
+
+        /* ボタン */
+        button { transition: all 0.1s; cursor: pointer; border: none; font-family: inherit; }
+        button:active { transform: scale(0.94); filter: brightness(1.1); }
         
-        .login-btn { background: #9146ff; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; font-family: inherit; font-size: 1rem; margin-bottom: 15px; transition: 0.2s; box-shadow: 0 4px 15px rgba(145, 70, 255, 0.2); }
-        .login-btn:hover { background: #772ce8; transform: translateY(-1px); }
-        .sub-btn { background: white; border: 2px solid #ffb347; color: #ff8c00; padding: 10px; border-radius: 12px; cursor: pointer; font-size: 0.85rem; font-family: inherit; font-weight: 700; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .sub-btn:hover { background: #ffb347; color: white; }
-        .section-title { font-size: 0.75rem; font-weight: 800; margin: 20px 0 10px; color: #ccc; display: flex; align-items: center; justify-content: center; letter-spacing: 2px; }
+        .login-btn { background: #9146ff; color: white; border-radius: 12px; padding: 14px; width: 100%; font-weight: 800; font-size: 1rem; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(145, 70, 255, 0.2); }
+        .sub-btn { background: white; border: 2px solid #ffb347; color: #ff8c00; padding: 10px; border-radius: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.8rem; }
+        .section-title { font-size: 0.75rem; font-weight: 800; margin: 20px 0 10px; color: #ccc; display: flex; align-items: center; justify-content: center; }
         .section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
-
-                /* --- ボタン (クリック感演出) --- */
-        button { transition: all 0.1s active; cursor: pointer; border: none; font-family: inherit; }
-        button:active { transform: scale(0.94); filter: brightness(1.1); } /* 凹む＆光る */
-
-        .btn-main { background: var(--accent-orange); color: white; border-radius: 15px; padding: 14px; width: 100%; font-weight: 800; font-size: 1rem; margin: 10px 0; box-shadow: 0 4px 0 #d35400; }
-        .btn-main:active { box-shadow: 0 1px 0 #d35400; transform: translateY(3px) scale(0.96); }
-
-        .btn-sub { background: white; border: 2px solid #ffd1a4; border-radius: 12px; padding: 8px; font-weight: 800; color: var(--accent-orange); font-size: 0.75rem; }
-        .tier-icon { width: 21px; height: 21px; object-fit: contain; }
+        .tier-icon { width: 24px; height: 24px; object-fit: contain; }
 
         .list-item { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; text-align: left; border: 2px solid #f0f0f0; }
         .badge { background: var(--twitch-purple); color: white; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 900; }
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
 
-                /* --- ナビゲーション --- */
+        /* ナビゲーション */
         .bottom-nav {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
             width: 85%; max-width: 320px; height: 65px;
@@ -101,96 +86,62 @@
             display: flex; justify-content: space-around; align-items: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; border: 2px solid #fff;
         }
-        .nav-item { font-size: 1.5rem; color: #ccc; display: flex; flex-direction: column; align-items: center; }
+        .nav-item { font-size: 1.5rem; color: #ccc; display: flex; flex-direction: column; align-items: center; background: none; }
         .nav-item.active { color: var(--accent-orange); }
         .nav-text { font-size: 0.55rem; font-weight: 900; margin-top: 2px; }
-        
     </style>
 </head>
 <body>
+
 <div class="viewport">
-  <div class="main-wrapper" id="master-container">
-           
-   <section class="page-section">
-   　　 <div class="card">
-   　　     <h1>
-          　　  <img src="https://media.discordapp.net/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69aaf0ba&is=69a99f3a&hm=22304559b0148fd48ac6ed141302397fe55bb211ce74dea8b291a94d7dda8201&=&format=webp&quality=lossless&width=58&height=58" class="title-icon">
-         　　   推し事の書
-          　　  <img src="https://media.discordapp.net/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69aaf0ba&is=69a99f3a&hm=edf1c182c7bf83dd9273029161fc686234d89108acac1ad9e9306ab2fd2baaca&=&format=webp&quality=lossless&width=58&height=58" class="title-icon">
-   　　     </h1>
-
-  　　      <div id="login-area">
-          　　  <p style="font-weight: 700;">Twitchでログインして<br>ステータスを確認しよう</p>
-       　　     <button class="login-btn" onclick="login()">Twitch ログイン 💜</button>
-      　　  </div>
-
-     　　   <div id="status-area" style="display:none;">
-         　　   <div class="status-item"><span>PLAYER</span> <span id="display-name">---</span></div>
-      　 　　    <div class="status-item"><span>RANK</span> <span id="display-rank" style="color:#ff8c00;">---</span></div>
-           　　 <div class="status-item"><span class="crystal">CRYSTAL</span> <span id="display-bits" class="crystal">0</span></div>
-            
-         　　   <div class="exp-container">
-              　　  <div class="level-header">
-              　　      <div>
-                    　　    <span class="level-label">LEVEL</span>
-                   　　     <span id="display-level">0</span>
-             　　       </div>
-             　　       <div class="exp-numbers">
-                   　　     <span id="display-current-exp">0</span> / <span id="display-next">0</span>
-                   　　 </div>
-              　　  </div>
-              　　  <div class="exp-outline"><div id="exp-bar" class="exp-fill"></div></div>
-           　　 </div>
-
-         　　   <div class="section-title">DAILY MISSION</div>
-        　　    <button onclick="playGacha('login')" class="login-btn" style="background: #ff8c00;">🎁１日１回ログインガチャ</button>
-            
-         　　   <div class="section-title">TIER ガチャ</div>
-        　　    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px;">
-            　　    <button onclick="playGacha('tier', 1)" class="sub-btn">
-               　　     <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69aae998&is=69a99818&hm=d0057cff53337d88165bb08679eaf00f4b78081a41beb2b93767679436d6ff20&=&format=webp&quality=lossless&width=691&height=691" alt="Tier 1" class="tier-icon">
-              　　      Tier1
-           　　     </button>
-               　　 <button onclick="playGacha('tier', 2)" class="sub-btn">
-                  　　  <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69aae998&is=69a99818&hm=81c582b4aab8eb7e8b2a3fc27513abc66f5bc16ae840b3082de107adc04dfc03&=&format=webp&quality=lossless&width=691&height=691" alt="Tier 2" class="tier-icon">
-                   　　 Tier2
-               　　 </button>
-               　　 <button onclick="callTier3()" class="sub-btn">
-                   　　 <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69aae998&is=69a99818&hm=4056b6dc1efbb59041c5de0ef5c2ddc9fdca982315be1d308fb3e27d2e8c829c&=&format=webp&quality=lossless&width=691&height=691" alt="Tier 3" class="tier-icon">
-                    　　Tier3
-               　　 </button>
-           　　 </div>
-
-            　　<div class="section-title">CRYSTAL ガチャ</div>
-           　　 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                　　<button onclick="playGacha('crystal', 100)" class="sub-btn">100円</button>
-                　　<button onclick="playGacha('crystal', 500)" class="sub-btn">500円</button>
-               　　 <button onclick="playGacha('crystal', 1000)" class="sub-btn">1000円</button>
-                　　<button onclick="playGacha('crystal', 5000)" class="sub-btn">5000円</button>
-            　　</div>
-        　　</div>
-    　　</div>
-　　</section>
-　　<section class="page-section">
+    <div class="main-wrapper" id="master-container">
+        
+        <section class="page-section">
             <div class="card">
-                <h1 style="color:#2ecc71">📖 HOW TO PLAY</h1>
-                <div class="list-item">
-                    <div style="font-weight:800; color:var(--accent-orange);">💎 クリスタルの貯め方</div>
-                    <div style="font-size:0.75rem; margin-top:5px;">
-                        配信での投げ銭（Bits等）に応じて付与されます。<br>
-                        100円 = 100 クリスタル
-                    </div>
+                <h1>
+                    <img src="https://media.discordapp.net/attachments/866687772056092682/1479136516478468167/mypage2.png" class="title-icon">
+                    推し事の書
+                    <img src="https://media.discordapp.net/attachments/866687772056092682/1479136516167958659/mypage1.png" class="title-icon">
+                </h1>
+                <div id="login-area">
+                    <p style="font-weight: 700;">Twitchでログインして<br>ステータスを確認しよう</p>
+                    <button class="login-btn" onclick="login()">Twitch ログイン 💜</button>
                 </div>
-                <div class="list-item">
-                    <div style="font-weight:800; color:var(--twitch-purple);">🆙 レベルを上げるには</div>
-                    <div style="font-size:0.75rem; margin-top:5px;">
-                        ガチャを回すと「経験値(EXP)」が貯まります！レベルが上がると報酬が解禁！
+                <div id="status-area" style="display:none;">
+                    <div class="status-item"><span>PLAYER</span> <span id="display-name">---</span></div>
+                    <div class="status-item"><span>RANK</span> <span id="display-rank" style="color:#ff8c00;">---</span></div>
+                    <div class="status-item"><span>CRYSTAL</span> <span id="display-bits" class="crystal-val">0</span></div>
+                    
+                    <div class="exp-container">
+                        <div class="level-header">
+                            <div><span class="level-label">LEVEL</span><span id="display-level">0</span></div>
+                            <div class="exp-numbers"><span id="display-current-exp">0</span> / <span id="display-next">0</span></div>
+                        </div>
+                        <div class="exp-outline"><div id="exp-bar" class="exp-fill"></div></div>
+                    </div>
+
+                    <div class="section-title">DAILY MISSION</div>
+                    <button onclick="playGacha('login')" class="login-btn" style="background: #ff8c00;">🎁 1日1回ログインガチャ</button>
+
+                    <div class="section-title">TIER GACHA</div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                        <button onclick="playGacha('tier', 1)" class="sub-btn"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png" class="tier-icon">Tier1</button>
+                        <button onclick="playGacha('tier', 2)" class="sub-btn"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png" class="tier-icon">Tier2</button>
+                        <button onclick="callTier3()" class="sub-btn"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png" class="tier-icon">Tier3</button>
+                    </div>
+
+                    <div class="section-title">CRYSTAL GACHA</div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button onclick="playGacha('crystal', 100)" class="sub-btn">100円</button>
+                        <button onclick="playGacha('crystal', 500)" class="sub-btn">500円</button>
+                        <button onclick="playGacha('crystal', 1000)" class="sub-btn">1000円</button>
+                        <button onclick="playGacha('crystal', 5000)" class="sub-btn">5000円</button>
                     </div>
                 </div>
             </div>
-      </section>
-    
-    　<section class="page-section">
+        </section>
+
+        <section class="page-section">
             <div class="card">
                 <h1 style="color:var(--twitch-purple)">🏆 BATTLE PASS</h1>
                 <div id="reward-list">
@@ -199,17 +150,31 @@
                     <div id="rw-30" class="list-item"><span class="badge">Lv.30</span><div style="font-weight:800; margin-top:5px;">限定SNSアイコン</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>
                 </div>
             </div>
-    　 </section>
-    
-　　　 <section class="page-section">
+        </section>
+
+        <section class="page-section">
+            <div class="card">
+                <h1 style="color:#2ecc71">📖 HOW TO PLAY</h1>
+                <div class="list-item">
+                    <div style="font-weight:800; color:var(--accent-orange);">💎 クリスタルの貯め方</div>
+                    <div style="font-size:0.75rem; margin-top:5px;">配信でのBits等に応じて付与されます。100円 = 100 クリスタル</div>
+                </div>
+                <div class="list-item">
+                    <div style="font-weight:800; color:var(--twitch-purple);">🆙 レベルを上げるには</div>
+                    <div style="font-size:0.75rem; margin-top:5px;">ガチャを回すと「経験値(EXP)」が貯まり、レベルアップで報酬解禁！</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
             <div class="card">
                 <h1 style="color:#7f8c8d">📜 GACHA LOG</h1>
                 <div id="log-content" style="text-align:left; font-size:0.75rem;">履歴はありません</div>
             </div>
-    　　</section>
+        </section>
     </div>
 </div>
-    
+
 <nav class="bottom-nav">
     <button class="nav-item active" onclick="go(0)">👤<span class="nav-text">STATUS</span></button>
     <button class="nav-item" onclick="go(1)">🏆<span class="nav-text">PASS</span></button>
@@ -217,162 +182,139 @@
     <button class="nav-item" onclick="go(3)">📜<span class="nav-text">LOG</span></button>
 </nav>
 
-
 <script>
-        // 設定値
-        const CLIENT_ID = '3x3nwbmhvpdx1bxzs9d540ga31ud6b'; 
-        const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwvnNqZbUMZKskqan4HJtexJCf37oG1s2xJHHJCBNchdm8G5Ri_qBgQyHrayYXMwwEy/exec';
-        const REDIRECT_URI = window.location.origin + window.location.pathname;
-        let loginID = "";
-        let globalT1 = 0, globalT2 = 0, globalT3 = 0;
+    const CLIENT_ID = '3x3nwbmhvpdx1bxzs9d540ga31ud6b'; 
+    const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxvnNqZbUMZKskqan4HJtexJCf37oG1s2xJHHJCBNchdm8G5Ri_qBgQyHrayYXMwwEy/exec';
+    const REDIRECT_URI = window.location.origin + window.location.pathname;
+    
+    let loginID = "";
+    let currentPage = 0;
+    let globalT1 = 0, globalT2 = 0, globalT3 = 0;
 
-         function go(idx) {
+    // 画面切り替え
+    function go(idx) {
         currentPage = idx;
         document.getElementById('master-container').style.transform = `translateX(-${idx * 100}vw)`;
-        const navs = document.querySelectorAll('.nav-item');
-        navs.forEach((n, i) => i === idx ? n.classList.add('active') : n.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach((n, i) => i === idx ? n.classList.add('active') : n.classList.remove('active'));
+    }
+
+    // スワイプ処理
+    let startX = 0;
+    document.addEventListener('touchstart', e => { startX = e.touches[0].pageX; });
+    document.addEventListener('touchend', e => {
+        let diff = e.changedTouches[0].pageX - startX;
+        if (Math.abs(diff) > 60) {
+            if (diff < 0 && currentPage < 3) go(currentPage + 1);
+            if (diff > 0 && currentPage > 0) go(currentPage - 1);
         }
+    });
 
-         let startX = 0;
-            document.addEventListener('touchstart', e => { startX = e.touches[0].pageX; });
-             document.addEventListener('touchend', e => {
-             let diff = e.changedTouches[0].pageX - startX;
-                  if (Math.abs(diff) > 60) {
-                       if (diff < 0 && currentPage < 3) go(currentPage + 1);
-                    if (diff > 0 && currentPage > 0) go(currentPage - 1);
-              }
-          });
+    // ログイン
+    function login() {
+        const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
+        window.location.assign(authUrl); 
+    }
 
-
-       // 今の関数のここをチェック
-function login() {
-    const scope = 'user:read:email';
-    const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${scope}`;
-    
-    // window.location.href ではなく、新しいタブで開くようにすると警告が出にくい場合も
-    window.location.assign(authUrl); 
-}
-
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.hash.substring(1));
-            const token = params.get('access_token');
-            if (token) {
-                document.getElementById('login-area').style.display = 'none';
-                document.getElementById('status-area').style.display = 'block';
-                getUserInfo(token);
-            }
-        };
-
-        function loadData() {
-          fetch(SHEET_URL).then(r => r.text()).then(txt => {
-            const rows = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')));
-            const user = rows.find(r => r[1] && r[1].toLowerCase() === loginID.toLowerCase());
-            if (user) {
-                document.getElementById('display-name').innerText = user[0];
-                document.getElementById('display-rank').innerText = user[8] || "サポーター";
-                document.getElementById('display-crystal').innerText = user[5];
-                document.getElementById('display-level').innerText = user[7];
-                let lv = parseInt(user[7]);
-                if(lv >= 10) unlock(10, "✅ 合言葉: おしおし！");
-                if(lv >= 20) unlock(20, "✅ DiscordでDMしてね");
-                fetchLogs();
-            }
-           });
+    window.onload = function() {
+        const token = new URLSearchParams(window.location.hash.substring(1)).get('access_token');
+        if (token) {
+            document.getElementById('login-area').style.display = 'none';
+            document.getElementById('status-area').style.display = 'block';
+            getUserInfo(token);
         }
+    };
 
-        async function getUserInfo(token) {
-            try {
-                const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` } });
-                const data = await res.json();
-                loginID = data.data[0].login;
-                fetchSheetData(loginID);
-            } catch (e) { console.error("Login Error"); }
+    async function getUserInfo(token) {
+        try {
+            const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            loginID = data.data[0].login;
+            fetchSheetData(loginID);
+            fetchLogs();
+        } catch (e) { console.error("Login Error"); }
+    }
+
+    async function fetchSheetData(targetUser) {
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
+        const res = await fetch(url);
+        const csvText = await res.text();
+        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+        const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
+
+        if (userData) {
+            document.getElementById('display-name').innerText = userData[0];
+            document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
+            document.getElementById('display-bits').innerText = userData[5];
+            document.getElementById('display-level').innerText = userData[7];
+
+            const totalExp = parseInt(userData[6]) || 0;
+            const level = parseInt(userData[7]) || 1;
+            const progress = getLevelProgress(totalExp, level);
+            document.getElementById('display-current-exp').innerText = progress.current;
+            document.getElementById('display-next').innerText = progress.next;
+            const percent = Math.min((progress.current / progress.next) * 100, 100);
+            setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
+
+            // バトルパス解禁チェック
+            if(level >= 10) unlock(10, "✅ 合言葉: おしおし！");
+            if(level >= 20) unlock(20, "✅ DiscordでDMしてね");
+
+            globalT1 = parseInt(userData[2]) || 0;
+            globalT2 = parseInt(userData[3]) || 0;
+            globalT3 = parseInt(userData[4]) || 0;
         }
+    }
 
-        async function fetchSheetData(targetUser) {
-            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
-            const res = await fetch(url);
-            const csvText = await res.text();
-            const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
-            const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
+    function unlock(lv, msg) {
+        const el = document.getElementById('rw-'+lv);
+        if(el) { el.classList.add('unlocked'); el.querySelector('.rw-msg').innerText = msg; el.querySelector('.rw-msg').style.color = "var(--accent-orange)"; }
+    }
 
-            if (userData) {
-                document.getElementById('display-name').innerText = userData[0];
-                document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
-                document.getElementById('display-bits').innerText = userData[5];
-                document.getElementById('display-level').innerText = userData[7];
-
-                const totalExp = parseInt(userData[6]) || 0;
-                const level = parseInt(userData[7]) || 1;
-                const progress = getLevelProgress(totalExp, level);
-                document.getElementById('display-current-exp').innerText = progress.current;
-                document.getElementById('display-next').innerText = progress.next;
-                const percent = Math.min((progress.current / progress.next) * 100, 100);
-                setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
-
-                globalT1 = parseInt(userData[2]) || 0;
-                globalT2 = parseInt(userData[3]) || 0;
-                globalT3 = parseInt(userData[4]) || 0;
+    function getLevelProgress(totalExp, level) {
+        const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
+        let acc = 0, curL = 1;
+        for (let r of cfg) {
+            while (curL < r.l) {
+                if (curL < level) { acc += r.c; curL++; }
+                else { return { current: Math.max(0, totalExp - acc), next: r.c }; }
             }
         }
-         function unlock(lv, msg) {
-             const el = document.getElementById('rw-'+lv);
-           if(el) { el.classList.add('unlocked'); el.querySelector('.rw-msg').innerText = msg; el.querySelector('.rw-msg').style.color = "var(--accent-orange)"; }
-          }
+        return { current: (totalExp - 330900) % 10000, next: 10000 };
+    }
 
-        function getLevelProgress(totalExp, level) {
-            const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
-            let acc = 0, curL = 1;
-            for (let r of cfg) {
-                while (curL < r.l) {
-                    if (curL < level) { acc += r.c; curL++; }
-                    else { return { current: Math.max(0, totalExp - acc), next: r.c }; }
-                }
-            }
-            return { current: (totalExp - 330900) % 10000, next: 10000 };
-        }
+    async function playGacha(mode, val = 0) {
+        if (!loginID) return;
+        let query = `?user=${loginID}`;
+        if (mode === 'login') query += `&type=login`;
+        else if (mode === 'crystal') query += `&bitsGacha=${val}`; // クリスタルガチャ用
+        else query += `&gacha=${val}`;
 
-        async function playGacha(mode, val = 0) {
-            if (!loginID) return;
-            let query = `?user=${loginID}`;
-            if (mode === 'login') query += `&type=login`;
-            else query += `&gacha=${val}`;
+        const res = await fetch(GAS_URL + query);
+        const msg = await res.text();
+        alert(msg);
+        if (!msg.includes("今日はもう")) location.reload();
+    }
 
-            const res = await fetch(GAS_URL + query);
-            const msg = await res.text();
-            alert(msg);
-            if (!msg.includes("今日はもう")) location.reload();
-        }
+    function callTier3() {
+        let msg = "";
+        if (globalT3 >= 1) msg = "Tier 3 のかけらを1つ使います。";
+        else if (globalT2 >= 3) msg = "Tier 2 のかけらを3つ使います。";
+        else if (globalT1 >= 9) msg = "Tier 1 のかけらを9つ使います。";
+        else { alert("かけらが足りません。"); return; }
+        
+        if(confirm(msg + "ガチャを引きますか？")) { playGacha('tier', 3); }
+    }
 
-          function playBits(amt) {
-                   if(confirm(amt + "クリスタルを消費してガチャを引きますか？")) {
-                   fetch(`${GAS_URL}?user=${loginID}&bitsGacha=${amt}`).then(r => r.text()).then(m => { alert(m); location.reload(); });
-                  }
-          }
-
-    
-        function callTier3() {
-            let msg = "";
-            if (globalT3 >= 1) msg = "Tier 3 のかけらを1つ使います。";
-            else if (globalT2 >= 3) msg = "Tier 2 のかけらを3つ使います。";
-            else if (globalT1 >= 9) msg = "Tier 1 のかけらを9つ使います。";
-            else { alert("かけらが足りません。"); return; }
-            
-            if(confirm(msg + "ガチャを引きますか？")) {
-                playGacha('tier', 3);
-                
-            }
-        }
-         async function fetchLogs() {
-        const res = await fetch(`https://docs.google.com/spreadsheets/d/14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI/gviz/tq?tqx=out:csv&sheet=GachaLog`);
+    async function fetchLogs() {
+        const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
         const txt = await res.text();
         const logs = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')))
                         .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase()).reverse().slice(0, 10);
         let html = "";
         logs.forEach(l => { html += `<div style="border-bottom:1px solid #eee; padding:5px 0;"><b>${l[3]}</b>: ${l[4]}</div>`; });
         document.getElementById('log-content').innerHTML = html || "履歴なし";
-      }
-    </script>
+    }
+</script>
 </body>
 </html>

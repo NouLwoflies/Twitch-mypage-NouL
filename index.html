@@ -386,56 +386,89 @@
         } catch (e) { console.error("Login Error", e); }
     }
 
-    async function fetchSheetData(targetUser) {
-        try {
-            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
-            const res = await fetch(url);
-            const csvText = await res.text();
-            const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
-            const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
+   async function fetchSheetData(targetUser) {
+    try {
+        // 1. ユーザーデータの取得
+        const userUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
+        const userRes = await fetch(userUrl);
+        const userCsv = await userRes.text();
+        const userRows = userCsv.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+        const userData = userRows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
 
-            if (userData) {
-                document.getElementById('display-name').innerText = userData[0];
-                document.getElementById('display-id').innerText = "@" + userData[1];
-                document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
-                document.getElementById('display-level').innerText = userData[7];
-                document.getElementById('inv-bits').innerText = userData[5];
-                document.getElementById('inv-t1').innerText = userData[2];
-                document.getElementById('inv-t2').innerText = userData[3];
-                document.getElementById('inv-t3').innerText = userData[4];
+        // 2. 報酬マスターデータの取得 (★ここを追加)
+        const masterUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=MasterRewards`;
+        const masterRes = await fetch(masterUrl);
+        const masterCsv = await masterRes.text();
+        const masterRows = masterCsv.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+        const rewardsMaster = masterRows.slice(1); // ヘッダーを除外
 
-                const totalExp = parseInt(userData[6]) || 0;
-                const level = parseInt(userData[7]) || 1;
-                const progress = getLevelProgress(totalExp, level);
-                document.getElementById('display-current-exp').innerText = progress.current;
-                document.getElementById('display-next').innerText = progress.next;
-                const percent = Math.min((progress.current / progress.next) * 100, 100);
-                setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
+        if (userData) {
+            // ステータス表示の更新
+            document.getElementById('display-name').innerText = userData[0];
+            document.getElementById('display-id').innerText = "@" + userData[1];
+            document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
+            document.getElementById('display-level').innerText = userData[7];
+            document.getElementById('inv-bits').innerText = userData[5];
+            document.getElementById('inv-t1').innerText = userData[2];
+            document.getElementById('inv-t2').innerText = userData[3];
+            document.getElementById('inv-t3').innerText = userData[4];
 
-                // --- バトルパスの表示更新 ---
-                const rewardList = document.getElementById('reward-list');
-                rewardList.innerHTML = ""; // 一旦中身を空にする
+            const totalExp = parseInt(userData[6]) || 0;
+            const level = parseInt(userData[7]) || 1;
+            const progress = getLevelProgress(totalExp, level);
+            document.getElementById('display-current-exp').innerText = progress.current;
+            document.getElementById('display-next').innerText = progress.next;
+            const percent = Math.min((progress.current / progress.next) * 100, 100);
+            setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-                for(let lv=10; lv<=100; lv+=10) {
-                    // K列(10番目)からがLv10, L列(11番目)がLv20...のフラグ
-                    const flagColIndex = 9 + (lv / 10); 
-                    const isClaimed = userData[flagColIndex] === "1";
-                    
-                    let statusHtml = "";
-                    if (level < lv) {
-                        statusHtml = `<span style="color:#ccc;">🔒 Lv.${lv}で解放</span>`;
-                    } else if (!isClaimed) {
-                        statusHtml = `<button onclick="claimReward(${lv})" style="background:#ff8c00; color:white; border-radius:8px; padding:6px 12px; font-weight:bold; border:none; cursor:pointer;">🎁 受取る</button>`;
+            // --- バトルパスの表示更新 (★ここを強化) ---
+            const rewardList = document.getElementById('reward-list');
+            rewardList.innerHTML = ""; 
+
+            rewardsMaster.forEach((reward) => {
+                const lv = parseInt(reward[0]); // A列: レベル
+                const type = reward[1];        // B列: タイプ (fragment / item)
+                const name = reward[2];        // C列: 報酬名
+                const rUrl = reward[4];        // E列: URL
+                
+                if(!lv) return; 
+
+                // K列(インデックス10)からフラグ。Lv10なら10, Lv20なら11...
+                const flagColIndex = 9 + (lv / 10); 
+                const isClaimed = userData[flagColIndex] === "1";
+                
+                let statusHtml = "";
+                if (level < lv) {
+                    statusHtml = `<span style="color:#ccc;">🔒 Lv.${lv}</span>`;
+                } else if (!isClaimed) {
+                    // まだ受け取っていない場合
+                    statusHtml = `<button onclick="claimReward(${lv})" style="background:#ff8c00; color:white; border-radius:8px; padding:6px 12px; font-weight:bold; border:none; cursor:pointer;">🎁 受取る</button>`;
+                } else {
+                    // 受け取り済みの場合
+                    if (type === "item" && rUrl) {
+                        // 景品(URL)タイプなら「見る」ボタンにする
+                        statusHtml = `<button onclick="window.open('${rUrl}', '_blank')" style="background:#2ecc71; color:white; border-radius:8px; padding:6px 12px; font-weight:bold; border:none; cursor:pointer;">📖 見る</button>`;
                     } else {
                         statusHtml = `<span style="color:#2ecc71; font-weight:bold;">✅ 受取済み</span>`;
                     }
-
-                    rewardList.innerHTML += `
-                        <div class="list-item ${level >= lv ? 'unlocked' : ''}" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:15px; background:white; border-radius:15px; border:2px solid ${level >= lv ? '#ffb347' : '#eee'};">
-                            <div style="font-weight:900;">Lv.${lv} 報酬</div>
-                            <div>${statusHtml}</div>
-                        </div>`;
                 }
+
+                rewardList.innerHTML += `
+                    <div class="list-item ${level >= lv ? 'unlocked' : ''}" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:15px; background:white; border-radius:15px; border:2px solid ${level >= lv ? '#ffb347' : '#eee'};">
+                        <div style="text-align:left;">
+                            <div style="font-size:0.7rem; color:#888;">Level ${lv}</div>
+                            <div style="font-weight:900; color:#333;">${name}</div>
+                        </div>
+                        <div>${statusHtml}</div>
+                    </div>`;
+            });
+
+            globalT1 = parseInt(userData[2]) || 0;
+            globalT2 = parseInt(userData[3]) || 0;
+            globalT3 = parseInt(userData[4]) || 0;
+        }
+    } catch (e) { console.error("Sheet Data Error", e); }
+}
                 // 報酬を受け取る命令をGASに送る関数
     async function claimReward(targetLv) {
         if(!confirm(`Lv.${targetLv} の報酬を受け取りますか？`)) return;

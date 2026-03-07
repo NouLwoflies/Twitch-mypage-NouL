@@ -149,9 +149,9 @@
 
 <div class="inventory-bar">
     <div class="inv-item">💎<span id="inv-bits" class="inv-val">0</span></div>
-    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon"><span id="inv-t1" class="inv-val">0</span></div>
-    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon"><span id="inv-t2" class="inv-val">0</span></div>
-    <div class="inv-item"><img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ace3d8&is=69ab9258&hm=71baa24c8d86345ae1864f45d19bd7ba8de24de6b6402ba9fc1f60821d3e2a3c&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon"><span id="inv-t3" class="inv-val">0</span></div>
+    <div class="inv-item"><img id="img-t1-icon" class="inv-icon"><span id="inv-t1" class="inv-val">0</span></div>
+    <div class="inv-item"><img id="img-t2-icon" class="inv-icon"><span id="inv-t2" class="inv-val">0</span></div>
+    <div class="inv-item"><img id="img-t3-icon" class="inv-icon"><span id="inv-t3" class="inv-val">0</span></div>
 </div>
 
 <div class="viewport">
@@ -160,9 +160,9 @@
         <section class="page-section">
             <div class="card">
                 <h1>
-                    <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69aceafa&is=69ab997a&hm=619be4a6e51910774a1e52d937483400d596c65199fd90c31ac63214faacd93d&" height="24">
+                    <img id="st_icon_t1" height="24">
                     ステータス 
-                    <img src="https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69aceafa&is=69ab997a&hm=85ce41a1eed270ea7720ef3e529dfe442c72ad1498ffe6aa386cc5bf643b2c45&" height="24">
+                    <img id="st_icon_t2" height="24">
                 </h1>
                 <div class="card-body">
                     <div id="login-area">
@@ -220,20 +220,21 @@
                     
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
-                        <button class="draw-button" style="background-image: url('https://cdn.discordapp.com/attachments/866687772056092682/1479511608727306311/582_20260307010950.png?ex=69ac4e0f&is=69aafc8f&hm=365ce08d639f21c36f4186f24958fe60f551fed5a36e48f134afae7370ebb981&'); background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon"> 1</div>
+                        
+                        <button id="btn-t1-bg" class="draw-button" style= "background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
+                            <div style="font-size:0.7rem;">1回引く</div><div><img id="btn-icon-t1" class="inv-icon"> 1</div>
                         </button>
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
-                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479511610153504868/582_20260307010959.png?ex=69ac4e0f&is=69aafc8f&hm=1628d3c86523e3709f8dba2f736adf57795af77f8e5ee787c1abfad8b48c938c&=&format=webp&quality=lossless&width=857&height=482'); background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000; box-shadow: 0 4px 0 #0044aa; height: 70px;" onclick="callTier2()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon">1 </div>
+                        <button id="btn-t2-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000; box-shadow: 0 4px 0 #0044aa; height: 70px;" onclick="callTier2()">
+                            <div style="font-size:0.7rem;">1回引く</div><div><img id="btn-icon-t1" class="inv-icon">3 / <img id="btn-icon-t2" class="inv-icon">1 </div>
                         </button>
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
-                        <button class="draw-button" style="background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479511609427628213/582_20260307010955.png?ex=69ac4e0f&is=69aafc8f&hm=d3b6bae8dea3273a99553cca5508c723f76bd1de8392b8eaa8ff687ad3344f98&=&format=webp&quality=lossless&width=857&height=482'); background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img src="https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon">9 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon">3 / <img src="https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ace3d8&is=69ab9258&hm=71baa24c8d86345ae1864f45d19bd7ba8de24de6b6402ba9fc1f60821d3e2a3c&=&format=webp&quality=lossless&width=691&height=691" class="inv-icon">1</div>
+                        <button id="btn-t3-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
+                            <div style="font-size:0.7rem;">1回引く</div><div><img id="btn-icon-t1" class="inv-icon">9 / <img id="btn-icon-t2" class="inv-icon">3 / <img id="btn-icon-t3" class="inv-icon">1</div>
                         </button>
                     </div>
                 </div>
@@ -310,6 +311,25 @@
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbzOXpaQpcF21CHpVUB7RUPUjzakyFdWOgnd0FfwiykJWBMy6DuSDPp1-svHFZLrqw13/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
+
+    // 画像URLの定義
+const IMAGES = {
+    BG_MAIN: 'https://media.discordapp.net/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69ace017&is=69ab8e97&hm=7fa0b80cf7ea68673b9cf4021fd5f322e917ae2eefb1af5f96b47738ff90e16e&=&format=webp&quality=lossless&width=950&height=599',
+    ST_ICON_1: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69aceafa&is=69ab997a&hm=619be4a6e51910774a1e52d937483400d596c65199fd90c31ac63214faacd93d&', // ビッツ（クリスタル）のアイコン
+    ST_ICON_2: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69aceafa&is=69ab997a&hm=85ce41a1eed270ea7720ef3e529dfe442c72ad1498ffe6aa386cc5bf643b2c45&', 
+    ICON_T1: 'https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691',
+    ICON_T2: 'https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691',
+    ICON_T3: 'https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ace3d8&is=69ab9258&hm=71baa24c8d86345ae1864f45d19bd7ba8de24de6b6402ba9fc1f60821d3e2a3c&=&format=webp&quality=lossless&width=691&height=691',
+    GACHA_T1: 'https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691',
+    GACHA_T2: 'https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691',
+    GACHA_T3: 'https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ace3d8&is=69ab9258&hm=71baa24c8d86345ae1864f45d19bd7ba8de24de6b6402ba9fc1f60821d3e2a3c&=&format=webp&quality=lossless&width=691&height=691',
+    GACHA_T1_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511608727306311/582_20260307010950.png?ex=69ac4e0f&is=69aafc8f&hm=365ce08d639f21c36f4186f24958fe60f551fed5a36e48f134afae7370ebb981&=&format=webp&quality=lossless&width=857&height=482',
+    GACHA_T2_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511610153504868/582_20260307010959.png?ex=69ac4e0f&is=69aafc8f&hm=1628d3c86523e3709f8dba2f736adf57795af77f8e5ee787c1abfad8b48c938c&=&format=webp&quality=lossless&width=857&height=482',
+    GACHA_T3_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511609427628213/582_20260307010955.png?ex=69ac4e0f&is=69aafc8f&hm=d3b6bae8dea3273a99553cca5508c723f76bd1de8392b8eaa8ff687ad3344f98&=&format=webp&quality=lossless&width=857&height=482'
+    
+};
+
+    
     
     let loginID = "";
     let globalT1 = 0, globalT2 = 0, globalT3 = 0;
@@ -325,6 +345,29 @@
     }
 
     window.onload = function() {
+
+    document.getElementById('img-t1-icon').src = IMAGES.ICON_T1;
+    document.getElementById('img-t2-icon').src = IMAGES.ICON_T2;
+    document.getElementById('img-t3-icon').src = IMAGES.ICON_T3;
+
+    // ガチャの背景画像を一括セット
+    document.getElementById('btn-t1-bg').style.backgroundImage = `url('${IMAGES.GACHA_T1_BG}')`;
+    document.getElementById('btn-t2-bg').style.backgroundImage = `url('${IMAGES.GACHA_T2_BG}')`;
+    document.getElementById('btn-t3-bg').style.backgroundImage = `url('${IMAGES.GACHA_T3_BG}')`;
+
+    document.getElementById('btn-icon-t1').src = IMAGES.GACHA_T1;
+    document.getElementById('btn-icon-t1').src = IMAGES.GACHA_T2;
+    document.getElementById('btn-icon-t1').src = IMAGES.GACHA_T3;
+
+    document.getElementById('st_icon_t1').src = IMAGES.ST_ICON_1;
+    document.getElementById('st_icon_t2').src = IMAGES.ST_ICON_2;    
+    // 背景画像もセット
+    document.body.style.backgroundImage = `url('${IMAGES.BG_MAIN}')`;
+    
+    // ...その他の初期化処理
+};
+
+        
         let html = "";
         for(let lv=10; lv<=100; lv+=10){
             html += `<div id="rw-${lv}" class="list-item"><span class="badge">Lv.${lv}</span><div style="font-weight:500; margin-top:5px;">作成中</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>`;

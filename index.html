@@ -334,9 +334,12 @@
                 document.getElementById('inv-t2').innerText = userData[3];
                 document.getElementById('inv-t3').innerText = userData[4];
 
+            // fetchSheetData関数内
                 const totalExp = parseInt(userData[6]) || 0;
-                const level = parseInt(userData[7]) || 1;
-                const progress = getLevelProgress(totalExp, level);
+// 引数からlevelを削除し、関数内で計算させる
+                const progress = getLevelProgress(totalExp); 
+
+                 document.getElementById('display-level').innerText = progress.level; // シートの値ではなく計算値を使う
                 document.getElementById('display-current-exp').innerText = progress.current;
                 document.getElementById('display-next').innerText = progress.next;
                 const percent = Math.min((progress.current / progress.next) * 100, 100);
@@ -394,15 +397,36 @@
         } catch (e) { alert("通信エラーが発生しました"); }
     }
 
-    function getLevelProgress(totalExp, level) {
-        const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
-        let acc = 0;
-        for (let r of cfg) {
-            if (level < r.l) return { current: Math.max(0, totalExp - acc), next: r.c };
-            acc += (r.l - (cfg.indexOf(r) === 0 ? 1 : cfg[cfg.indexOf(r)-1].l)) * r.c;
+    // 修正版：累積EXPから現在のレベルと次のレベルへの進捗を計算する
+function getLevelProgress(totalExp) {
+    const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
+    
+    let currentTotal = totalExp;
+    let calculatedLevel = 1;
+    let nextLevelExpRequired = 100;
+
+    // 累積EXPを削りながらレベルをシミュレートする
+    for (let r of cfg) {
+        let levelsInThisTier = r.l - (calculatedLevel === 1 ? 1 : calculatedLevel);
+        for (let i = 0; i < levelsInThisTier; i++) {
+            if (currentTotal >= r.c) {
+                currentTotal -= r.c;
+                calculatedLevel++;
+                nextLevelExpRequired = r.c;
+            } else {
+                return { level: calculatedLevel, current: currentTotal, next: r.c };
+            }
         }
-        return { current: (totalExp - acc) % 10000, next: 10000 };
+        nextLevelExpRequired = r.c;
     }
+    
+    // Lv100以降のループ
+    while (currentTotal >= 10000) {
+        currentTotal -= 10000;
+        calculatedLevel++;
+    }
+    return { level: calculatedLevel, current: currentTotal, next: 10000 };
+}
 
     async function playGacha(mode, val = 0) {
         if (!loginID) { alert("先にログインしてください！"); return; }

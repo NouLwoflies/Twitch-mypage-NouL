@@ -222,19 +222,19 @@
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
                         
                         <button id="btn-t1-bg" class="draw-button" style= "background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img id="btn-icon-t1" class="inv-icon"> 1</div>
+                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class"> 1</div>
                         </button>
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
                         <button id="btn-t2-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000; box-shadow: 0 4px 0 #0044aa; height: 70px;" onclick="callTier2()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img id="btn-icon-t1" class="inv-icon">3 / <img id="btn-icon-t2" class="inv-icon">1 </div>
+                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class">3 / <img class="inv-icon icon-t2-class">1 </div>
                         </button>
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
                         <button id="btn-t3-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img id="btn-icon-t1" class="inv-icon">9 / <img id="btn-icon-t2" class="inv-icon">3 / <img id="btn-icon-t3" class="inv-icon">1</div>
+                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class">9 / <img class="inv-icon icon-t2-class">3 / <img class="inv-icon icon-t3-class">1</div>
                         </button>
                     </div>
                 </div>
@@ -355,9 +355,9 @@ const IMAGES = {
     document.getElementById('btn-t2-bg').style.backgroundImage = `url('${IMAGES.GACHA_T2_BG}')`;
     document.getElementById('btn-t3-bg').style.backgroundImage = `url('${IMAGES.GACHA_T3_BG}')`;
         
-    document.getElementById('btn-icon-t1').src = IMAGES.GACHA_T1;
-    document.getElementById('btn-icon-t2').src = IMAGES.GACHA_T2;
-    document.getElementById('btn-icon-t3').src = IMAGES.GACHA_T3;
+    document.querySelectorAll('.icon-t1-class').forEach(img => img.src = IMAGES.GACHA_T1);
+    document.querySelectorAll('.icon-t2-class').forEach(img => img.src = IMAGES.GACHA_T2);
+    document.querySelectorAll('.icon-t3-class').forEach(img => img.src = IMAGES.GACHA_T3);
 
     document.getElementById('st_icon_t1').src = IMAGES.ST_ICON_1;
     document.getElementById('st_icon_t2').src = IMAGES.ST_ICON_2;    

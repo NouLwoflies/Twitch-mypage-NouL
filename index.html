@@ -401,9 +401,18 @@
 
     async function playGacha(mode, val = 0) {
         if (!loginID) { alert("先にログインしてください！"); return; }
+        
         if (mode === 'bits') {
-        const cost = val;
-        if (!confirm(`💎 ${cost:2} クリスタルを消費してガチャを引きますか？`)) {
+        // --- 価格(val)に応じた消費コストの設定 ---
+        const costMapping = {
+            100: 200,    // 100円ガチャは 200クリスタル消費
+            500: 1000,   // 500円ガチャは 1000クリスタル消費
+            1000: 2000,  // 1000円ガチャは 2000クリスタル消費
+            5000: 10000  // 5000円ガチャは 10000クリスタル消費
+        };   
+        const cost = costMapping[val] || val;
+            
+        if (!confirm(`💎 ${cost} クリスタルを消費してガチャを引きますか？`)) {
             return; // キャンセルならここで終了
         }
     }

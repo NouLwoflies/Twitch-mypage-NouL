@@ -403,7 +403,7 @@
         if (!loginID) { alert("先にログインしてください！"); return; }
         if (mode === 'bits') {
         const cost = val;
-        if (!confirm(`💎 ${cost} クリスタルを消費してガチャを引きますか？`)) {
+        if (!confirm(`💎 ${cost:2} クリスタルを消費してガチャを引きますか？`)) {
             return; // キャンセルならここで終了
         }
     }

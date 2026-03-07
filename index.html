@@ -173,22 +173,24 @@
                             <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 10000</div>
                         </button>
                     </div>
+                                       
+
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
-                        <button id="btn-t1-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
+                        <button id="btn-t1-bg" class="draw-button" style= "background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
                             <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class"> 1</div>
-                        </button>
+                      </button>
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
                         <button id="btn-t2-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000; box-shadow: 0 4px 0 #0044aa; height: 70px;" onclick="callTier2()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t2-class"> 1</div>
+                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class">3 / <img class="inv-icon icon-t2-class">1 </div>
                         </button>
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
                         <button id="btn-t3-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t3-class"> 1</div>
+                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class">9 / <img class="inv-icon icon-t2-class">3 / <img class="inv-icon icon-t3-class">1</div>
                         </button>
                     </div>
                 </div>
@@ -422,18 +424,32 @@
     function callTier2() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
     function callTier3() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
 
-    async function fetchLogs() {
-        try {
-            const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
-            const txt = await res.text();
-            const logs = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')))
-                            .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase()).reverse();
-            const logBox = document.getElementById('log-content');
-            if (logs.length > 0) {
-                logBox.innerHTML = logs.slice(0, 20).map(l => `<div style="border-bottom:1px solid #eee; padding:5px;">[${l[0]}] ${l[3]}</div>`).join('');
-            }
-        } catch (e) { console.error("Log Error", e); }
+       async function fetchLogs() {
+    try {
+        const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
+        const txt = await res.text();
+        const logs = txt.split('\n')
+            .map(r => r.split(',').map(c => c.replace(/"/g,'')))
+            .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase())
+            .reverse() 
+            .slice(0, 10);
+        let html = "";
+        logs.forEach(l => {
+            html += `
+                <div style="border-bottom: 1px solid #eee; padding: 12px 5px; display: flex; flex-direction: column; gap: 4px;">
+                  <div style="font-size: 0.65rem; color: #999; font-weight: bold;">
+                        📅 ${l[0]}
+                    </div>
+                    <div style="font-size: 0.95rem; color: #2c3e50; font-weight: 800;">
+                        ${l[4]}
+                    </div>
+                </div>`;
+        });    
+        document.getElementById('log-content').innerHTML = html || "履歴はありません";
+    } catch (e) { 
+        console.error("Log fetch error"); 
     }
+}
 </script>
 </body>
 </html>

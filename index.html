@@ -412,7 +412,61 @@
                 const percent = Math.min((progress.current / progress.next) * 100, 100);
                 setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-                for(let lv=10; lv<=100; lv+=10) { if(level >= lv) unlock(lv, "✅ 達成済み！"); }
+                // --- バトルパスの表示更新 ---
+                const rewardList = document.getElementById('reward-list');
+                rewardList.innerHTML = ""; // 一旦中身を空にする
+
+                for(let lv=10; lv<=100; lv+=10) {
+                    // K列(10番目)からがLv10, L列(11番目)がLv20...のフラグ
+                    const flagColIndex = 9 + (lv / 10); 
+                    const isClaimed = userData[flagColIndex] === "1";
+                    
+                    let statusHtml = "";
+                    if (level < lv) {
+                        statusHtml = `<span style="color:#ccc;">🔒 Lv.${lv}で解放</span>`;
+                    } else if (!isClaimed) {
+                        statusHtml = `<button onclick="claimReward(${lv})" style="background:#ff8c00; color:white; border-radius:8px; padding:6px 12px; font-weight:bold; border:none; cursor:pointer;">🎁 受取る</button>`;
+                    } else {
+                        statusHtml = `<span style="color:#2ecc71; font-weight:bold;">✅ 受取済み</span>`;
+                    }
+
+                    rewardList.innerHTML += `
+                        <div class="list-item ${level >= lv ? 'unlocked' : ''}" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:15px; background:white; border-radius:15px; border:2px solid ${level >= lv ? '#ffb347' : '#eee'};">
+                            <div style="font-weight:900;">Lv.${lv} 報酬</div>
+                            <div>${statusHtml}</div>
+                        </div>`;
+                }
+                // 報酬を受け取る命令をGASに送る関数
+    async function claimReward(targetLv) {
+        if(!confirm(`Lv.${targetLv} の報酬を受け取りますか？`)) return;
+
+        const url = `${GAS_URL}?user=${loginID}&type=claimReward&targetLv=${targetLv}`;
+        
+        try {
+            const res = await fetch(url);
+            const text = await res.text();
+
+            if (text.startsWith("SUCCESS")) {
+                const parts = text.split(":");
+                const type = parts[1]; // fragment か item
+                const rUrl = parts[2]; // URLがある場合
+
+                alert("報酬を受け取りました！");
+
+                // もし景品(URL)があるタイプなら、そのURLを開く
+                if (type === "item" && rUrl) {
+                    window.open(rUrl, '_blank');
+                }
+                
+                // 画面を更新して最新の状態（受取済み）にする
+                fetchSheetData(loginID);
+            } else {
+                alert("エラー: " + text);
+            }
+        } catch (e) {
+            alert("通信エラーが発生しました");
+        }
+    }
 
                 globalT1 = parseInt(userData[2]) || 0;
                 globalT2 = parseInt(userData[3]) || 0;

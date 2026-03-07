@@ -312,25 +312,18 @@
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbzOXpaQpcF21CHpVUB7RUPUjzakyFdWOgnd0FfwiykJWBMy6DuSDPp1-svHFZLrqw13/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
-    // 画像URLの定義
-const IMAGES = {
-    BG_MAIN: 'https://media.discordapp.net/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69ace017&is=69ab8e97&hm=7fa0b80cf7ea68673b9cf4021fd5f322e917ae2eefb1af5f96b47738ff90e16e&=&format=webp&quality=lossless&width=950&height=599',
-    ST_ICON_1: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69aceafa&is=69ab997a&hm=619be4a6e51910774a1e52d937483400d596c65199fd90c31ac63214faacd93d&', // ビッツ（クリスタル）のアイコン
-    ST_ICON_2: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69aceafa&is=69ab997a&hm=85ce41a1eed270ea7720ef3e529dfe442c72ad1498ffe6aa386cc5bf643b2c45&', 
-    ICON_T1: 'https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691',
-    ICON_T2: 'https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691',
-    ICON_T3: 'https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ace3d8&is=69ab9258&hm=71baa24c8d86345ae1864f45d19bd7ba8de24de6b6402ba9fc1f60821d3e2a3c&=&format=webp&quality=lossless&width=691&height=691',
-    GACHA_T1: 'https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691',
-    GACHA_T2: 'https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691',
-    GACHA_T3: 'https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ace3d8&is=69ab9258&hm=71baa24c8d86345ae1864f45d19bd7ba8de24de6b6402ba9fc1f60821d3e2a3c&=&format=webp&quality=lossless&width=691&height=691',
-    GACHA_T1_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511608727306311/582_20260307010950.png?ex=69ac4e0f&is=69aafc8f&hm=365ce08d639f21c36f4186f24958fe60f551fed5a36e48f134afae7370ebb981&=&format=webp&quality=lossless&width=857&height=482',
-    GACHA_T2_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511610153504868/582_20260307010959.png?ex=69ac4e0f&is=69aafc8f&hm=1628d3c86523e3709f8dba2f736adf57795af77f8e5ee787c1abfad8b48c938c&=&format=webp&quality=lossless&width=857&height=482',
-    GACHA_T3_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511609427628213/582_20260307010955.png?ex=69ac4e0f&is=69aafc8f&hm=d3b6bae8dea3273a99553cca5508c723f76bd1de8392b8eaa8ff687ad3344f98&=&format=webp&quality=lossless&width=857&height=482'
-    
-};
+    const IMAGES = {
+        BG_MAIN: 'https://media.discordapp.net/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69ace017&is=69ab8e97&hm=7fa0b80cf7ea68673b9cf4021fd5f322e917ae2eefb1af5f96b47738ff90e16e&=&format=webp&quality=lossless&width=950&height=599',
+        ST_ICON_1: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69aceafa&is=69ab997a&hm=619be4a6e51910774a1e52d937483400d596c65199fd90c31ac63214faacd93d&',
+        ST_ICON_2: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69aceafa&is=69ab997a&hm=85ce41a1eed270ea7720ef3e529dfe442c72ad1498ffe6aa386cc5bf643b2c45&', 
+        ICON_T1: 'https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691',
+        ICON_T2: 'https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691',
+        ICON_T3: 'https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ace3d8&is=69ab9258&hm=71baa24c8d86345ae1864f45d19bd7ba8de24de6b6402ba9fc1f60821d3e2a3c&=&format=webp&quality=lossless&width=691&height=691',
+        GACHA_T1_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511608727306311/582_20260307010950.png?ex=69ac4e0f&is=69aafc8f&hm=365ce08d639f21c36f4186f24958fe60f551fed5a36e48f134afae7370ebb981&=&format=webp&quality=lossless&width=857&height=482',
+        GACHA_T2_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511610153504868/582_20260307010959.png?ex=69ac4e0f&is=69aafc8f&hm=1628d3c86523e3709f8dba2f736adf57795af77f8e5ee787c1abfad8b48c938c&=&format=webp&quality=lossless&width=857&height=482',
+        GACHA_T3_BG: 'https://media.discordapp.net/attachments/866687772056092682/1479511609427628213/582_20260307010955.png?ex=69ac4e0f&is=69aafc8f&hm=d3b6bae8dea3273a99553cca5508c723f76bd1de8392b8eaa8ff687ad3344f98&=&format=webp&quality=lossless&width=857&height=482'
+    };
 
-    
-    
     let loginID = "";
     let globalT1 = 0, globalT2 = 0, globalT3 = 0;
 
@@ -345,36 +338,33 @@ const IMAGES = {
     }
 
     window.onload = function() {
+        // --- 1. 画像アセットの適用 ---
+        document.getElementById('img-t1-icon').src = IMAGES.ICON_T1;
+        document.getElementById('img-t2-icon').src = IMAGES.ICON_T2;
+        document.getElementById('img-t3-icon').src = IMAGES.ICON_T3;
 
-    document.getElementById('img-t1-icon').src = IMAGES.ICON_T1;
-    document.getElementById('img-t2-icon').src = IMAGES.ICON_T2;
-    document.getElementById('img-t3-icon').src = IMAGES.ICON_T3;
-
-    // ガチャの背景画像を一括セット
-    document.getElementById('btn-t1-bg').style.backgroundImage = `url('${IMAGES.GACHA_T1_BG}')`;
-    document.getElementById('btn-t2-bg').style.backgroundImage = `url('${IMAGES.GACHA_T2_BG}')`;
-    document.getElementById('btn-t3-bg').style.backgroundImage = `url('${IMAGES.GACHA_T3_BG}')`;
+        document.getElementById('btn-t1-bg').style.backgroundImage = `url('${IMAGES.GACHA_T1_BG}')`;
+        document.getElementById('btn-t2-bg').style.backgroundImage = `url('${IMAGES.GACHA_T2_BG}')`;
+        document.getElementById('btn-t3-bg').style.backgroundImage = `url('${IMAGES.GACHA_T3_BG}')`;
         
-    document.querySelectorAll('.icon-t1-class').forEach(img => img.src = IMAGES.GACHA_T1);
-    document.querySelectorAll('.icon-t2-class').forEach(img => img.src = IMAGES.GACHA_T2);
-    document.querySelectorAll('.icon-t3-class').forEach(img => img.src = IMAGES.GACHA_T3);
+        document.querySelectorAll('.icon-t1-class').forEach(img => img.src = IMAGES.ICON_T1);
+        document.querySelectorAll('.icon-t2-class').forEach(img => img.src = IMAGES.ICON_T2);
+        document.querySelectorAll('.icon-t3-class').forEach(img => img.src = IMAGES.ICON_T3);
 
-    document.getElementById('st_icon_t1').src = IMAGES.ST_ICON_1;
-    document.getElementById('st_icon_t2').src = IMAGES.ST_ICON_2;    
-    // 背景画像もセット
-    document.body.style.backgroundImage = `url('${IMAGES.BG_MAIN}')`;
-    
-    // ...その他の初期化処理
-};
+        document.getElementById('st_icon_t1').src = IMAGES.ST_ICON_1;
+        document.getElementById('st_icon_t2').src = IMAGES.ST_ICON_2;    
+        document.body.style.backgroundImage = `url('${IMAGES.BG_MAIN}')`;
 
-        
-        let html = "";
+        // --- 2. バトルパスリストの生成 ---
+        let passHtml = "";
         for(let lv=10; lv<=100; lv+=10){
-            html += `<div id="rw-${lv}" class="list-item"><span class="badge">Lv.${lv}</span><div style="font-weight:500; margin-top:5px;">作成中</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>`;
+            passHtml += `<div id="rw-${lv}" class="list-item"><span class="badge">Lv.${lv}</span><div style="font-weight:500; margin-top:5px;">作成中</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>`;
         }
-        document.getElementById('reward-list').innerHTML = html;
+        document.getElementById('reward-list').innerHTML = passHtml;
 
-        const token = new URLSearchParams(window.location.hash.substring(1)).get('access_token');
+        // --- 3. ログイン認証トークンのチェック ---
+        const params = new URLSearchParams(window.location.hash.substring(1));
+        const token = params.get('access_token');
         if (token) {
             document.getElementById('login-area').style.display = 'none';
             document.getElementById('status-area').style.display = 'block';
@@ -384,87 +374,89 @@ const IMAGES = {
 
     async function getUserInfo(token) {
         try {
-            const res = await fetch('https://api.twitch.tv/helix/users', { headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` } });
+            const res = await fetch('https://api.twitch.tv/helix/users', { 
+                headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` } 
+            });
             const data = await res.json();
-            loginID = data.data[0].login;
-            fetchSheetData(loginID);
-            fetchLogs();
-        } catch (e) { console.error("Login Error"); }
+            if (data.data && data.data[0]) {
+                loginID = data.data[0].login;
+                fetchSheetData(loginID);
+                fetchLogs();
+            }
+        } catch (e) { console.error("Login Error", e); }
     }
 
     async function fetchSheetData(targetUser) {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
-        const res = await fetch(url);
-        const csvText = await res.text();
-        const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
-        const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
+        try {
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
+            const res = await fetch(url);
+            const csvText = await res.text();
+            const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+            const userData = rows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
 
-        if (userData) {
-            document.getElementById('display-name').innerText = userData[0];
-            document.getElementById('display-id').innerText = "@" + userData[1];
-            document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
-            document.getElementById('display-level').innerText = userData[7];
-            document.getElementById('inv-bits').innerText = userData[5];
-            document.getElementById('inv-t1').innerText = userData[2];
-            document.getElementById('inv-t2').innerText = userData[3];
-            document.getElementById('inv-t3').innerText = userData[4];
+            if (userData) {
+                document.getElementById('display-name').innerText = userData[0];
+                document.getElementById('display-id').innerText = "@" + userData[1];
+                document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
+                document.getElementById('display-level').innerText = userData[7];
+                document.getElementById('inv-bits').innerText = userData[5];
+                document.getElementById('inv-t1').innerText = userData[2];
+                document.getElementById('inv-t2').innerText = userData[3];
+                document.getElementById('inv-t3').innerText = userData[4];
 
-            const totalExp = parseInt(userData[6]) || 0;
-            const level = parseInt(userData[7]) || 1;
-            const progress = getLevelProgress(totalExp, level);
-            document.getElementById('display-current-exp').innerText = progress.current;
-            document.getElementById('display-next').innerText = progress.next;
-            const percent = Math.min((progress.current / progress.next) * 100, 100);
-            setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
+                const totalExp = parseInt(userData[6]) || 0;
+                const level = parseInt(userData[7]) || 1;
+                const progress = getLevelProgress(totalExp, level);
+                document.getElementById('display-current-exp').innerText = progress.current;
+                document.getElementById('display-next').innerText = progress.next;
+                const percent = Math.min((progress.current / progress.next) * 100, 100);
+                setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-            for(let lv=10; lv<=100; lv+=10) { if(level >= lv) unlock(lv, "✅ 達成済み！"); }
+                for(let lv=10; lv<=100; lv+=10) { if(level >= lv) unlock(lv, "✅ 達成済み！"); }
 
-            globalT1 = parseInt(userData[2]) || 0;
-            globalT2 = parseInt(userData[3]) || 0;
-            globalT3 = parseInt(userData[4]) || 0;
-        }
+                globalT1 = parseInt(userData[2]) || 0;
+                globalT2 = parseInt(userData[3]) || 0;
+                globalT3 = parseInt(userData[4]) || 0;
+            }
+        } catch (e) { console.error("Sheet Data Error", e); }
     }
 
     function unlock(lv, msg) {
         const el = document.getElementById('rw-'+lv);
-        if(el) { el.classList.add('unlocked'); el.querySelector('.rw-msg').innerText = msg; el.querySelector('.rw-msg').style.color = "var(--accent-orange)"; }
+        if(el) { 
+            el.classList.add('unlocked'); 
+            el.querySelector('.rw-msg').innerText = msg; 
+            el.querySelector('.rw-msg').style.color = "var(--accent-orange)"; 
+        }
     }
 
     function getLevelProgress(totalExp, level) {
         const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
-        let acc = 0, curL = 1;
+        let acc = 0;
         for (let r of cfg) {
-            while (curL < r.l) {
-                if (curL < level) { acc += r.c; curL++; }
-                else { return { current: Math.max(0, totalExp - acc), next: r.c }; }
-            }
+            if (level < r.l) return { current: Math.max(0, totalExp - acc), next: r.c };
+            acc += (r.l - (cfg.indexOf(r) === 0 ? 1 : cfg[cfg.indexOf(r)-1].l)) * r.c;
         }
-        return { current: (totalExp - 330900) % 10000, next: 10000 };
+        return { current: (totalExp - acc) % 10000, next: 10000 };
     }
 
     async function playGacha(mode, val = 0) {
         if (!loginID) { alert("先にログインしてください！"); return; }
         
         if (mode === 'bits') {
-        // --- 価格(val)に応じた消費コストの設定 ---
-        const costMapping = {
-            100: 200,    // 100円ガチャは 200クリスタル消費
-            500: 1000,   // 500円ガチャは 1000クリスタル消費
-            1000: 2000,  // 1000円ガチャは 2000クリスタル消費
-            5000: 10000  // 5000円ガチャは 10000クリスタル消費
-        };   
-        const cost = costMapping[val] || val;
-            
-        if (!confirm(`💎 ${cost} クリスタルを消費してガチャを引きますか？`)) {
-            return; // キャンセルならここで終了
+            const costMapping = { 100: 200, 500: 1000, 1000: 2000, 5000: 10000 };   
+            const cost = costMapping[val] || val;
+            if (!confirm(`💎 ${cost} クリスタルを消費してガチャを引きますか？`)) return;
         }
-    }
-        let query = `?user=${encodeURIComponent(loginID)}&type=${mode === 'login' ? 'login' : 'gacha'}&gachaType=${val}`;
+
+        let query = `?user=${encodeURIComponent(loginID)}&type=${mode === 'login' ? 'login' : mode}&gachaType=${val}`;
         try {
             const res = await fetch(GAS_URL + query);
             const msg = await res.text();
             alert(msg);
-            if (!msg.includes("今日はもう") && !msg.includes("足りない") && !msg.includes("ERROR")) { location.reload(); }
+            if (!msg.includes("今日はもう") && !msg.includes("足りない") && !msg.includes("ERROR")) { 
+                location.reload(); 
+            }
         } catch (e) { alert("通信エラーが発生しました。"); }
     }
     
@@ -472,38 +464,27 @@ const IMAGES = {
     function callTier2() { if (globalT2 >= 1 || globalT1 >= 3) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
     function callTier3() { if (globalT3 >= 1 || globalT2 >= 3 || globalT1 >= 9) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
 
-   async function fetchLogs() {
-    try {
-        const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
-        const txt = await res.text();
-        
-        const logs = txt.split('\n')
-            .map(r => r.split(',').map(c => c.replace(/"/g,'')))
-            .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase())
-            .reverse() 
-            .slice(0, 10);
+    async function fetchLogs() {
+        try {
+            const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
+            const txt = await res.text();
+            const logs = txt.split('\n')
+                .map(r => r.split(',').map(c => c.replace(/"/g,'')))
+                .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase())
+                .reverse() 
+                .slice(0, 10);
 
-        let html = "";
-        logs.forEach(l => {
-            // l[0]: A列（日付）
-            // l[4]: E列（結果・当たったもの）
-
-            html += `
-                <div style="border-bottom: 1px solid #eee; padding: 12px 5px; display: flex; flex-direction: column; gap: 4px;">
-                    <div style="font-size: 0.65rem; color: #999; font-weight: bold;">
-                        📅 ${l[0]}
-                    </div>
-                    <div style="font-size: 0.95rem; color: #2c3e50; font-weight: 800;">
-                        ${l[4]}
-                    </div>
-                </div>`;
-        });
-        
-        document.getElementById('log-content').innerHTML = html || "履歴はありません";
-    } catch (e) { 
-        console.error("Log fetch error"); 
+            let logHtml = "";
+            logs.forEach(l => {
+                logHtml += `
+                    <div style="border-bottom: 1px solid #eee; padding: 12px 5px; display: flex; flex-direction: column; gap: 4px;">
+                        <div style="font-size: 0.65rem; color: #999; font-weight: bold;">📅 ${l[0]}</div>
+                        <div style="font-size: 0.95rem; color: #2c3e50; font-weight: 800;">${l[4]}</div>
+                    </div>`;
+            });
+            document.getElementById('log-content').innerHTML = logHtml || "履歴はありません";
+        } catch (e) { console.error("Log fetch error", e); }
     }
-}
 </script>
 </body>
 </html>

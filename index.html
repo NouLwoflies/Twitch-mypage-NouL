@@ -8,7 +8,6 @@
     <style>
         html, body {
             height: 100%;
-            height: -webkit-fill-available;
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -23,17 +22,14 @@
         }
         body {
             margin: 0; padding: 0; font-family: 'Mochiy Pop One', sans-serif;
-            background-image: url('https://media.discordapp.net/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69ace017&is=69ab8e97&hm=7fa0b80cf7ea68673b9cf4021fd5f322e917ae2eefb1af5f96b47738ff90e16e&=&format=webp&quality=lossless&width=950&height=599');
             background-size: cover; background-position: center; background-attachment: fixed;
             overflow: hidden; touch-action: pan-y;
         }
-      /* 背景の白いモヤ（画面全体） */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(255, 255, 255, 0.4); z-index: -1;
-            pointer-events: none; /* クリックを邪魔しない */
+            pointer-events: none;
         }
-        /* インベントリバー */
         .inventory-bar {
             position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
             width: 92%; max-width: 380px; height: 40px;
@@ -48,7 +44,6 @@
         .inv-icon { width: 24px !important; height: 24px !important; object-fit: contain !important; display: inline-block !important; }
         .inv-val { font-size: 0.8rem; font-weight: 900; color: #2c3e50; }
 
-        /* コンテナ */
         .viewport {
             width: 100vw; height: 100vh; overflow: hidden; position: relative;
             padding-top: 70px; padding-bottom: 100px; box-sizing: border-box;
@@ -74,14 +69,12 @@
         .card-body::-webkit-scrollbar { width: 6px; }
         .card-body::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 10px; }
 
-        /* ランク・ステータス表示 */
         .status-item { font-size: 0.95rem; margin: 15px 0; font-weight: 700; display: flex; flex-direction: column; align-items: flex-start; border-bottom: 1px solid #f5f5f5; padding-bottom: 8px; }
         .status-item span:first-child { font-size: 0.7rem; color: #888; font-weight: 900; margin-bottom: 2px; }
         #display-rank {
             display: inline-block; font-family: 'Mochiy Pop One', sans-serif; font-weight:500; font-size: 1.35rem;
-            background: #ffd700;
-            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(1px 1px 0px #6a5d21) drop-shadow(-1px -1px 0px #6a5d21) drop-shadow(1px -1px 0px #6a5d21) drop-shadow(-1px 1px 0px #6a5d21);
+            background: #ffd700; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(1px 1px 0px #6a5d21) drop-shadow(-1px -1px 0px #6a5d21);
             transform: skewX(-5deg); margin-left: 5px; padding: 2px 5px;
         }
         .exp-container { text-align: left; margin: 20px 0; }
@@ -90,7 +83,6 @@
         .exp-outline { background: #fdf2e2; height: 14px; border-radius: 7px; overflow: hidden; }
         .exp-fill { background: linear-gradient(to right, #ffb347, #ff4500); height: 100%; width: 0%; transition: 1.5s ease; }
 
-        /* ボタン・ガチャ */
         button { transition: all 0.1s; cursor: pointer; border: none; font-family: inherit; }
         button:active { transform: scale(0.94); }
         .login-btn { background: #9146ff; color: white; border-radius: 12px; padding: 14px; width: 100%; font-weight: 800; font-size: 1rem; margin-bottom: 15px; }
@@ -99,39 +91,11 @@
         .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
         .gacha-box { background: #fff; border: 2px solid #f0f0f0; border-radius: 20px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .gacha-title { font-size: 1rem; font-weight: 900; color: #2c3e50; margin-bottom: 10px; }
-     .draw-button {
-    width: 100%;
-    border-radius: 15px;
-    padding: 12px;
-    color: white !important;
-    font-weight: 900;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    transition: transform 0.1s, box-shadow 0.1s; /* 反応を速く */
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-}
-        .btn-premium { background: linear-gradient(135deg, #fffcf0 0%, #fff5d1 100%) !important; border: 2px solid gold !important; color: #d4af37 !important; position: relative; overflow: hidden; }
-        .btn-premium::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.6), transparent); transform: rotate(45deg); animation: shine 2s infinite; }
-        @keyframes shine { 0% { transform: translateX(-150%) rotate(45deg); } 100% { transform: translateX(150%) rotate(45deg); } }
-        /* 共通：プレミアムボタンの光沢アニメーション */
-       
-/* --- 各ボタンの個別色設定 --- */
-.btn-bronze {
-    background: linear-gradient(135deg, #d2691e, #8b4513) !important;
-    box-shadow: 0 4px 0 #5d2e0d;
-}
+        .draw-button { width: 100%; border-radius: 15px; padding: 12px; color: white !important; font-weight: 900; border: none; position: relative; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+        .btn-bronze { background: linear-gradient(135deg, #d2691e, #8b4513) !important; box-shadow: 0 4px 0 #5d2e0d; }
+        .btn-silver { background: linear-gradient(135deg, #bdc3c7, #7f8c8d) !important; box-shadow: 0 4px 0 #4f5b5c; }
+        .btn-gold { background: linear-gradient(135deg, #ffd700, #daa520) !important; box-shadow: 0 4px 0 #916f1b; }
 
-.btn-silver {
-    background: linear-gradient(135deg, #bdc3c7, #7f8c8d) !important;
-    box-shadow: 0 4px 0 #4f5b5c;
-}
-
-.btn-gold {
-    background: linear-gradient(135deg, #ffd700, #daa520) !important;
-    box-shadow: 0 4px 0 #916f1b;
-}
-        /* ナビゲーション */
         .bottom-nav {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
             width: 85%; max-width: 320px; height: 65px;
@@ -156,14 +120,9 @@
 
 <div class="viewport">
     <div class="main-wrapper" id="master-container">
-        
         <section class="page-section">
             <div class="card">
-                <h1>
-                    <img id="st_icon_t1" height="24">
-                    ステータス 
-                    <img id="st_icon_t2" height="24">
-                </h1>
+                <h1><img id="st_icon_t1" height="24"> ステータス <img id="st_icon_t2" height="24"></h1>
                 <div class="card-body">
                     <div id="login-area">
                         <p style="font-weight: 700; text-align: center;">Twitchでログインして<br>ステータスを確認しよう</p>
@@ -190,111 +149,81 @@
             <div class="card">
                 <h1>🎰 ガチャ 🎰</h1>
                 <div class="card-body">
-                   <div class="gacha-box">
-        <div class="gacha-title">100円ガチャ</div>
-        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('bits', 100)">
-            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 200</div>
-        </button>
-    </div>
-
-    <div class="gacha-box" style="border-color: #cd7f32; background: #fffaf5;">
-        <div class="gacha-title" style="color: #a0522d;">500円ガチャ</div>
-        <button class="draw-button btn-bronze" onclick="playGacha('bits', 500)">
-            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 1000</div>
-        </button>
-    </div>
-
-    <div class="gacha-box" style="border-color: #c0c0c0; background: #f8f8f8;">
-        <div class="gacha-title" style="color: #707070;">1000円ガチャ</div>
-        <button class="draw-button btn-silver" onclick="playGacha('bits', 1000)">
-            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 2000</div>
-        </button>
-    </div>
-
-    <div class="gacha-box" style="border-color: #ffd700; background: #fffdf0;">
-        <div class="gacha-title" style="color: #b8860b;">5000円ガチャ</div>
-        <button class="draw-button btn-gold" onclick="playGacha('bits', 5000)">
-            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 10000</div>
-        </button>
-    </div>
-                    
+                    <div class="gacha-box">
+                        <div class="gacha-title">100円ガチャ</div>
+                        <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('bits', 100)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 200</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box" style="border-color: #cd7f32; background: #fffaf5;">
+                        <div class="gacha-title" style="color: #a0522d;">500円ガチャ</div>
+                        <button class="draw-button btn-bronze" onclick="playGacha('bits', 500)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 1000</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box" style="border-color: #c0c0c0; background: #f8f8f8;">
+                        <div class="gacha-title" style="color: #707070;">1000円ガチャ</div>
+                        <button class="draw-button btn-silver" onclick="playGacha('bits', 1000)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 2000</div>
+                        </button>
+                    </div>
+                    <div class="gacha-box" style="border-color: #ffd700; background: #fffdf0;">
+                        <div class="gacha-title" style="color: #b8860b;">5000円ガチャ</div>
+                        <button class="draw-button btn-gold" onclick="playGacha('bits', 5000)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 10000</div>
+                        </button>
+                    </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
-                        
-                        <button id="btn-t1-bg" class="draw-button" style= "background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
+                        <button id="btn-t1-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
                             <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class"> 1</div>
                         </button>
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 2</div>
                         <button id="btn-t2-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000; box-shadow: 0 4px 0 #0044aa; height: 70px;" onclick="callTier2()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class">3 / <img class="inv-icon icon-t2-class">1 </div>
+                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t2-class"> 1</div>
                         </button>
                     </div>
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 3</div>
                         <button id="btn-t3-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
-                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class">9 / <img class="inv-icon icon-t2-class">3 / <img class="inv-icon icon-t3-class">1</div>
+                            <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t3-class"> 1</div>
                         </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="page-section"><div class="card"><h1 style="color:var(--twitch-purple)">🏆 バトルパス 🏆</h1><div class="card-body" id="reward-list"></div></div></section>
         <section class="page-section">
             <div class="card">
-                <h1 style="color:#2ecc71">
-                    📖 ガイド 📖
-                </h1>
+                <h1 style="color:var(--twitch-purple)">🏆 バトルパス 🏆</h1>
+                <div class="card-body" id="reward-list"></div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="card">
+                <h1 style="color:#2ecc71">📖 ガイド 📖</h1>
                 <div class="card-body">
                     <div class="list-item">
-                        <div style="font-weight:800; color:var(--accent-orange);">
-                          　🔰 経験値の貯め方
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            コメントやサブスク、ビッツを贈ろう。
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            1コメント＝１EXP
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            1ビッツ＝5EXP
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            Tier1サブスク＝1500EXP
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            Tier2サブスク＝3000EXP
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            Tier3サブスク＝10000EXP
-                        </div>
-                        
+                        <div style="font-weight:800; color:var(--accent-orange);">🔰 経験値の貯め方</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">1コメント＝1EXP / 1ビッツ＝5EXP / Sub Tier1＝1500EXP</div>
                     </div>
                     <div class="list-item">
-                        <div style="font-weight:800; color:var(--accent-orange);">
-                            🔰 クリスタル入手方法
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            ビッツを贈ろう。イベント時配布あるかも？
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            1ビッツ＝1クリスタル
-                        </div>
-                    </div>
-                    <div class="list-item">
-                        <div style="font-weight:800; color:var(--accent-orange);">
-                            🔰 バトルパスで豪華な景品をゲットしよう
-                        </div>
-                        <div style="font-size:0.75rem; margin-top:5px;">
-                            バトルパスをクリック
-                        </div>
+                        <div style="font-weight:800; color:var(--accent-orange);">🔰 クリスタル入手方法</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">ビッツを贈ろう。1ビッツ＝1クリスタル</div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="page-section"><div class="card"><h1 style="color:#7f8c8d">📜 履歴 📜</h1><div class="card-body" id="log-content" style="text-align:left; font-size:0.75rem;">履歴はありません</div></div></section>
+
+        <section class="page-section">
+            <div class="card">
+                <h1 style="color:#7f8c8d">📜 履歴 📜</h1>
+                <div class="card-body" id="log-content">履歴はありません</div>
+            </div>
+        </section>
     </div>
 </div>
 
@@ -315,7 +244,7 @@
     const IMAGES = {
         BG_MAIN: 'https://media.discordapp.net/attachments/866687772056092682/1479124828115046450/525_20241011150841.png?ex=69ace017&is=69ab8e97&hm=7fa0b80cf7ea68673b9cf4021fd5f322e917ae2eefb1af5f96b47738ff90e16e&=&format=webp&quality=lossless&width=950&height=599',
         ST_ICON_1: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516167958659/mypage1.png?ex=69aceafa&is=69ab997a&hm=619be4a6e51910774a1e52d937483400d596c65199fd90c31ac63214faacd93d&',
-        ST_ICON_2: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69aceafa&is=69ab997a&hm=85ce41a1eed270ea7720ef3e529dfe442c72ad1498ffe6aa386cc5bf643b2c45&', 
+        ST_ICON_2: 'https://cdn.discordapp.com/attachments/866687772056092682/1479136516478468167/mypage2.png?ex=69aceafa&is=69ab997a&hm=85ce41a1eed270ea7720ef3e529dfe442c72ad1498ffe6aa386cc5bf643b2c45&',
         ICON_T1: 'https://media.discordapp.net/attachments/866687772056092682/1479128856102178936/tier1_.png?ex=69ace3d8&is=69ab9258&hm=1870ec127cc17bc468927bd4b5f95028c9936ab2b188d8ccdaffa461df577f27&=&format=webp&quality=lossless&width=691&height=691',
         ICON_T2: 'https://media.discordapp.net/attachments/866687772056092682/1479128856609820672/tier_2_.png?ex=69ace3d8&is=69ab9258&hm=42f84d7241ef1b11cd69a65db1d95c70d6f20a791774ed8e2fabd68f032c1ce6&=&format=webp&quality=lossless&width=691&height=691',
         ICON_T3: 'https://media.discordapp.net/attachments/866687772056092682/1479128857109074093/tier_3_.png?ex=69ace3d8&is=69ab9258&hm=71baa24c8d86345ae1864f45d19bd7ba8de24de6b6402ba9fc1f60821d3e2a3c&=&format=webp&quality=lossless&width=691&height=691',
@@ -334,35 +263,23 @@
 
     function login() {
         const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
-        window.location.assign(authUrl); 
+        window.location.assign(authUrl);
     }
 
     window.onload = function() {
-        // --- 1. 画像アセットの適用 ---
         document.getElementById('img-t1-icon').src = IMAGES.ICON_T1;
         document.getElementById('img-t2-icon').src = IMAGES.ICON_T2;
         document.getElementById('img-t3-icon').src = IMAGES.ICON_T3;
-
         document.getElementById('btn-t1-bg').style.backgroundImage = `url('${IMAGES.GACHA_T1_BG}')`;
         document.getElementById('btn-t2-bg').style.backgroundImage = `url('${IMAGES.GACHA_T2_BG}')`;
         document.getElementById('btn-t3-bg').style.backgroundImage = `url('${IMAGES.GACHA_T3_BG}')`;
-        
         document.querySelectorAll('.icon-t1-class').forEach(img => img.src = IMAGES.ICON_T1);
         document.querySelectorAll('.icon-t2-class').forEach(img => img.src = IMAGES.ICON_T2);
         document.querySelectorAll('.icon-t3-class').forEach(img => img.src = IMAGES.ICON_T3);
-
         document.getElementById('st_icon_t1').src = IMAGES.ST_ICON_1;
-        document.getElementById('st_icon_t2').src = IMAGES.ST_ICON_2;    
+        document.getElementById('st_icon_t2').src = IMAGES.ST_ICON_2;
         document.body.style.backgroundImage = `url('${IMAGES.BG_MAIN}')`;
 
-        // --- 2. バトルパスリストの生成 ---
-        let passHtml = "";
-        for(let lv=10; lv<=100; lv+=10){
-            passHtml += `<div id="rw-${lv}" class="list-item"><span class="badge">Lv.${lv}</span><div style="font-weight:500; margin-top:5px;">作成中</div><div class="rw-msg" style="font-size:0.7rem; color:#ccc;">🔒 LOCKED</div></div>`;
-        }
-        document.getElementById('reward-list').innerHTML = passHtml;
-
-        // --- 3. ログイン認証トークンのチェック ---
         const params = new URLSearchParams(window.location.hash.substring(1));
         const token = params.get('access_token');
         if (token) {
@@ -374,8 +291,8 @@
 
     async function getUserInfo(token) {
         try {
-            const res = await fetch('https://api.twitch.tv/helix/users', { 
-                headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` } 
+            const res = await fetch('https://api.twitch.tv/helix/users', {
+                headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
             if (data.data && data.data[0]) {
@@ -386,120 +303,67 @@
         } catch (e) { console.error("Login Error", e); }
     }
 
-   async function fetchSheetData(targetUser) {
-    try {
-        // 1. ユーザーデータの取得
-        const userUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
-        const userRes = await fetch(userUrl);
-        const userCsv = await userRes.text();
-        const userRows = userCsv.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
-        const userData = userRows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
-
-        // 2. 報酬マスターデータの取得 (★ここを追加)
-        const masterUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=MasterRewards`;
-        const masterRes = await fetch(masterUrl);
-        const masterCsv = await masterRes.text();
-        const masterRows = masterCsv.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
-        const rewardsMaster = masterRows.slice(1); // ヘッダーを除外
-
-        if (userData) {
-            // ステータス表示の更新
-            document.getElementById('display-name').innerText = userData[0];
-            document.getElementById('display-id').innerText = "@" + userData[1];
-            document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
-            document.getElementById('display-level').innerText = userData[7];
-            document.getElementById('inv-bits').innerText = userData[5];
-            document.getElementById('inv-t1').innerText = userData[2];
-            document.getElementById('inv-t2').innerText = userData[3];
-            document.getElementById('inv-t3').innerText = userData[4];
-
-            const totalExp = parseInt(userData[6]) || 0;
-            const level = parseInt(userData[7]) || 1;
-            const progress = getLevelProgress(totalExp, level);
-            document.getElementById('display-current-exp').innerText = progress.current;
-            document.getElementById('display-next').innerText = progress.next;
-            const percent = Math.min((progress.current / progress.next) * 100, 100);
-            setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
-
-            // --- バトルパスの表示更新 (★ここを強化) ---
-            const rewardList = document.getElementById('reward-list');
-            rewardList.innerHTML = ""; 
-
-            rewardsMaster.forEach((reward) => {
-                const lv = parseInt(reward[0]); // A列: レベル
-                const type = reward[1];        // B列: タイプ (fragment / item)
-                const name = reward[2];        // C列: 報酬名
-                const rUrl = reward[4];        // E列: URL
-                
-                if(!lv) return; 
-
-                // K列(インデックス10)からフラグ。Lv10なら10, Lv20なら11...
-                const flagColIndex = 9 + (lv / 10); 
-                const isClaimed = userData[flagColIndex] === "1";
-                
-                let statusHtml = "";
-                if (level < lv) {
-                    statusHtml = `<span style="color:#ccc;">🔒 Lv.${lv}</span>`;
-                } else if (!isClaimed) {
-                    // まだ受け取っていない場合
-                    statusHtml = `<button onclick="claimReward(${lv})" style="background:#ff8c00; color:white; border-radius:8px; padding:6px 12px; font-weight:bold; border:none; cursor:pointer;">🎁 受取る</button>`;
-                } else {
-                    // 受け取り済みの場合
-                    if (type === "item" && rUrl) {
-                        // 景品(URL)タイプなら「見る」ボタンにする
-                        statusHtml = `<button onclick="window.open('${rUrl}', '_blank')" style="background:#2ecc71; color:white; border-radius:8px; padding:6px 12px; font-weight:bold; border:none; cursor:pointer;">📖 見る</button>`;
-                    } else {
-                        statusHtml = `<span style="color:#2ecc71; font-weight:bold;">✅ 受取済み</span>`;
-                    }
-                }
-
-                rewardList.innerHTML += `
-                    <div class="list-item ${level >= lv ? 'unlocked' : ''}" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:15px; background:white; border-radius:15px; border:2px solid ${level >= lv ? '#ffb347' : '#eee'};">
-                        <div style="text-align:left;">
-                            <div style="font-size:0.7rem; color:#888;">Level ${lv}</div>
-                            <div style="font-weight:900; color:#333;">${name}</div>
-                        </div>
-                        <div>${statusHtml}</div>
-                    </div>`;
-            });
-
-            globalT1 = parseInt(userData[2]) || 0;
-            globalT2 = parseInt(userData[3]) || 0;
-            globalT3 = parseInt(userData[4]) || 0;
-        }
-    } catch (e) { console.error("Sheet Data Error", e); }
-}
-                // 報酬を受け取る命令をGASに送る関数
-    async function claimReward(targetLv) {
-        if(!confirm(`Lv.${targetLv} の報酬を受け取りますか？`)) return;
-
-        const url = `${GAS_URL}?user=${loginID}&type=claimReward&targetLv=${targetLv}`;
-        
+    async function fetchSheetData(targetUser) {
         try {
-            const res = await fetch(url);
-            const text = await res.text();
+            const userUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
+            const userRes = await fetch(userUrl);
+            const userCsv = await userRes.text();
+            const userRows = userCsv.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+            const userData = userRows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
 
-            if (text.startsWith("SUCCESS")) {
-                const parts = text.split(":");
-                const type = parts[1]; // fragment か item
-                const rUrl = parts[2]; // URLがある場合
+            const masterUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=MasterRewards`;
+            const masterRes = await fetch(masterUrl);
+            const masterCsv = await masterRes.text();
+            const masterRows = masterCsv.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+            const rewardsMaster = masterRows.slice(1);
 
-                alert("報酬を受け取りました！");
+            if (userData) {
+                document.getElementById('display-name').innerText = userData[0];
+                document.getElementById('display-id').innerText = "@" + userData[1];
+                document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
+                document.getElementById('display-level').innerText = userData[7];
+                document.getElementById('inv-bits').innerText = userData[5];
+                document.getElementById('inv-t1').innerText = userData[2];
+                document.getElementById('inv-t2').innerText = userData[3];
+                document.getElementById('inv-t3').innerText = userData[4];
 
-                // もし景品(URL)があるタイプなら、そのURLを開く
-                if (type === "item" && rUrl) {
-                    window.open(rUrl, '_blank');
-                }
-                
-                // 画面を更新して最新の状態（受取済み）にする
-                fetchSheetData(loginID);
-            } else {
-                alert("エラー: " + text);
-            }
-        } catch (e) {
-            alert("通信エラーが発生しました");
-        }
-    }
+                const totalExp = parseInt(userData[6]) || 0;
+                const level = parseInt(userData[7]) || 1;
+                const progress = getLevelProgress(totalExp, level);
+                document.getElementById('display-current-exp').innerText = progress.current;
+                document.getElementById('display-next').innerText = progress.next;
+                const percent = Math.min((progress.current / progress.next) * 100, 100);
+                setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
+
+                const rewardList = document.getElementById('reward-list');
+                rewardList.innerHTML = "";
+                rewardsMaster.forEach((reward) => {
+                    const lv = parseInt(reward[0]);
+                    const type = reward[1];
+                    const name = reward[2];
+                    const rUrl = reward[4];
+                    if(!lv) return;
+                    const flagColIndex = 9 + (lv / 10);
+                    const isClaimed = userData[flagColIndex] === "1";
+                    
+                    let statusHtml = "";
+                    if (level < lv) {
+                        statusHtml = `<span style="color:#ccc;">🔒 Lv.${lv}</span>`;
+                    } else if (!isClaimed) {
+                        statusHtml = `<button onclick="claimReward(${lv})" style="background:#ff8c00; color:white; border-radius:8px; padding:6px 12px; font-weight:bold;">🎁 受取る</button>`;
+                    } else {
+                        if (type === "item" && rUrl) {
+                            statusHtml = `<button onclick="window.open('${rUrl}', '_blank')" style="background:#2ecc71; color:white; border-radius:8px; padding:6px 12px;">📖 見る</button>`;
+                        } else {
+                            statusHtml = `<span style="color:#2ecc71; font-weight:bold;">✅ 受取済み</span>`;
+                        }
+                    }
+                    rewardList.innerHTML += `
+                        <div class="list-item ${level >= lv ? 'unlocked' : ''}" style="display:flex; justify-content:space-between; align-items:center;">
+                            <div><div style="font-size:0.7rem; color:#888;">Level ${lv}</div><div style="font-weight:900;">${name}</div></div>
+                            <div>${statusHtml}</div>
+                        </div>`;
+                });
 
                 globalT1 = parseInt(userData[2]) || 0;
                 globalT2 = parseInt(userData[3]) || 0;
@@ -508,13 +372,19 @@
         } catch (e) { console.error("Sheet Data Error", e); }
     }
 
-    function unlock(lv, msg) {
-        const el = document.getElementById('rw-'+lv);
-        if(el) { 
-            el.classList.add('unlocked'); 
-            el.querySelector('.rw-msg').innerText = msg; 
-            el.querySelector('.rw-msg').style.color = "var(--accent-orange)"; 
-        }
+    async function claimReward(targetLv) {
+        if(!confirm(`Lv.${targetLv} の報酬を受け取りますか？`)) return;
+        const url = `${GAS_URL}?user=${loginID}&type=claimReward&targetLv=${targetLv}`;
+        try {
+            const res = await fetch(url);
+            const text = await res.text();
+            if (text.startsWith("SUCCESS")) {
+                const parts = text.split(":");
+                alert("報酬を受け取りました！");
+                if (parts[1] === "item" && parts[2]) window.open(parts[2], '_blank');
+                fetchSheetData(loginID);
+            } else { alert("エラー: " + text); }
+        } catch (e) { alert("通信エラーが発生しました"); }
     }
 
     function getLevelProgress(totalExp, level) {
@@ -529,48 +399,35 @@
 
     async function playGacha(mode, val = 0) {
         if (!loginID) { alert("先にログインしてください！"); return; }
-        
         if (mode === 'bits') {
-            const costMapping = { 100: 200, 500: 1000, 1000: 2000, 5000: 10000 };   
+            const costMapping = { 100: 200, 500: 1000, 1000: 2000, 5000: 10000 };
             const cost = costMapping[val] || val;
             if (!confirm(`💎 ${cost} クリスタルを消費してガチャを引きますか？`)) return;
         }
-
         let query = `?user=${encodeURIComponent(loginID)}&type=${mode === 'login' ? 'login' : mode}&gachaType=${val}`;
         try {
             const res = await fetch(GAS_URL + query);
             const msg = await res.text();
             alert(msg);
-            if (!msg.includes("今日はもう") && !msg.includes("足りない") && !msg.includes("ERROR")) { 
-                location.reload(); 
-            }
+            if (!msg.includes("今日はもう") && !msg.includes("足りない")) location.reload();
         } catch (e) { alert("通信エラーが発生しました。"); }
     }
-    
+
     function callTier1() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 1); } else { alert("足りません"); } }
-    function callTier2() { if (globalT2 >= 1 || globalT1 >= 3) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
-    function callTier3() { if (globalT3 >= 1 || globalT2 >= 3 || globalT1 >= 9) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
+    function callTier2() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
+    function callTier3() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
 
     async function fetchLogs() {
         try {
             const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
             const txt = await res.text();
-            const logs = txt.split('\n')
-                .map(r => r.split(',').map(c => c.replace(/"/g,'')))
-                .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase())
-                .reverse() 
-                .slice(0, 10);
-
-            let logHtml = "";
-            logs.forEach(l => {
-                logHtml += `
-                    <div style="border-bottom: 1px solid #eee; padding: 12px 5px; display: flex; flex-direction: column; gap: 4px;">
-                        <div style="font-size: 0.65rem; color: #999; font-weight: bold;">📅 ${l[0]}</div>
-                        <div style="font-size: 0.95rem; color: #2c3e50; font-weight: 800;">${l[4]}</div>
-                    </div>`;
-            });
-            document.getElementById('log-content').innerHTML = logHtml || "履歴はありません";
-        } catch (e) { console.error("Log fetch error", e); }
+            const logs = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g,'')))
+                            .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase()).reverse();
+            const logBox = document.getElementById('log-content');
+            if (logs.length > 0) {
+                logBox.innerHTML = logs.slice(0, 20).map(l => `<div style="border-bottom:1px solid #eee; padding:5px;">[${l[0]}] ${l[3]}</div>`).join('');
+            }
+        } catch (e) { console.error("Log Error", e); }
     }
 </script>
 </body>

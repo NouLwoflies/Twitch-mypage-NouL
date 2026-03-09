@@ -7,13 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
     <style>
         html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-        }
+       height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    /* ブラウザ標準の挙動を制限 */
+    overscroll-behavior-y: contain;
+}
         :root {
             --accent-orange: #ff8c00;
             --twitch-purple: #9146ff;
@@ -107,6 +109,38 @@
         .nav-item.active { color: var(--accent-orange); }
         .nav-icon-emu { font-size: 1.4rem; margin-bottom: 2px; }
         .nav-text { font-size: 0.55rem; font-weight: 900; margin-top: 2px; }
+/* プルリフレッシュの見た目 */
+#pull-to-refresh {
+    position: fixed;
+    top: -70px; /* 初期位置は画面の外 */
+    left: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(224, 234, 252, 0.9);
+    backdrop-filter: blur(4px);
+    z-index: 10000; /* インベントリバーより上に */
+    transition: transform 0.2s ease;
+    border-bottom: 2px solid var(--crystal-blue);
+    color: #2c3e50;
+    font-size: 0.8rem;
+    font-weight: 900;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ccc;
+    border-top-color: var(--twitch-purple);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+        
     </style>
 </head>
 <body>
@@ -473,6 +507,57 @@ function getLevelProgress(totalExp) {
         console.error("Log fetch error"); 
     }
 }
+    let startY = 0;
+let isPulling = false;
+const ptr = document.getElementById('pull-to-refresh');
+
+// 画面全体でタッチを監視
+window.addEventListener('touchstart', (e) => {
+    // 画面の最上部付近でのタッチのみ反応させる
+    startY = e.touches[0].pageY;
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+    const currentY = e.touches[0].pageY;
+    const moveY = currentY - startY;
+
+    // 下方向に引っ張っている、かつ指が動いている時
+    if (moveY > 0) {
+        // 抵抗感の再現 (移動量の0.4倍、最大90pxまで)
+        const displayY = Math.min(moveY * 0.4, 90);
+        ptr.style.transform = `translateY(${displayY}px)`;
+        
+        // 一定以上引っ張ったら「更新」を強調（お好みで）
+        if (displayY > 60) {
+            ptr.style.background = "#d0e0ff";
+        } else {
+            ptr.style.background = "rgba(224, 234, 252, 0.9)";
+        }
+        isPulling = true;
+    }
+}, { passive: true });
+
+window.addEventListener('touchend', (e) => {
+    if (!isPulling) return;
+    
+    const endY = e.changedTouches[0].pageY - startY;
+    const displayY = endY * 0.4;
+
+    if (displayY > 60) {
+        // リフレッシュ実行
+        ptr.style.transform = 'translateY(70px)';
+        setTimeout(() => {
+            // location.reload() だとログインが外れる場合があるので
+            // 可能であれば必要なデータ取得関数だけ叩くのがスマートですが、
+            // 確実なのは reload です。
+            location.reload(); 
+        }, 600);
+    } else {
+        // キャンセル：元に戻す
+        ptr.style.transform = 'translateY(0)';
+    }
+    isPulling = false;
+});
 </script>
 </body>
 </html>

@@ -46,10 +46,16 @@
         .inv-icon { width: 24px !important; height: 24px !important; object-fit: contain !important; display: inline-block !important; }
         .inv-val { font-size: 0.8rem; font-weight: 900; color: #2c3e50; }
 
-        .viewport {
-            width: 100vw; height: 100vh; overflow: hidden; position: relative;
-            padding-top: 70px; padding-bottom: 100px; box-sizing: border-box;
-        }
+       .viewport {
+    width: 100vw; 
+    height: 100vh; 
+    overflow: hidden; 
+    position: relative;
+    padding-top: 70px; 
+    padding-bottom: 100px; 
+    box-sizing: border-box;
+    touch-action: none; /* ← ここを追加：ブラウザ標準のプルダウンを無効化 */
+}
         .main-wrapper {
             display: flex; width: 500vw; height: 100%;
             transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);
@@ -507,30 +513,36 @@ function getLevelProgress(totalExp) {
         console.error("Log fetch error"); 
     }
 }
-    let startY = 0;
+let startY = 0;
 let isPulling = false;
 const ptr = document.getElementById('pull-to-refresh');
 
 // 画面全体でタッチを監視
 window.addEventListener('touchstart', (e) => {
-    // 画面の最上部付近でのタッチのみ反応させる
-    startY = e.touches[0].pageY;
+    // 現在表示されているカードの中身（.card-body）が一番上にあるかチェック
+    const activeSection = document.querySelectorAll('.page-section')[Math.round(Math.abs(currentX / 100))]; // currentX管理が必要な場合は単純に判定
+    const scrollable = document.querySelector('.card-body'); // 簡易的に最初のカードで判定
+
+    // スクロール位置が0（一番上）の時だけプルリフレッシュを有効にする準備
+    if (window.scrollY === 0) {
+        startY = e.touches[0].pageY;
+    }
 }, { passive: true });
 
 window.addEventListener('touchmove', (e) => {
     const currentY = e.touches[0].pageY;
     const moveY = currentY - startY;
 
-    // 下方向に引っ張っている、かつ指が動いている時
-    if (moveY > 0) {
-        // 抵抗感の再現 (移動量の0.4倍、最大90pxまで)
-        const displayY = Math.min(moveY * 0.4, 90);
+    // 下方向に引っ張っており、かつブラウザのスクロールがトップにある場合
+    if (moveY > 0 && window.scrollY === 0) {
+        const displayY = Math.min(moveY * 0.5, 80); // 抵抗感
         ptr.style.transform = `translateY(${displayY}px)`;
         
-        // 一定以上引っ張ったら「更新」を強調（お好みで）
         if (displayY > 60) {
+            ptr.innerHTML = '<div class="spinner"></div> 更新して読み込む';
             ptr.style.background = "#d0e0ff";
         } else {
+            ptr.innerHTML = '↓ 引っぱって更新';
             ptr.style.background = "rgba(224, 234, 252, 0.9)";
         }
         isPulling = true;
@@ -540,18 +552,18 @@ window.addEventListener('touchmove', (e) => {
 window.addEventListener('touchend', (e) => {
     if (!isPulling) return;
     
-    const endY = e.changedTouches[0].pageY - startY;
-    const displayY = endY * 0.4;
+    // transformから現在の高さを取得
+    const matrix = new WebKitCSSMatrix(window.getComputedStyle(ptr).transform);
+    const currentDisplayY = matrix.m42;
 
-    if (displayY > 60) {
+    if (currentDisplayY > 60) {
         // リフレッシュ実行
         ptr.style.transform = 'translateY(70px)';
+        ptr.innerHTML = '<div class="spinner"></div> 更新中...';
         setTimeout(() => {
-            // location.reload() だとログインが外れる場合があるので
-            // 可能であれば必要なデータ取得関数だけ叩くのがスマートですが、
-            // 確実なのは reload です。
+            // URLのハッシュ（ログイン情報）を維持したままリロード
             location.reload(); 
-        }, 600);
+        }, 800);
     } else {
         // キャンセル：元に戻す
         ptr.style.transform = 'translateY(0)';

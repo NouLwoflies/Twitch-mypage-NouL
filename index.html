@@ -67,10 +67,18 @@
         .card {
             background: var(--bg-glass); border-radius: 25px; border: 3px solid #ffb347;
             padding: 20px; width: 100%; max-width: 350px;
-            height: 480px;
+            height: auto;
             display: flex; flex-direction: column;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1); box-sizing: border-box; position: relative;
         }
+        /* スマホ（横幅が480px以下の時） */
+@media screen and (max-width: 480px) {
+    .card {
+        height: auto;         /* 高さを中身に合わせる */
+        max-height: 480px;    /* 最大サイズを制限して被りを防ぐ */
+        padding: 15px;        /* 余白も少し詰めるとスッキリします */
+    }
+}
         .card h1 { font-family: 'Mochiy Pop One', sans-serif; flex-shrink: 0; margin-top: 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-bottom: 3px solid #ffb347; padding-bottom: 5px; color: #ff8c00; font-size: 1.4rem; margin-bottom: 15px; font-weight: 800; }
         .card-body { flex-grow: 1; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-right: 10px; }
         .card-body::-webkit-scrollbar { width: 6px; }

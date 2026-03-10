@@ -84,6 +84,23 @@
             filter: drop-shadow(1px 1px 0px #6a5d21) drop-shadow(-1px -1px 0px #6a5d21);
             transform: skewX(-5deg); margin-left: 5px; padding: 2px 5px;
         }
+        .shop-btn-rich {
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+}
+.shop-btn-rich:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+.shop-btn-rich b {
+    font-size: 0.85rem;
+}
         .exp-container { text-align: left; margin: 20px 0; }
         .level-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px; }
         #display-level { font-size: 2.2rem; font-weight: 900; color: #ff8c00; line-height: 1; }
@@ -143,6 +160,7 @@
             animation: spin 1s linear infinite;
             margin-right: 10px;
         }
+
 
         @keyframes spin { to { transform: rotate(360deg); } }
         
@@ -225,32 +243,51 @@
             </div>
         </section>
         <section class="page-section">
-            <div class="card" style="border-color: var(--shop-green);">
-                <h1 style="color: var(--shop-green);">🛒 ショップ 🛒</h1>
-                <div class="card-body">
-                    <div class="shop-item">
-                        <div class="shop-info"><span class="shop-name">👑 VIP 1ヶ月分</span><span class="shop-cost">💎 200</span></div>
-                        <button class="shop-btn" onclick="buyShop('VIP 1ヶ月', 200)">購入する</button>
-                    </div>
-                    <div class="shop-item">
-                        <div class="shop-info"><span class="shop-name">🚀 VIP 1年間分</span><span class="shop-cost">💎 2000</span></div>
-                        <button class="shop-btn" onclick="buyShop('VIP 1年間', 2000)">購入する</button>
-                    </div>
-                    <hr>
-                    <p style="font-size: 0.7rem; font-weight: 800; color: #666;">🎁 指定差し入れ（贅沢コース）</p>
-                    <div class="shop-item" style="border-color: #ffb347;">
-                        <input type="text" id="gift-note" class="note-input" placeholder="何にする？（例：スタバ券、入浴剤）">
-                        <div class="shop-info"><span class="shop-name">🎁 差し入れ</span><span class="shop-cost">💎 2000〜</span></div>
-                        <div style="display: flex; gap: 5px;">
-                            <button class="shop-btn" style="background:#ff8c00; font-size:0.65rem;" onclick="buyShop('1000円', 2000, true)">1,000円分 (2k)</button>
-                    <button class="shop-btn" style="background:#ff4500; font-size:0.65rem;" onclick="buyShop('2500円', 5000, true)">2,500円分 (5k)</button>
-                    <button class="shop-btn" style="background:#e74c3c; font-size:0.65rem;" onclick="buyShop('5000円', 10000, true)">5,000円分 (10k)</button>
-                    <button class="shop-btn" style="background:#000000; font-size:0.65rem;" onclick="buyShop('10000円', 20000, true)">10,000円分 (20k)</button>
-                        </div>
-                    </div>
+    <div class="card" style="border: 2px solid var(--shop-green); background: #f9fff9;">
+        <h1 style="color: var(--shop-green); text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">🛒 ショップ 🛒</h1>
+        <div class="card-body">
+            
+            <div class="shop-item-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                <div class="shop-box" style="border: 2px solid #ffd700; background: #fffdf0; padding: 10px; border-radius: 12px; text-align: center;">
+                    <div class="shop-name" style="font-weight: bold; color: #b8860b;">👑 VIP 1ヶ月</div>
+                    <button class="draw-button" style="background: linear-gradient(135deg, #ffd700, #ffa500); box-shadow: 0 4px 0 #cc8400; width: 100%; margin-top: 5px;" onclick="buyShop('VIP 1ヶ月', 200)">
+                        <div style="font-size:0.6rem; opacity:0.9;">交換する</div><div>💎 200</div>
+                    </button>
+                </div>
+                <div class="shop-box" style="border: 2px solid #ff4500; background: #fff5f2; padding: 10px; border-radius: 12px; text-align: center;">
+                    <div class="shop-name" style="font-weight: bold; color: #d32f2f;">🚀 VIP 1年間</div>
+                    <button class="draw-button" style="background: linear-gradient(135deg, #ff6347, #ff4500); box-shadow: 0 4px 0 #b33000; width: 100%; margin-top: 5px;" onclick="buyShop('VIP 1年間', 2000)">
+                        <div style="font-size:0.6rem; opacity:0.9;">交換する</div><div>💎 2000</div>
+                    </button>
                 </div>
             </div>
-        </section>
+
+            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
+
+            <div class="gift-section" style="background: #ffffff; border: 2px solid #ffb347; border-radius: 15px; padding: 15px; box-shadow: inset 0 0 10px rgba(255,179,71,0.1);">
+                <p style="font-size: 0.8rem; font-weight: 800; color: #e67e22; margin-bottom: 10px; text-align: center;">🎁 指定差し入れ（贅沢コース）</p>
+                
+                <input type="text" id="gift-note" class="note-input" placeholder="何にする？（例：スタバ券、入浴剤）" 
+                       style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; box-sizing: border-box;">
+                
+                <div class="gift-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button class="shop-btn-rich" style="background: #ff8c00;" onclick="buyShop('1000円', 2000, true)">
+                        <span>1,000円相当</span><br><b>💎2000</b>
+                    </button>
+                    <button class="shop-btn-rich" style="background: #ff4500;" onclick="buyShop('2500円', 5000, true)">
+                        <span>2,500円相当</span><br><b>💎5000</b>
+                    </button>
+                    <button class="shop-btn-rich" style="background: #e74c3c;" onclick="buyShop('5000円', 10000, true)">
+                        <span>5,000円相当</span><br><b>💎10000</b>
+                    </button>
+                    <button class="shop-btn-rich" style="background: #c0392b;" onclick="buyShop('10000円', 20000, true)">
+                        <span>10,000円相当</span><br><b>💎20000</b>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
         <section class="page-section">
             <div class="card">

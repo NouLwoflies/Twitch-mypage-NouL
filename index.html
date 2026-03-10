@@ -202,20 +202,7 @@
                             <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 1000</div>
                         </button>
                     </div>
-                    <div class="gacha-box" style="border-color: #c0c0c0; background: #f8f8f8;">
-                        <div class="gacha-title" style="color: #707070;">1000円ガチャ</div>
-                        <button class="draw-button btn-silver" onclick="playGacha('bits', 1000)">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 2000</div>
-                        </button>
-                    </div>
-                    <div class="gacha-box" style="border-color: #ffd700; background: #fffdf0;">
-                        <div class="gacha-title" style="color: #b8860b;">5000円ガチャ</div>
-                        <button class="draw-button btn-gold" onclick="playGacha('bits', 5000)">
-                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 10000</div>
-                        </button>
-                    </div>
-                                                                        
-
+                                                      
                     <div class="gacha-box">
                         <div class="gacha-title" style="color: var(--twitch-purple);">TIER 1</div>
                         <button id="btn-t1-bg" class="draw-button" style= "background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
@@ -233,6 +220,33 @@
                         <button id="btn-t3-bg" class="draw-button" style="background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
                             <div style="font-size:0.7rem;">1回引く</div><div><img class="inv-icon icon-t1-class">9 / <img class="inv-icon icon-t2-class">3 / <img class="inv-icon icon-t3-class">1</div>
                         </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="page-section">
+            <div class="card" style="border-color: var(--shop-green);">
+                <h1 style="color: var(--shop-green);">🛒 ショップ 🛒</h1>
+                <div class="card-body">
+                    <div class="shop-item">
+                        <div class="shop-info"><span class="shop-name">👑 VIP 1ヶ月分</span><span class="shop-cost">💎 200</span></div>
+                        <button class="shop-btn" onclick="buyShop('VIP 1ヶ月', 200)">購入する</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="shop-info"><span class="shop-name">🚀 VIP 1年間分</span><span class="shop-cost">💎 2000</span></div>
+                        <button class="shop-btn" onclick="buyShop('VIP 1年間', 2000)">購入する</button>
+                    </div>
+                    <hr>
+                    <p style="font-size: 0.7rem; font-weight: 800; color: #666;">🎁 指定差し入れ（贅沢コース）</p>
+                    <div class="shop-item" style="border-color: #ffb347;">
+                        <input type="text" id="gift-note" class="note-input" placeholder="何にする？（例：スタバ券、入浴剤）">
+                        <div class="shop-info"><span class="shop-name">🎁 差し入れ</span><span class="shop-cost">💎 2000〜</span></div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="shop-btn" style="background:#ff8c00; font-size:0.65rem;" onclick="buyShop('1000円', 2000, true)">1,000円分 (2k)</button>
+                    <button class="shop-btn" style="background:#ff4500; font-size:0.65rem;" onclick="buyShop('2500円', 5000, true)">2,500円分 (5k)</button>
+                    <button class="shop-btn" style="background:#e74c3c; font-size:0.65rem;" onclick="buyShop('5000円', 10000, true)">5,000円分 (10k)</button>
+                    <button class="shop-btn" style="background:#000000; font-size:0.65rem;" onclick="buyShop('10000円', 20000, true)">10,000円分 (20k)</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -278,15 +292,16 @@
 <nav class="bottom-nav">
     <button class="nav-item active" onclick="go(0)"><span class="nav-icon-emu">👤</span><span class="nav-text">ステータス</span></button>
     <button class="nav-item" onclick="go(1)"><span class="nav-icon-emu">🎰</span><span class="nav-text">ガチャ</span></button>
-    <button class="nav-item" onclick="go(2)"><span class="nav-icon-emu">🏆</span><span class="nav-text">パス</span></button>
-    <button class="nav-item" onclick="go(3)"><span class="nav-icon-emu">📖</span><span class="nav-text">ガイド</span></button>
-    <button class="nav-item" onclick="go(4)"><span class="nav-icon-emu">📜</span><span class="nav-text">履歴</span></button>
+    <button class="nav-item" onclick="go(2)"><span class="nav-icon-emu">🛒</span><span class="nav-text">ショップ</span></button>
+    <button class="nav-item" onclick="go(3)"><span class="nav-icon-emu">🏆</span><span class="nav-text">パス</span></button>
+    <button class="nav-item" onclick="go(4)"><span class="nav-icon-emu">📖</span><span class="nav-text">ガイド</span></button>
+    <button class="nav-item" onclick="go(5)"><span class="nav-icon-emu">📜</span><span class="nav-text">履歴</span></button>
 </nav>
 
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbys7t0Zvzgo6uz0-0vTlXXFzCP7vvt0pqiUzUin4RgtnNmoiGEFe5LmLCgcarxMOFc/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzGLS-nTxCBk0WF8qfiqKdso9McJhBfk0j06RJltg05wwIOPzZYrn9oDGHT7Ax2kpEK/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -349,6 +364,25 @@
                 fetchLogs();
             }
         } catch (e) { console.error("Login Error", e); }
+    }
+    async function buyShop(itemName, cost, isGift = false) {
+        if (!loginID) { alert("ログインしてください"); return; }
+        let note = "";
+        if (isGift) {
+            note = document.getElementById('gift-note').value;
+            if (!note) { alert("差し入れの内容を入力してください！"); return; }
+        }
+        
+        if (!confirm(`${itemName} を 💎${cost} で購入しますか？`)) return;
+
+        const url = `${GAS_URL}?user=${encodeURIComponent(loginID)}&type=shop&itemName=${encodeURIComponent(itemName)}&cost=${cost}&note=${encodeURIComponent(note)}`;
+        
+        try {
+            const res = await fetch(url);
+            const msg = await res.text();
+            alert(msg);
+            if (msg.includes("SUCCESS")) location.reload();
+        } catch (e) { alert("通信エラー"); }
     }
 
     async function fetchSheetData(targetUser) {

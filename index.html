@@ -409,7 +409,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxT7OGdXhOyDrGKN-7Pri7CNM4vmXkMcbRt_Q-5FQr8XTttVQk6VxJitaNsjqty_nqG/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwyL5dKo_fNtaABTTYJhdMiRJZu_B4AoAflDhqd64Z-cl8L9Z3uRwb-DzakJ4iHCPXW/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -697,33 +697,54 @@
         isPulling = false;
     });
     async function openPrizes() {
-    document.getElementById('prizesOverlay').style.display = 'flex';
-    const prizesData = document.getElementById('prizesData');
-    prizesData.innerHTML = "読み込み中...";
+    const overlay = document.getElementById('prizesOverlay');
+    const container = document.getElementById('prizesData');
+    overlay.style.display = 'flex';
+    container.innerHTML = '<p style="text-align:center; padding:20px;">読み込み中...</p>';
     
     try {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=MasterPrizes`; // シート名は適宜変更
+        // GAS経由でGachaTableのデータを取得
+        const url = `${GAS_URL}?type=getGachaList`;
         const res = await fetch(url);
-        const csv = await res.text();
-        const rows = csv.split('\n').map(r => r.split(',').map(c => c.replace(/"/g, '')));
+        const data = await res.json();
         
-        let html = '<table style="width:100%; border-collapse:collapse; font-size:0.8rem;">';
-        rows.slice(1).forEach(r => {
-            html += `<tr style="border-bottom:1px solid #eee;">
-                        <td style="padding:8px;">${r[0]}</td><td style="padding:8px; font-weight:bold;">${r[1]}</td>
-                     </tr>`;
+        if (!data || data.length === 0) {
+            container.innerHTML = "景品データがありません。";
+            return;
+        }
+
+        let html = "";
+        // ガチャの種類（100, 500, 1, 2, 3）ごとにグループ化して表示
+        const gachaTypes = [...new Set(data.map(item => item.gachaId))].sort((a, b) => a - b);
+        
+        gachaTypes.forEach(type => {
+            const items = data.filter(item => item.gachaId === type);
+            // 表示名の変換（100→100円ガチャ、1→Tier1かけらガチャなど）
+            let title = type + " ガチャ";
+            if(type == 100 || type == 500) title = type + "円ガチャ";
+            if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";
+
+            html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50;">💎 ${title}</div>`;
+            
+            items.forEach(item => {
+                let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem;";
+                if(item.name.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
+                if(item.name.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
+                
+                html += `<div style="${style}">${item.name}</div>`;
+            });
         });
-        html += '</table>';
-        prizesData.innerHTML = html;
+        
+        container.innerHTML = html;
     } catch (e) {
-        prizesData.innerHTML = "景品リストの取得に失敗しました。";
+        console.error(e);
+        container.innerHTML = "データの取得に失敗しました。GASのデプロイを確認してください。";
     }
 }
 
 function closePrizes() {
     document.getElementById('prizesOverlay').style.display = 'none';
 }
-
     
 </script>
 </body>

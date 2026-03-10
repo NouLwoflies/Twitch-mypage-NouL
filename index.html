@@ -413,11 +413,24 @@
                 const progress = getLevelProgress(totalExp); 
 
                 document.getElementById('display-level').innerText = progress.level; 
+               // --- ここから書き換え ---
                 document.getElementById('display-current-exp').innerText = progress.current;
                 document.getElementById('display-next').innerText = progress.next;
                 const percent = Math.min((progress.current / progress.next) * 100, 100);
                 setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
+                // VIP情報をボタンの上に差し込む
+                if (userData[9]) { 
+                    const statusArea = document.getElementById('status-area');
+                    const vipHtml = `
+                        <div class="status-item" style="border-left: 4px solid #e91e63; padding-left: 10px;">
+                            <span>VIP STATUS</span>
+                            <span style="color:#e91e63; font-size:1rem; font-weight:900;">👑 ${userData[9]}</span>
+                            <span style="font-size:0.75rem; color:#888;">期限: ${userData[10]} まで</span>
+                        </div>`;
+                    // ガチャボタンの直前にVIP情報を入れる
+                    statusArea.querySelector('.login-btn').insertAdjacentHTML('beforebegin', vipHtml);
+                }
                 const rewardList = document.getElementById('reward-list');
                 rewardList.innerHTML = "";
                 rewardsMaster.forEach((reward) => {
@@ -426,7 +439,7 @@
                     const name = reward[2];
                     const rUrl = reward[4];
                     if(!lv) return;
-                    const flagColIndex = 9 + (lv / 10);
+                    const flagColIndex = 11 + (lv / 10);
                     const isClaimed = userData[flagColIndex] === "1";
                     let statusHtml = "";
                     if (progress.level < lv) {

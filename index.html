@@ -696,49 +696,33 @@
         }
         isPulling = false;
     });
-function openPrizes() {
-    document.getElementById('prizesOverlay').style.display = 'block';
-    const container = document.getElementById('prizesData');
-
-    // GASからデータを取得（※自分のGASのURLに書き換えてください）
-    fetch('あなたのGASのURL?action=getGachaList')
-        .then(res => res.json())
-        .then(data => {
-            let html = "";
-            // ガチャIDごとにグループ化して表示
-            const gachaIds = [1, 2, 3, 100, 500, 1000, 5000]; // 存在するIDをリストアップ
-            
-            gachaIds.forEach(id => {
-                const items = data.filter(item => item.id == id);
-                if (items.length > 0) {
-                    let title = id + " ガチャ";
-                    if(id > 99) title = id + "円相当ガチャ";
-                    html += `<div class="gacha-title">✨ ${title}</div>`;
-                    
-                    items.forEach(item => {
-                        let rarityClass = "";
-                        if (item.name.includes("SSR")) rarityClass = "ssr";
-                        else if (item.name.includes("SR")) rarityClass = "sr";
-                        
-                        html += `
-                            <div class="prize-row ${rarityClass}">
-                                <span>${item.name}</span>
-                            </div>`;
-                    });
-                }
-            });
-            container.innerHTML = html;
-        })
-        .catch(err => {
-            container.innerHTML = "データの取得に失敗しました。";
+    async function openPrizes() {
+    document.getElementById('prizesOverlay').style.display = 'flex';
+    const prizesData = document.getElementById('prizesData');
+    prizesData.innerHTML = "読み込み中...";
+    
+    try {
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=MasterPrizes`; // シート名は適宜変更
+        const res = await fetch(url);
+        const csv = await res.text();
+        const rows = csv.split('\n').map(r => r.split(',').map(c => c.replace(/"/g, '')));
+        
+        let html = '<table style="width:100%; border-collapse:collapse; font-size:0.8rem;">';
+        rows.slice(1).forEach(r => {
+            html += `<tr style="border-bottom:1px solid #eee;">
+                        <td style="padding:8px;">${r[0]}</td><td style="padding:8px; font-weight:bold;">${r[1]}</td>
+                     </tr>`;
         });
+        html += '</table>';
+        prizesData.innerHTML = html;
+    } catch (e) {
+        prizesData.innerHTML = "景品リストの取得に失敗しました。";
+    }
 }
 
 function closePrizes() {
     document.getElementById('prizesOverlay').style.display = 'none';
 }
-
-
 
     
 </script>

@@ -735,7 +735,7 @@
         
         gachaTypes.forEach(type => {
             const items = data.filter(item => item.gachaId === type);
-            // 表示名の変換（100→100円ガチャ、1→Tier1かけらガチャなど）
+            // 表示名の変換（100→200円ガチャ、1→Tier1かけらガチャなど）
             let title = type + " ガチャ";
             if(type == 100 || type == 500) title = type + "円ガチャ";
             if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";
@@ -754,7 +754,7 @@
         container.innerHTML = html;
     } catch (e) {
         console.error(e);
-        container.innerHTML = "データの取得に失敗しました。GASのデプロイを確認してください。";
+        container.innerHTML = "データの取得に失敗しました。";
     }
 }
 

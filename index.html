@@ -171,7 +171,54 @@
 
 
         @keyframes spin { to { transform: rotate(360deg); } }
-        
+        /* 景品一覧を開くボタン */
+.view-prizes-btn {
+    background: #ffb347; border: none; border-radius: 12px;
+    padding: 12px; width: 100%; font-weight: bold; color: #fff;
+    cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* 全画面の背景 */
+.prizes-overlay {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; background: rgba(0,0,0,0.9);
+    z-index: 9999; backdrop-filter: blur(10px);
+}
+
+/* 景品画面の本体 */
+.prizes-content {
+    width: 90%; max-width: 400px; height: 80vh;
+    margin: 10vh auto; background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #ffb347; border-radius: 25px;
+    display: flex; flex-direction: column; overflow: hidden;
+}
+
+.prizes-header {
+    padding: 15px; background: rgba(255,255,255,0.1);
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.prizes-list-container {
+    flex: 1; overflow-y: auto; padding: 20px; text-align: left;
+}
+
+.close-overlay {
+    background: none; border: none; color: white; font-size: 30px; cursor: pointer;
+}
+
+/* 景品ごとの見た目 */
+.gacha-title {
+    color: #ffb347; border-bottom: 2px solid #ffb347;
+    margin: 20px 0 10px; padding-bottom: 5px; font-size: 1.1em;
+}
+
+.prize-row {
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9em; display: flex; justify-content: space-between;
+}
+
+.ssr { color: #ff4747; font-weight: bold; text-shadow: 0 0 5px rgba(255,71,71,0.5); }
+.sr  { color: #ffb347; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -216,6 +263,21 @@
             <div class="card">
                 <h1>🎰 ガチャ 🎰</h1>
                 <div class="card-body">
+                    <button onclick="openPrizes()" class="view-prizes-btn">
+  🎁 全ガチャの景品一覧を見る
+</button>
+
+<div id="prizesOverlay" class="prizes-overlay">
+  <div class="prizes-content">
+    <div class="prizes-header">
+      <h3>ガチャ景品ラインナップ</h3>
+      <button class="close-overlay" onclick="closePrizes()">×</button>
+    </div>
+    <div id="prizesData" class="prizes-list-container">
+      <p style="text-align:center; padding:20px;">読み込み中...</p>
+    </div>
+  </div>
+</div>
                     <div class="gacha-box">
                         <div class="gacha-title">100円ガチャ</div>
                         <button class="draw-button" style="background: linear-gradient(135deg, #00d4ff, #0099cc); box-shadow: 0 4px 0 #006688;" onclick="playGacha('bits', 100)">
@@ -634,6 +696,51 @@
         }
         isPulling = false;
     });
+function openPrizes() {
+    document.getElementById('prizesOverlay').style.display = 'block';
+    const container = document.getElementById('prizesData');
+
+    // GASからデータを取得（※自分のGASのURLに書き換えてください）
+    fetch('あなたのGASのURL?action=getGachaList')
+        .then(res => res.json())
+        .then(data => {
+            let html = "";
+            // ガチャIDごとにグループ化して表示
+            const gachaIds = [1, 2, 3, 100, 500, 1000, 5000]; // 存在するIDをリストアップ
+            
+            gachaIds.forEach(id => {
+                const items = data.filter(item => item.id == id);
+                if (items.length > 0) {
+                    let title = id + " ガチャ";
+                    if(id > 99) title = id + "円相当ガチャ";
+                    html += `<div class="gacha-title">✨ ${title}</div>`;
+                    
+                    items.forEach(item => {
+                        let rarityClass = "";
+                        if (item.name.includes("SSR")) rarityClass = "ssr";
+                        else if (item.name.includes("SR")) rarityClass = "sr";
+                        
+                        html += `
+                            <div class="prize-row ${rarityClass}">
+                                <span>${item.name}</span>
+                            </div>`;
+                    });
+                }
+            });
+            container.innerHTML = html;
+        })
+        .catch(err => {
+            container.innerHTML = "データの取得に失敗しました。";
+        });
+}
+
+function closePrizes() {
+    document.getElementById('prizesOverlay').style.display = 'none';
+}
+
+
+
+    
 </script>
 </body>
 </html>

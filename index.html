@@ -178,24 +178,44 @@
     cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* 全画面の背景 */
-.prizes-overlay {background: #fff
-    display: none; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%; background: rgba(0,0,0,0.9);
-    z-index: 9999; backdrop-filter: blur(10px);
+/* 最初は画面に表示しない設定 */
+.prizes-overlay {
+  display: none; /* JSの display='flex' で上書きされます */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); /* 背景を暗くして目立たせる */
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 表示する時だけこのクラスをJSでつける、もしくは .style.display = 'flex' にする */
+.prizes-overlay.active {
+  display: flex;
 }
 
 /* 景品画面の本体 */
 .prizes-content {
-    width: 90%; max-width: 400px; height: 80vh;
-    margin: 10vh auto; background: rgba(255, 255, 255, 0.1);
-    border: 2px solid #ffb347; border-radius: 25px;
-    display: flex; flex-direction: column; overflow: hidden;
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  border-radius: 15px;
+  overflow-y: auto; /* 中身が長い時にスクロールできるようにする */
+  padding: 20px;
+  position: relative;
 }
 
 .prizes-header {
-    padding: 15px; background: rgba(255,255,255,0.1);
-    display: flex; justify-content: space-between; align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f0f4f8;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .prizes-list-container {
@@ -203,7 +223,14 @@
 }
 
 .close-overlay {
-    background: none; border: none; color: white; font-size: 30px; cursor: pointer;
+  background: #eee;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  line-height: 30px;
 }
 
 /* 景品ごとの見た目 */
@@ -398,7 +425,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyVe0psX2AM3WeEKfYoo6YRlDnsgQfkwTR35c5FfRWT_XB7xgqkPSUngs4628rDrChk/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyD7A3I3HWLGk0Nw2OsmmiNxh_S6TrAnW2hT_XImzaupRXDvs8KnuyHLD7zpAhi8bNh/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -734,9 +761,10 @@
 function closePrizes() {
     document.getElementById('prizesOverlay').style.display = 'none';
 }
+
     
 </script>
-    <div id="prizesOverlay" class="prizes-overlay">
+    <div id="prizesOverlay" class="prizes-overlay"　style="display: none;">
   <div class="prizes-content">
     <div class="prizes-header">
       <h3>ガチャ景品ラインナップ</h3>

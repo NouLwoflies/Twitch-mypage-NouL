@@ -672,9 +672,9 @@
         return { level: calculatedLevel, current: currentTotal, next: 10000 };
     }
 
-async function playGacha(val) {
+async function playGacha(type, id) {
     if (!loginID) { alert("先にログインしてください！"); return; }
-    
+    const val = id || type;
     // --- コスト確認 ---
     if (val === 100) {
         if (!confirm(`💎 100 クリスタルを消費してガチャを引きますか？`)) return;

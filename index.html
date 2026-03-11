@@ -280,7 +280,7 @@
                             </div>
                             <div class="exp-outline"><div id="exp-bar" class="exp-fill"></div></div>
                         </div>
-                        <button onclick="playGacha('login')" class="login-btn" style="background: #ff8c00;">🎁 1日1回ログインガチャ</button>
+                        <button onclick="playGacha('4')" class="login-btn" style="background: #ff8c00;">🎁 1日1回ログインガチャ</button>
                     </div>
                 </div>
             </div>
@@ -628,34 +628,35 @@
         return { level: calculatedLevel, current: currentTotal, next: 10000 };
     }
 
-  async function playGacha(mode, val = 0) {
-        if (!loginID) { alert("先にログインしてください！"); return; }
-        
-        // --- 1. コスト確認とユーザーへの確認 ---
-        if (mode === 'bits') {
-            const costMapping = { 100: 100, 500: 1000 }; // 100円=100, 500円=1000
-            const cost = costMapping[val];
-            if (!confirm(`💎 ${cost} クリスタルを消費してガチャを引きますか？`)) return;
-        }
-
-        // --- 2. クエリパラメータの構築 ---
-        // ログインガチャ(mode='login')の場合も gachaType=0 として送信する
-        let gType = (mode === 'login') ? 0 : val;
-        let query = `?user=${encodeURIComponent(loginID)}&type=gacha&gachaType=${gType}`;
-
-        try {
-            const res = await fetch(GAS_URL + query);
-            const msg = await res.text();
-            alert(msg);
-            
-            // 成功時のみリロード（「今日はもう」「足りない」などはリロードしない）
-            if (!msg.includes("今日はもう") && !msg.includes("不足") && !msg.includes("エラー")) {
-                location.reload();
-            }
-        } catch (e) { 
-            alert("通信エラーが発生しました。"); 
-        }
+async function playGacha(val) {
+    if (!loginID) { alert("先にログインしてください！"); return; }
+    
+    // --- コスト確認 ---
+    if (val === 100) {
+        if (!confirm(`💎 100 クリスタルを消費してガチャを引きますか？`)) return;
+    } else if (val === 500) {
+        if (!confirm(`💎 1000 クリスタルを消費してガチャを引きますか？`)) return;
+    } else if (val === 4) {
+        // ログインガチャは確認なし、または専用メッセージ
+        if (!confirm(`ログインガチャを引きますか？`)) return;
     }
+
+    // --- クエリパラメータの構築 ---
+    // valがそのままgachaType（4, 100, 500など）になります
+    let query = `?user=${encodeURIComponent(loginID)}&type=gacha&gachaType=${val}`;
+
+    try {
+        const res = await fetch(GAS_URL + query);
+        const msg = await res.text();
+        alert(msg);
+        
+        if (!msg.includes("今日はもう") && !msg.includes("不足") && !msg.includes("エラー")) {
+            location.reload();
+        }
+    } catch (e) { 
+        alert("通信エラーが発生しました。"); 
+    }
+}
     function callTier1() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 1); } else { alert("足りません"); } }
     function callTier2() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
     function callTier3() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }

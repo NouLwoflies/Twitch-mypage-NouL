@@ -727,6 +727,13 @@ async function openPrizes() {
             container.innerHTML = "景品データがありません。";
             return;
         }
+        const formattedData = data.map(item => {
+            const keys = Object.keys(item);
+            return {
+                gachaType: item[keys[0]], // 1列目 (gacha)
+                prizeName: item[keys[1]]  // 2列目 (result)
+            };
+        });
 
         let html = "";
         

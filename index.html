@@ -470,7 +470,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbz9HI5suUDIUwioubQGjoqbLy_50yfb2Wd6vbCD36JbpAd6PlNgUHNMSd-C1lDhODf5/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyV28v7EmqyJ68newzPgrW-E2JeZoC77GdNy-zekICbVOlglZUcP0lew-ysvSbUoMKF/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -681,7 +681,7 @@ async function playGacha(type, id) {
     const val = id || type;
     // --- コスト確認 ---
     if (val === 100) {
-        if (!confirm(`💎 100 クリスタルを消費してガチャを引きますか？`)) return;
+        if (!confirm(`💎 200 クリスタルを消費してガチャを引きますか？`)) return;
     } else if (val === 500) {
         if (!confirm(`💎 1000 クリスタルを消費してガチャを引きますか？`)) return;
     } else if (val === 4) {

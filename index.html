@@ -806,7 +806,9 @@ async function playGacha(type, id) {
             else if(type == 100) title = "100円ガチャ (100クリスタル)";
             else if(type == 500) title = "500円ガチャ (1000クリスタル)";
             else if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " 最前列ガチャ";
-            else if(type == 11 || type == 12 || type == 13) title = "Tier " + type + " 見守り隊ガチャ";
+            else if(type == 11) title = "Tier 1 見守り隊ガチャ";
+            else if(type == 12) title = "Tier 2 見守り隊ガチャ";
+            else if(type == 13) title = "Tier 3 見守り隊ガチャ";
             else return; 
 
             html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50; display:flex; justify-content:space-between;">

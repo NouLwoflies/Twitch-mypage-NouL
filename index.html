@@ -726,50 +726,67 @@
     });
 // 景品一覧表示
     async function openPrizes() {
-        const overlay = document.getElementById('prizesOverlay');
-        const container = document.getElementById('prizesData');
-        overlay.style.display = 'flex';
-        container.innerHTML = '<p style="text-align:center; padding:20px;">読み込み中...</p>';
+    const overlay = document.getElementById('prizesOverlay');
+    const container = document.getElementById('prizesData');
+    overlay.style.display = 'flex';
+    container.innerHTML = '<p style="text-align:center; padding:20px;">読み込み中...</p>';
+    
+    try {
+        const url = `${GAS_URL}?type=getGachaList`;
+        const res = await fetch(url);
+        const data = await res.json();
         
-        try {
-            const url = `${GAS_URL}?type=getGachaList`;
-            const res = await fetch(url);
-            const data = await res.json();
-            
-            if (!data || data.length === 0) {
-                container.innerHTML = "景品データがありません。";
-                return;
-            }
-
-            let html = "";
-            const gachaTypes = [...new Set(data.map(item => item.gacha))].sort((a, b) => a - b);
-            
-            gachaTypes.forEach(type => {
-                const items = data.filter(item => item.gacha == type);
-                let title = "";
-                
-                // 表示用タイトルの判定
-                if(type == 0) title = "1日1回 ログインガチャ";
-                else if(type == 100) title = "100円ガチャ (100クリスタル)";
-                else if(type == 500) title = "500円ガチャ (1000クリスタル)";
-                else if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";
-                else return; // 1000, 5000 など未定義のIDは表示しない
-
-                html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50;">🎁 ${title}</div>`;
-                
-                items.forEach(item => {
-                    let prizeName = item.result || "名称未設定";
-                    let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem;";
-                    if(prizeName.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
-                    else if(prizeName.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
-                    html += `<div style="${style}">${prizeName}</div>`;
-                });
-            });
-            container.innerHTML = html;
-        } catch (e) {
-            container.innerHTML = "データの取得に失敗しました。";
+        if (!data || data.length === 0) {
+            container.innerHTML = "景品データがありません。";
+            return;
         }
+
+        let html = "";
+        const gachaTypes = [...new Set(data.map(item => item.gacha))].sort((a, b) => a - b);
+        
+        gachaTypes.forEach(type => {
+            const items = data.filter(item => item.gacha == type);
+            
+            // --- そのガチャ種別の合計重みを計算 ---
+            const totalWeight = items.reduce((sum, item) => sum + Number(item.weight || 0), 0);
+            
+            let title = "";
+            if(type == 0) title = "1日1回 ログインガチャ";
+            else if(type == 100) title = "100円ガチャ (100クリスタル)";
+            else if(type == 500) title = "500円ガチャ (1000クリスタル)";
+            else if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";
+            else return; 
+
+            html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50; display:flex; justify-content:space-between;">
+                        <span>🎁 ${title}</span>
+                        <span style="font-size:0.7rem; color:#666;">Total: ${totalWeight}</span>
+                     </div>`;
+            
+            items.forEach(item => {
+                let prizeName = item.result || "名称未設定";
+                let weight = Number(item.weight || 0);
+                // --- 確率(%)を計算 (小数点第1位まで) ---
+                let percent = totalWeight > 0 ? ((weight / totalWeight) * 100).toFixed(1) : 0;
+                
+                let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center;";
+                
+                if(prizeName.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
+                else if(prizeName.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
+                
+                html += `
+                    <div style="${style}">
+                        <span>${prizeName}</span>
+                        <span style="font-family:monospace; color:#888; font-size:0.75rem;">${percent}%</span>
+                    </div>`;
+            });
+        });
+        
+        container.innerHTML = html;
+    } catch (e) {
+        console.error("ラインナップ取得エラー:", e);
+        container.innerHTML = "データの取得に失敗しました。";
     }
+}
 function closePrizes() {
     document.getElementById('prizesOverlay').style.display = 'none';
 }

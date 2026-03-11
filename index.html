@@ -727,35 +727,27 @@ async function openPrizes() {
             container.innerHTML = "景品データがありません。";
             return;
         }
-        const formattedData = data.map(item => {
-            const keys = Object.keys(item);
-            return {
-                gachaType: item[keys[0]], // 1列目 (gacha)
-                prizeName: item[keys[1]]  // 2列目 (result)
-            };
-        });
 
         let html = "";
         
-        // 1. スプレッドシートの「gacha」列の値を基準に種類を抽出
-        const gachaTypes = [...new Set(data.map(item => item.gacha))].sort((a, b) => a - b);
+        // GASの「gachaId」という名前に合わせて種類を抽出
+        const gachaTypes = [...new Set(data.map(item => item.gachaId))].filter(t => t !== "undefined").sort((a, b) => a - b);
         
         gachaTypes.forEach(type => {
-            // 2. そのガチャ種類に属するアイテムをフィルタリング
-            const items = data.filter(item => item.gacha == type);
+            // GASの「gachaId」でフィルタリング
+            const items = data.filter(item => item.gachaId == type);
             
             let title = type + " ガチャ";
-            if(type == 100 || type == 500) title = type + "円ガチャ";
-            if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";
+            if(type == "100" || type == "500") title = type + "円ガチャ";
+            if(type == "1" || type == "2" || type == "3") title = "Tier " + type + " かけらガチャ";
 
             html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50;">💎 ${title}</div>`;
             
             items.forEach(item => {
-                // 3. スプレッドシートの「result」列の値を景品名として表示
-                let prizeName = item.result || "名称未設定";
+                // GASの「name」という名前を景品名として表示
+                let prizeName = item.name || "名称不明";
                 let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem;";
                 
-                // レアリティによる色付け
                 if(prizeName.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
                 else if(prizeName.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
                 
@@ -765,11 +757,10 @@ async function openPrizes() {
         
         container.innerHTML = html;
     } catch (e) {
-        console.error("ラインナップ取得エラー:", e);
-        container.innerHTML = "データの取得に失敗しました。GASのデプロイやシート名を確認してください。";
+        console.error("取得エラー:", e);
+        container.innerHTML = "データの取得に失敗しました。";
     }
 }
-
 function closePrizes() {
     document.getElementById('prizesOverlay').style.display = 'none';
 }

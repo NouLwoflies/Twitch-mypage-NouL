@@ -734,7 +734,7 @@
         const gachaTypes = [...new Set(data.map(item => item.gachaId))].sort((a, b) => a - b);
         
         gachaTypes.forEach(type => {
-            const items = data.filter(item => item.gachaId === type);
+            const items = data.filter(item => item.gachaId == type);
             // 表示名の変換（100→200円ガチャ、1→Tier1かけらガチャなど）
             let title = type + " ガチャ";
             if(type == 100 || type == 500) title = type + "円ガチャ";

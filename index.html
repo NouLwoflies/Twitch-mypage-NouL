@@ -470,7 +470,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzbywlILKJMgUdBxf3rLm2oZl5q2kwHMcoLoHbPxWTbx2jF6HPtcXfxlrmDSMjQ1uw/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbz_kDlCJcaO7fw9eQRRZignWKNOrSCRMEx5xSM5hX6_4lQsLquuhyRxM6BROsU4huV4/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -639,20 +639,42 @@
         } catch (e) { console.error("Sheet Data Error", e); }
     }
 
-    async function claimReward(targetLv) {
-        if(!confirm(`Lv.${targetLv} の報酬を受け取りますか？`)) return;
-        const url = `${GAS_URL}?user=${loginID}&type=claimReward&targetLv=${targetLv}`;
-        try {
-            const res = await fetch(url);
-            const text = await res.text();
-            if (text.startsWith("SUCCESS")) {
-                const parts = text.split(":");
+ async function claimReward(targetLv) {
+    if(!confirm(`Lv.${targetLv} の報酬を受け取りますか？`)) return;
+    
+    // loginIDが空でないか念のためチェック
+    if(!loginID) { alert("ログインが必要です"); return; }
+
+    const url = `${GAS_URL}?user=${encodeURIComponent(loginID)}&type=claimReward&targetLv=${targetLv}`;
+    
+    try {
+        const res = await fetch(url);
+        const text = await res.text();
+        
+        if (text.startsWith("SUCCESS")) {
+            const parts = text.split(":");
+            const rewardType = parts[1]; // fragment or item
+            const rewardUrl = parts[2];  // URL
+            
+            if (rewardType === "fragment") {
+                alert("報酬のクリスタルを受け取りました！");
+            } else if (rewardType === "item") {
+                alert("アイテム報酬をアンロックしました！");
+                if (rewardUrl) window.open(rewardUrl, '_blank');
+            } else {
                 alert("報酬を受け取りました！");
-                if (parts[1] === "item" && parts[2]) window.open(parts[2], '_blank');
-                fetchSheetData(loginID);
-            } else { alert("エラー: " + text); }
-        } catch (e) { alert("通信エラーが発生しました"); }
+            }
+
+            // 最後にデータを再読み込みして、表示を「受取済み」や「見る」に更新する
+            fetchSheetData(loginID);
+            
+        } else { 
+            alert("エラー: " + text); 
+        }
+    } catch (e) { 
+        alert("通信エラーが発生しました"); 
     }
+}
 
     function getLevelProgress(totalExp) {
         const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];

@@ -425,7 +425,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwREjZTdj9ZiKZbq06oKT25Ud_nNlWPqePcukYyDbQA-p87Ee96miq5C0w6Lpis_wVP/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxBUHYcsy4HXPVBtJ1FtyCs2f2xcfuVQhd7bGL_qvh8do8niLSazYrlMX7h1qm8S56o/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -730,24 +730,25 @@ async function openPrizes() {
 
         let html = "";
         
-        // GASの「gachaId」という名前に合わせて種類を抽出
-        const gachaTypes = [...new Set(data.map(item => item.gachaId))].filter(t => t !== "undefined").sort((a, b) => a - b);
+        // 1. スプレッドシートの「gacha」列の値を基準に種類を抽出
+        const gachaTypes = [...new Set(data.map(item => item.gacha))].sort((a, b) => a - b);
         
         gachaTypes.forEach(type => {
-            // GASの「gachaId」でフィルタリング
-            const items = data.filter(item => item.gachaId == type);
+            // 2. そのガチャ種類に属するアイテムをフィルタリング
+            const items = data.filter(item => item.gacha == type);
             
             let title = type + " ガチャ";
-            if(type == "100" || type == "500") title = type + "円ガチャ";
-            if(type == "1" || type == "2" || type == "3") title = "Tier " + type + " かけらガチャ";
+            if(type == 100 || type == 500) title = type + "円ガチャ";
+            if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";
 
             html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50;">💎 ${title}</div>`;
             
             items.forEach(item => {
-                // GASの「name」という名前を景品名として表示
-                let prizeName = item.name || "名称不明";
+                // 3. スプレッドシートの「result」列の値を景品名として表示
+                let prizeName = item.result || "名称未設定";
                 let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem;";
                 
+                // レアリティによる色付け
                 if(prizeName.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
                 else if(prizeName.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
                 
@@ -757,8 +758,8 @@ async function openPrizes() {
         
         container.innerHTML = html;
     } catch (e) {
-        console.error("取得エラー:", e);
-        container.innerHTML = "データの取得に失敗しました。";
+        console.error("ラインナップ取得エラー:", e);
+        container.innerHTML = "データの取得に失敗しました。GASのデプロイやシート名を確認してください。";
     }
 }
 function closePrizes() {

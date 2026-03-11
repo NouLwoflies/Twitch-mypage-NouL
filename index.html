@@ -751,7 +751,7 @@
             const totalWeight = items.reduce((sum, item) => sum + Number(item.weight || 0), 0);
             
             let title = "";
-            if(type == 0) title = "1日1回 ログインガチャ";
+            if(type == 4) title = "1日1回 ログインガチャ";
             else if(type == 100) title = "100円ガチャ (100クリスタル)";
             else if(type == 500) title = "500円ガチャ (1000クリスタル)";
             else if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";

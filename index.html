@@ -628,22 +628,34 @@
         return { level: calculatedLevel, current: currentTotal, next: 10000 };
     }
 
-    async function playGacha(mode, val = 0) {
+  async function playGacha(mode, val = 0) {
         if (!loginID) { alert("先にログインしてください！"); return; }
+        
+        // --- 1. コスト確認とユーザーへの確認 ---
         if (mode === 'bits') {
-            const costMapping = { 100: 200, 500: 1000};
-            const cost = costMapping[val] || val;
+            const costMapping = { 100: 100, 500: 1000 }; // 100円=100, 500円=1000
+            const cost = costMapping[val];
             if (!confirm(`💎 ${cost} クリスタルを消費してガチャを引きますか？`)) return;
         }
-        let query = `?user=${encodeURIComponent(loginID)}&type=${mode === 'login' ? 'login' : mode}&gachaType=${val}`;
+
+        // --- 2. クエリパラメータの構築 ---
+        // ログインガチャ(mode='login')の場合も gachaType=0 として送信する
+        let gType = (mode === 'login') ? 0 : val;
+        let query = `?user=${encodeURIComponent(loginID)}&type=gacha&gachaType=${gType}`;
+
         try {
             const res = await fetch(GAS_URL + query);
             const msg = await res.text();
             alert(msg);
-            if (!msg.includes("今日はもう") && !msg.includes("足りない")) location.reload();
-        } catch (e) { alert("通信エラーが発生しました。"); }
+            
+            // 成功時のみリロード（「今日はもう」「足りない」などはリロードしない）
+            if (!msg.includes("今日はもう") && !msg.includes("不足") && !msg.includes("エラー")) {
+                location.reload();
+            }
+        } catch (e) { 
+            alert("通信エラーが発生しました。"); 
+        }
     }
-
     function callTier1() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 1); } else { alert("足りません"); } }
     function callTier2() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
     function callTier3() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
@@ -712,56 +724,52 @@
         }
         isPulling = false;
     });
-async function openPrizes() {
-    const overlay = document.getElementById('prizesOverlay');
-    const container = document.getElementById('prizesData');
-    overlay.style.display = 'flex';
-    container.innerHTML = '<p style="text-align:center; padding:20px;">読み込み中...</p>';
-    
-    try {
-        // userパラメータをあえて含めない（GAS側でスキップさせるため）
-        const url = `${GAS_URL}?type=getGachaList`;
-        const res = await fetch(url);
-        const data = await res.json();
+// 景品一覧表示
+    async function openPrizes() {
+        const overlay = document.getElementById('prizesOverlay');
+        const container = document.getElementById('prizesData');
+        overlay.style.display = 'flex';
+        container.innerHTML = '<p style="text-align:center; padding:20px;">読み込み中...</p>';
         
-        if (!data || data.length === 0) {
-            container.innerHTML = "景品データがありません。";
-            return;
-        }
+        try {
+            const url = `${GAS_URL}?type=getGachaList`;
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            if (!data || data.length === 0) {
+                container.innerHTML = "景品データがありません。";
+                return;
+            }
 
-        let html = "";
-        
-        // 重複を除いたガチャ種別（gacha列）を抽出してソート
-        const gachaTypes = [...new Set(data.map(item => item.gacha))].sort((a, b) => a - b);
-        
-        gachaTypes.forEach(type => {
-            const items = data.filter(item => item.gacha == type);
+            let html = "";
+            const gachaTypes = [...new Set(data.map(item => item.gacha))].sort((a, b) => a - b);
             
-            let title = type + " ガチャ";
-            
-            if(type == 100) title = "100円ガチャ (100クリスタル)";
-            if(type == 500) title = "500円ガチャ (1000クリスタル)";
-            if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";
+            gachaTypes.forEach(type => {
+                const items = data.filter(item => item.gacha == type);
+                let title = "";
+                
+                // 表示用タイトルの判定
+                if(type == 0) title = "1日1回 ログインガチャ";
+                else if(type == 100) title = "100円ガチャ (100クリスタル)";
+                else if(type == 500) title = "500円ガチャ (1000クリスタル)";
+                else if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " かけらガチャ";
+                else return; // 1000, 5000 など未定義のIDは表示しない
 
-            html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50;">💎 ${title}</div>`;
-            
-            items.forEach(item => {
-                let prizeName = item.result || "名称未設定";
-                let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem;";
+                html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50;">🎁 ${title}</div>`;
                 
-                if(prizeName.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
-                else if(prizeName.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
-                
-                html += `<div style="${style}">${prizeName}</div>`;
+                items.forEach(item => {
+                    let prizeName = item.result || "名称未設定";
+                    let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem;";
+                    if(prizeName.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
+                    else if(prizeName.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
+                    html += `<div style="${style}">${prizeName}</div>`;
+                });
             });
-        });
-        
-        container.innerHTML = html;
-    } catch (e) {
-        console.error("ラインナップ取得エラー:", e);
-        container.innerHTML = "データの取得に失敗しました。";
+            container.innerHTML = html;
+        } catch (e) {
+            container.innerHTML = "データの取得に失敗しました。";
+        }
     }
-}
 function closePrizes() {
     document.getElementById('prizesOverlay').style.display = 'none';
 }

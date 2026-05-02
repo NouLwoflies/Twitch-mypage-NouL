@@ -478,7 +478,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbz4ekTIhC_rDBDVVo8DbYakFGp4BLWgQT_tcfy1hRZ8upFRnFZHWTmzaXfgQ7MvQyM3/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxK4Q4TWC9ubqzBWJfq04kD7xt3z2DHx4MTfyyf0B_bCW9jCxx5353ksDP00ADtsEm_/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -561,7 +561,7 @@
             const res = await fetch(url);
             const msg = await res.text();
             alert(msg);
-            if (msg.includes("SUCCESS")) location.reload();
+            if (msg.includes("購入完了")) location.reload();
         } catch (e) { alert("通信エラー"); }
     }
 

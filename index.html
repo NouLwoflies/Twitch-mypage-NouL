@@ -246,6 +246,21 @@
 
 .ssr { color: #ff4747; font-weight: bold; text-shadow: 0 0 5px rgba(255,71,71,0.5); }
 .sr  { color: #ffb347; font-weight: bold; }
+/* ぐるぐるの見た目（CSS） */
+.loader {
+  border: 5px solid #333; /* 背景色（ダーク） */
+  border-top: 5px solid #ff8c00; /* 動く部分の色（オレンジ） */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
     </style>
 </head>
 <body>
@@ -292,6 +307,11 @@
                  <button onclick="openPrizes()" class="view-prizes-btn">
   🎁 全ガチャの景品一覧を見る
 </button>
+                            <!-- ローディング画面（最初は非表示） -->
+<div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+  <div class="loader"></div>
+  <p style="color: #bf94ff; font-weight: bold;">処理中...</p> <!-- あなたの好きな「紫」系の色にしています -->
+</div>
                 <div class="card-body">
                    
                     <div class="gacha-box" style="border-color: #cd7f32; background: #fffaf5;">
@@ -362,7 +382,13 @@
         <section class="page-section">
     <div class="card">
         <h1>🛒 ショップ 🛒</h1>
+                    <!-- ローディング画面（最初は非表示） -->
+<div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+  <div class="loader"></div>
+  <p style="color: #bf94ff; font-weight: bold;">処理中...</p> <!-- あなたの好きな「紫」系の色にしています -->
+</div>
         <div class="card-body">
+            
             
             <div class="shop-item-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
                 <div class="shop-box" style="border: 2px solid #ffd700; background: #fffdf0; padding: 10px; border-radius: 12px; text-align: center;">
@@ -478,7 +504,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxOG282tZ3xZwV9scka-Ijnh5MoQWOH1nDp7vEmy6YkZxBJ40lO3r5752ONPYDR4YDs/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzc3xdOaLZDBLfPDs7oRyiL0Uy3-Ittzlh9qF_Rv_8EQXXCiP8lUw7C70J0-FLRVQM6/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -684,6 +710,48 @@
     }
 }
 
+
+    function drawGacha(gachaId) {
+  // 1. ボタンを無効化（連打防止）し、ぐるぐるを表示
+  const gachaButton = document.getElementById("gachaButton");
+  const loadingDiv = document.getElementById("loading");
+  const resultDiv = document.getElementById("result");
+
+  gachaButton.disabled = true;
+  loadingDiv.style.display = "block";
+  resultDiv.innerText = ""; // 前の結果をクリア
+
+  // 2. GAS（サーバー）に通信
+  // URLにパラメータ（IDやユーザー名など）をくっつけて送る形にしています
+  const fetchUrl = `${GAS_URL}?id=${gachaId}&user=【リスナー名】`; 
+
+  fetch(fetchUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('ネットワーク応答が正常ではありません');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // 3. 結果が返ってきたら、ぐるぐるを隠して結果を表示
+      loadingDiv.style.display = "none";
+      gachaButton.disabled = false;
+
+      if (data.error) {
+        resultDiv.innerText = "エラー: " + data.error;
+      } else {
+        // GAS側で返している「item」を表示
+        resultDiv.innerText = "結果： " + data.item;
+      }
+    })
+    .catch(error => {
+      // エラー時もぐるぐるを消して、ボタンを戻す
+      loadingDiv.style.display = "none";
+      gachaButton.disabled = false;
+      console.error("通信エラー:", error);
+      resultDiv.innerText = "通信に失敗しました。";
+    });
+}
     function getLevelProgress(totalExp) {
         const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
         let currentTotal = totalExp;

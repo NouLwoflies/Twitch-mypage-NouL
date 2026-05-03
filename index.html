@@ -504,7 +504,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwJT0I_gJjsC2f1OC28T_skWMsYBpP0Y0Ou9wdjMgdufYoL-qOISNA3jS5iUpqY6VyX/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyBgwwHv0g-R0uG2b7TjpfIkYdnVTOk5GEIqo2YSXofiCZEjoOPRZInA2mBXJW7FXni/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -810,25 +810,44 @@ async function playGacha(type, id) {
     function callTier11() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 11); } else { alert("足りません"); } }
     function callTier12() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 12); } else { alert("足りません"); } }
     function callTier13() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 13); } else { alert("足りません"); } }
-    async function fetchLogs() {
-        try {
-            const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
-            const txt = await res.text();
-            const logs = txt.split('\n')
-                .map(r => r.split(',').map(c => c.replace(/"/g,'')))
-                .filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase())
-                .reverse() 
-                .slice(0, 10);
+    
+  async function fetchLogs() {
+    try {
+        const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
+        const txt = await res.text();
+        
+        const rows = txt.split(/\r?\n/);
+        const logs = rows
+            .map(row => {
+                const matches = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+                return matches ? matches.map(c => c.replace(/^"|"$/g, '')) : [];
+            })
+            .filter(r => r.length > 2 && r[2] && r[2].toLowerCase() === loginID.toLowerCase())
+            .reverse() 
+            .slice(0, 10);
+            
             let html = "";
-            logs.forEach(l => {
-                html += `
-                    <div style="border-bottom: 1px solid #eee; padding: 12px 5px; display: flex; flex-direction: column; gap: 4px;">
-                      <div style="font-size: 0.65rem; color: #999; font-weight: bold;">📅 ${l[0]}</div>
-                      <div style="font-size: 0.95rem; color: #2c3e50; font-weight: 800;">${l[4]}</div>
-                    </div>`;
-            });    
-            document.getElementById('log-content').innerHTML = html || "履歴はありません";
-        } catch (e) { console.error("Log fetch error"); }
+        logs.forEach(l => {
+            const date = l[0] || "";
+            const itemName = l[4] || ""; // E列：アイテム名（1,000円分の差し入れ等）
+            const memo = l[6] || "";     // G列：入力内容（コーヒー等）
+
+            // メモがある場合は、( ) で囲って表示する
+            const displayContent = memo ? `${itemName} <span style="font-size: 0.8rem; color: #666; font-weight: normal;">(${memo})</span>` : itemName;
+
+            html += `
+                <div style="border-bottom: 1px solid #eee; padding: 12px 5px; display: flex; flex-direction: column; gap: 4px;">
+                  <div style="font-size: 0.65rem; color: #999; font-weight: bold;">📅 ${date}</div>
+                  <div style="font-size: 0.95rem; color: #2c3e50; font-weight: 800; line-height: 1.4;">
+                    ${displayContent}
+                  </div>
+                </div>`;
+        });    
+
+        document.getElementById('log-content').innerHTML = html || "履歴はありません";
+    } catch (e) { 
+        console.error("Log fetch error:", e); 
+    } 
     }
 
     /* --- 引っ張って更新のロジック --- */

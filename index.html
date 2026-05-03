@@ -586,6 +586,7 @@
         try {
             const res = await fetch(url);
             const msg = await res.text();
+         
             alert(msg);
             if (msg.includes("購入完了")) location.reload();
         } catch (e) { alert("通信エラー"); }

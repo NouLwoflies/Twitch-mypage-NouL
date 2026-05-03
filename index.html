@@ -504,7 +504,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyPJodH1MEZzlovHr2pdCrX4u1Uh-SaVRISEwx1ebaC7-2V8eavGfmgeqhGClt_dFVC/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxpq4c1o4BvRO7a3_16VAi-nuY9d6DQjqtqi-pSI0JXbhZwU5bbAfP9jYQ0UtTw3bQA/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -873,60 +873,56 @@ async function playGacha(type, id) {
         }
         isPulling = false;
     });
-// 景品一覧表示
-// 修正後
+// 景品一覧表示の完成版
 async function openPrizes() {
+    // 1. 画面を表示状態にする
     document.getElementById('prizesOverlay').style.display = 'flex';
-    const container = document.getElementById('prizesContainer');
-    container.innerHTML = '<div class="loader"></div><p>読み込み中...</p>'; // ぐるぐるを出す
-    
+    // 2. データを流し込む場所を特定（IDは HTMLと合わせる）
+    const container = document.getElementById('prizesData'); 
+    container.innerHTML = '<div style="text-align:center; padding:20px;">読み込み中...</div>';
+
     try {
-        await fetchPrizes(); // データの取得が終わるまでしっかり待つ
-    } catch (e) {
-        container.innerHTML = '<p>読み込みに失敗しました。</p>';
-    }
-}
-    
-    try {
+        // 3. GASから景品データを取ってくる
         const url = `${GAS_URL}?type=getGachaList`;
         const res = await fetch(url);
         const data = await res.json();
-        
+
         if (!data || data.length === 0) {
             container.innerHTML = "景品データがありません。";
             return;
         }
 
         let html = "";
+        // ガチャの種類（100, 500など）を整理
         const gachaTypes = [...new Set(data.map(item => item.gacha))].sort((a, b) => a - b);
         
         gachaTypes.forEach(type => {
             const items = data.filter(item => item.gacha == type);
-            
-            // --- そのガチャ種別の合計重みを計算 ---
+            // 合計の重みを計算
             const totalWeight = items.reduce((sum, item) => sum + Number(item.weight || 0), 0);
             
             let title = "";
             if(type == 4) title = "1日1回 ログインガチャ";
-            else if(type == 100) title = "100円ガチャ (100クリスタル)";
-            else if(type == 500) title = "500円ガチャ (1000クリスタル)";
+            else if(type == 100) title = "100円ガチャ (200クリスタル)"; // コスト修正反映
+            else if(type == 500) title = "500円ガチャ (1000クリスタル)"; // コスト修正反映
             else if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " 最前列ガチャ";
             else if(type == 11) title = "Tier 1 見守り隊ガチャ";
             else if(type == 12) title = "Tier 2 見守り隊ガチャ";
             else if(type == 13) title = "Tier 3 見守り隊ガチャ";
             else return; 
 
-            html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50; display:flex; justify-content:space-between;">
+            // ヘッダー部分のHTML生成
+            html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50;">
                         <span>🎁 ${title}</span>
                      </div>`;
             
+            // 各景品のHTML生成（確率計算付き）
             items.forEach(item => {
                 let prizeName = item.result || "名称未設定";
                 let weight = Number(item.weight || 0);
-                // --- 確率(%)を計算 (小数点第1位まで) ---
                 let percent = totalWeight > 0 ? ((weight / totalWeight) * 100).toFixed(1) : 0;
                 
-                let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center;";
+                let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; background:#fff;";
                 
                 if(prizeName.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
                 else if(prizeName.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
@@ -939,7 +935,9 @@ async function openPrizes() {
             });
         });
         
+        // 4. 完成したHTMLを画面に表示
         container.innerHTML = html;
+
     } catch (e) {
         console.error("ラインナップ取得エラー:", e);
         container.innerHTML = "データの取得に失敗しました。";

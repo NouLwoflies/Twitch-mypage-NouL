@@ -504,7 +504,7 @@
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxb0CmECjs9g2E-GG1RAInM22myQvAa189qdoyurgsA-9L8FwfnTxSDQ4foQ2sXUn3o/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyPJodH1MEZzlovHr2pdCrX4u1Uh-SaVRISEwx1ebaC7-2V8eavGfmgeqhGClt_dFVC/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
@@ -874,11 +874,18 @@ async function playGacha(type, id) {
         isPulling = false;
     });
 // 景品一覧表示
-    async function openPrizes() {
-    const overlay = document.getElementById('prizesOverlay');
-    const container = document.getElementById('prizesData');
-    overlay.style.display = 'flex';
-    container.innerHTML = '<p style="text-align:center; padding:20px;">読み込み中...</p>';
+// 修正後
+async function openPrizes() {
+    document.getElementById('prizesOverlay').style.display = 'flex';
+    const container = document.getElementById('prizesContainer');
+    container.innerHTML = '<div class="loader"></div><p>読み込み中...</p>'; // ぐるぐるを出す
+    
+    try {
+        await fetchPrizes(); // データの取得が終わるまでしっかり待つ
+    } catch (e) {
+        container.innerHTML = '<p>読み込みに失敗しました。</p>';
+    }
+}
     
     try {
         const url = `${GAS_URL}?type=getGachaList`;

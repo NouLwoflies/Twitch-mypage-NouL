@@ -285,22 +285,20 @@
                         <button class="login-btn" onclick="login()">Twitch ログイン 💜</button>
                     </div>
                     <div id="status-area" style="display:none;">
-                        <!-- 会員特典エリア（名前表示の下あたりに追加） -->
-　　　　　　　　　　　　　　　　<div id="member-assets-container" style="display:none; margin: 15px 0; text-align: center;">
+                        <!-- 会員特典エリア（名前の上に配置するのがおすすめ） -->
+    <div id="member-assets-container" style="display:none; margin: 15px 0; text-align: center;">
+        <div id="card1-box" style="display:none; margin-bottom:15px;">
+            <div style="font-size: 0.6rem; color: #daa520; font-weight: 900; margin-bottom: 5px;">PREMIUM CARD #01</div>
+            <img id="display-member-card-1" src="" style="width: 100%; max-width: 300px; border-radius: 12px; border: 2px solid #ffd700; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+        </div>
+        <div id="card2-box" style="display:none; margin-bottom:5px;">
+            <div style="font-size: 0.6rem; color: #daa520; font-weight: 900; margin-bottom: 5px;">PREMIUM CARD #02</div>
+            <img id="display-member-card-2" src="" style="width: 100%; max-width: 300px; border-radius: 12px; border: 2px solid #ffd700; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+        </div>
+    </div>
+                       
     
- 　　　　　　　　　　　　　   <!-- 会員証1枚目 -->
-  　　　　　　　　　　　　　　　　  <div id="card1-box" style="display:none; margin-bottom:15px;">
-    　　　　　　　　　　　　　　　　　    <div style="font-size: 0.6rem; color: #daa520; font-weight: 900; margin-bottom: 5px;">PREMIUM CARD #01</div>
-     　　　　　　　　　　　　　　　   <img id="display-member-card-1" src="" style="width: 100%; max-width: 300px; border-radius: 12px; border: 2px solid #ffd700; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-  　　　　　　　　　　　　　  </div>
-    
-  　　　　　　　　　　　  <!-- 会員証2枚目 -->
-  　　　　　　　　　　　　　　  <div id="card2-box" style="display:none; margin-bottom:5px;">
-       　　　　　　　　　　　　　　　　　 <div style="font-size: 0.6rem; color: #daa520; font-weight: 900; margin-bottom: 5px;">PREMIUM CARD #02</div>
-       　　　　　　　　　　　　　　　 <img id="display-member-card-2" src="" style="width: 100%; max-width: 300px; border-radius: 12px; border: 2px solid #ffd700; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-　　　　　　　　　　　　　 </div>
-    
-　　　　　　　　　　　　　</div>
+　　　　　　　　　　　　
                         <div class="status-item"><span>PLAYER</span> <span id="display-name" style="font-size:1.25rem;">---</span></div>
                         <div class="status-item"><span>USER ID</span> <span id="display-id" style="font-size:0.8rem; color:#666;">---</span></div>
                         <div class="status-item"><span>RANK</span> <span id="display-rank">---</span></div>
@@ -626,12 +624,13 @@
                 // --- 【修正：会員番号 № をプレイヤー名の前につける】 ---
                 const rawName = userData[0];      // A列：名前
                 const memberNo = userData[14];    // O列：会員番号 (index 14)
-                if (memberNo && memberNo.trim() !== "") {
-                    document.getElementById('display-name').innerText = `№ ${memberNo} ${rawName}`;
-                } else {
-                    document.getElementById('display-name').innerText = rawName;
-                }
-                document.getElementById('display-name').innerText = userData[0];
+                  const displayNameElem = document.getElementById('display-name');
+
+   　　　　　　　　 if (memberNo && memberNo.trim() !== "" && memberNo !== "undefined") {
+       　　　　　　　　　　 displayNameElem.innerText = `№ ${memberNo} ${rawName}`;
+   　　　　　　　　　　　　 } else {
+     　　　　　　　　　　   displayNameElem.innerText = rawName;
+  　　　　　　　　　　　　　　  }
                 document.getElementById('display-id').innerText = "@" + userData[1];
                 document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
                 document.getElementById('display-level').innerText = userData[7];

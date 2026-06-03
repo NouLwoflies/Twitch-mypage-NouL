@@ -6,136 +6,264 @@
     <title>推し事の書</title>
     <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- 基本スタイル --- */
         html, body {
-            height: 100%; margin: 0; padding: 0; overflow: hidden;
-            position: fixed; width: 100%; overscroll-behavior-y: contain;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            overscroll-behavior-y: contain;
         }
         :root {
             --accent-orange: #ff8c00;
             --twitch-purple: #9146ff;
             --crystal-blue: #00d4ff;
-            --bg-glass: rgba(255, 255, 255, 0.9);
+            --bg-glass: rgba(255, 255, 255, 0.85);
         }
         body {
-            font-family: 'Mochiy Pop One', sans-serif;
+            margin: 0; padding: 0; font-family: 'Mochiy Pop One', sans-serif;
             background-size: cover; background-position: center; background-attachment: fixed;
             overflow: hidden; touch-action: pan-y;
         }
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(255, 255, 255, 0.4); z-index: -1;
+            pointer-events: none;
         }
-
-        /* --- インベントリ --- */
         .inventory-bar {
             position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
             width: 92%; max-width: 380px; height: 40px;
-            background: #ffffff; border: 2px solid #f0f0f0;
-            border-radius: 27px; display: flex; align-items: center;
-            justify-content: space-around; padding: 0 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); z-index: 9999; box-sizing: border-box;
+            background: #ffffff !important; border: 2px solid #f0f0f0 !important;
+            border-radius: 27px !important; display: flex !important;
+            align-items: center !important; justify-content: space-around !important;
+            padding: 0 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            z-index: 9999 !important; box-sizing: border-box;
         }
-        .inv-item { display: flex; align-items: center; gap: 4px; flex: 1; justify-content: center; }
-        .inv-item:not(:last-child) { border-right: 1px solid #f0f0f0; }
-        .inv-icon { width: 16px; height: 16px; object-fit: contain; }
+        .inv-item { display: flex !important; align-items: center !important; gap: 4px; flex: 1; justify-content: center; background: transparent !important; border: none !important; }
+        .inv-item:not(:last-child) { border-right: 1px solid #f0f0f0 !important; }
+        .inv-icon { width: 16px !important; height: 16px !important; object-fit: contain !important; display: inline-block !important; }
         .inv-val { font-size: 0.8rem; font-weight: 900; color: #2c3e50; }
 
-        /* --- メインコンテンツ --- */
         .viewport {
-            width: 100vw; height: 100vh; overflow: hidden; position: relative;
-            padding-top: 70px; padding-bottom: 100px; box-sizing: border-box;
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            position: relative;
+            padding-top: 70px; 
+            padding-bottom: 100px; 
+            box-sizing: border-box;
+            touch-action: pan-y; 
         }
         .main-wrapper {
-            display: flex; width: 600vw; height: 100%;
+            display: flex; width: 500vw; height: 100%;
             transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);
         }
         .page-section {
-            width: 100vw; height: 100%; display: flex; justify-content: center;
-            align-items: flex-start; flex-shrink: 0; box-sizing: border-box; padding: 10px 15px;
+            width: 100vw; height: 100%;
+            display: flex; justify-content: center; align-items: flex-start;
+            flex-shrink: 0; box-sizing: border-box; padding: 10px 15px;
         }
         .card {
             background: var(--bg-glass); border-radius: 25px; border: 3px solid #ffb347;
-            padding: 15px; width: 100%; max-width: 350px; height: 85%;
-            display: flex; flex-direction: column; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            position: relative; overflow: hidden;
+            padding: 12px; width: 100%; max-width: 350px;
+            height: 700px;
+            display: flex; flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1); box-sizing: border-box; position: relative;
         }
-        @media screen and (max-height: 700px) { .card { height: 90%; } }
+        /* スマホ（横幅が480px以下の時） */
+@media screen and (max-width: 480px) {
+    .card {
+        height: auto;         /* 高さを中身に合わせる */
+        max-height: 480px;    /* 最大サイズを制限して被りを防ぐ */
+        padding: 15px;        /* 余白も少し詰めるとスッキリします */
+    }
+}
+        .card h1 { font-family: 'Mochiy Pop One', sans-serif; flex-shrink: 0; margin-top: 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-bottom: 3px solid #ffb347; padding-bottom: 5px; color: #ff8c00; font-size: 1.4rem; margin-bottom: 15px; font-weight: 800; }
+        .card-body { flex-grow: 1; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-right: 10px; }
+        .card-body::-webkit-scrollbar { width: 6px; }
+        .card-body::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 10px; }
 
-        .card h1 { 
-            font-size: 1.3rem; margin: 0 0 15px; text-align: center; color: var(--accent-orange);
-            border-bottom: 3px solid #ffb347; padding-bottom: 5px; flex-shrink: 0;
+        .status-item { font-size: 0.95rem; margin: 15px 0; font-weight: 900; display: flex; flex-direction: column; align-items: flex-start; border-bottom: 1px solid #f5f5f5; padding-bottom: 8px; }
+        .status-item span:first-child { font-size: 0.6rem; color: #888; font-weight: 900; margin-bottom: 2px; }
+        #display-rank {
+            display: inline-block; font-family: 'Mochiy Pop One', sans-serif; font-weight:500; font-size: 1.5rem;
+            background: #ffd700; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(1px 1px 0px #6a5d21) drop-shadow(-1px -1px 0px #6a5d21);
+            transform: skewX(-5deg); margin-left: 5px; padding: 2px 5px;
         }
-        .card-body { flex-grow: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-right: 5px; }
+        .shop-btn-rich {
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+}
+.shop-btn-rich:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+.shop-btn-rich b {
+    font-size: 0.85rem;
+}
+        .exp-container { text-align: left; margin: 20px 0; }
+        .level-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px; }
+        #display-level { font-size: 2.2rem; font-weight: 900; color: #ff8c00; line-height: 1; }
+        .exp-outline { background: #fdf2e2; height: 14px; border-radius: 7px; overflow: hidden; }
+        .exp-fill { background: linear-gradient(to right, #ffb347, #ff4500); height: 100%; width: 0%; transition: 1.5s ease; }
 
-        /* --- ステータス --- */
-        .status-item { font-size: 0.95rem; margin-bottom: 12px; border-bottom: 1px solid #f5f5f5; padding-bottom: 5px; }
-        .status-item span:first-child { font-size: 0.6rem; color: #888; display: block; }
-        #display-rank { font-weight: bold; color: #daa520; }
-        
-        /* --- 経験値バー --- */
-        .exp-container { margin: 15px 0; }
-        .level-header { display: flex; justify-content: space-between; align-items: flex-end; }
-        #display-level { font-size: 2rem; color: var(--accent-orange); font-weight: 900; }
-        .exp-outline { background: #fdf2e2; height: 12px; border-radius: 6px; overflow: hidden; margin-top: 5px; }
-        .exp-fill { background: linear-gradient(to right, #ffb347, #ff4500); height: 100%; width: 0%; transition: width 1s ease; }
+        button { transition: all 0.1s; cursor: pointer; border: none; font-family: inherit; }
+        button:active { transform: scale(0.94); }
+        .login-btn { background: #9146ff; color: white; border-radius: 12px; padding: 14px; width: 100%; font-weight: 800; font-size: 1rem; margin-bottom: 15px; }
+        .list-item { background: white; border-radius: 15px; padding: 15px; margin-bottom: 10px; text-align: left; border: 2px solid #f0f0f0; }
+        .badge { background: var(--twitch-purple); color: white; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 900; }
+        .unlocked { border-color: var(--accent-orange); background: #fffdfa; }
+        .gacha-box { background: #fff; border: 2px solid #f0f0f0; border-radius: 20px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .gacha-title { font-size: 1rem; font-weight: 900; color: #2c3e50; margin-bottom: 10px; }
+        .draw-button { width: 100%; border-radius: 15px; padding: 12px; color: white !important; font-weight: 900; border: none; position: relative; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+        .btn-bronze { background: linear-gradient(135deg, #d2691e, #8b4513) !important; box-shadow: 0 4px 0 #5d2e0d; }
+        .btn-silver { background: linear-gradient(135deg, #bdc3c7, #7f8c8d) !important; box-shadow: 0 4px 0 #4f5b5c; }
+        .btn-gold { background: linear-gradient(135deg, #ffd700, #daa520) !important; box-shadow: 0 4px 0 #916f1b; }
 
-        /* --- ボタン・汎用 --- */
-        button { border: none; font-family: inherit; transition: 0.1s; cursor: pointer; }
-        button:active { transform: scale(0.95); }
-        button:disabled { opacity: 0.6; cursor: not-allowed; }
-        .login-btn { background: var(--twitch-purple); color: white; border-radius: 12px; padding: 12px; width: 100%; font-weight: bold; }
-        .list-item { background: white; border-radius: 12px; padding: 12px; margin-bottom: 8px; border: 2px solid #f0f0f0; }
-        
-        /* --- ガチャ --- */
-        .gacha-box { background: #fff; border: 2px solid #f0f0f0; border-radius: 15px; padding: 12px; margin-bottom: 12px; }
-        .draw-button { width: 100%; border-radius: 12px; padding: 10px; color: white; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-        .btn-bronze { background: linear-gradient(135deg, #d2691e, #8b4513); box-shadow: 0 4px 0 #5d2e0d; }
-        .btn-silver { background: linear-gradient(135deg, #bdc3c7, #7f8c8d); box-shadow: 0 4px 0 #4f5b5c; }
-        
-        /* --- ナビゲーション --- */
         .bottom-nav {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px; height: 60px;
-            background: rgba(255, 255, 255, 0.95); border-radius: 30px;
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 85%; max-width: 320px; height: 65px;
+            background: rgba(255, 255, 255, 0.95); border-radius: 35px;
             display: flex; justify-content: space-around; align-items: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1); z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; border: 2px solid #fff;
         }
-        .nav-item { background: none; color: #ccc; font-size: 0.5rem; text-align: center; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; background: none; border: none; color: #ccc; transition: 0.2s; width: 20%; }
         .nav-item.active { color: var(--accent-orange); }
-        .nav-icon-emu { font-size: 1.4rem; display: block; }
+        .nav-icon-emu { font-size: 1.5rem; margin-bottom: 2px; }
+        .nav-text { font-size: 0.45rem; font-weight: 900; margin-top: 2px; }
 
-        /* --- ローディング --- */
-        #global-loading {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(255,255,255,0.7); z-index: 10001; justify-content: center; align-items: center; flex-direction: column;
-        }
-        .loader { border: 5px solid #f3f3f3; border-top: 5px solid var(--accent-orange); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* --- 景品オーバーレイ --- */
-        .prizes-overlay {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.8); z-index: 10002; justify-content: center; align-items: center;
-        }
-        .prizes-content { background: white; width: 90%; max-width: 380px; max-height: 80vh; border-radius: 20px; padding: 20px; overflow-y: auto; }
-        
-        /* --- 引っ張り更新 --- */
         #pull-to-refresh {
-            position: fixed; top: -70px; left: 0; width: 100%; height: 60px;
-            display: flex; justify-content: center; align-items: center;
-            background: rgba(224, 234, 252, 0.9); z-index: 10000; transition: transform 0.1s;
-            font-size: 0.8rem; font-weight: bold;
+            position: fixed;
+            top: -70px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(224, 234, 252, 0.9);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            transition: transform 0.1s ease;
+            border-bottom: 2px solid var(--crystal-blue);
+            color: #2c3e50;
+            font-size: 0.8rem;
+            font-weight: 900;
         }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ccc;
+            border-top-color: var(--twitch-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        /* 景品一覧を開くボタン */
+.view-prizes-btn {
+    background: #ffb347; border: none; border-radius: 12px;
+    padding: 12px; width: 100%; font-weight: bold; color: #fff;
+    cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* 最初は画面に表示しない設定 */
+.prizes-overlay {
+  display: none; /* JSの display='flex' で上書きされます */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); /* 背景を暗くして目立たせる */
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 表示する時だけこのクラスをJSでつける、もしくは .style.display = 'flex' にする */
+.prizes-overlay.active {
+  display: flex;
+}
+
+/* 景品画面の本体 */
+.prizes-content {
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  border-radius: 15px;
+  overflow-y: auto; /* 中身が長い時にスクロールできるようにする */
+  padding: 20px;
+  position: relative;
+}
+
+.prizes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f0f4f8;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.prizes-list-container {
+    flex: 1; overflow-y: auto; padding: 20px; text-align: left;
+}
+
+.close-overlay {
+  background: #eee;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  line-height: 30px;
+}
+
+/* 景品ごとの見た目 */
+.gacha-title {
+    color: #ffb347; border-bottom: 2px solid #ffb347;
+    margin: 20px 0 10px; padding-bottom: 5px; font-size: 1.1em;
+}
+
+.prize-row {
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9em; display: flex; justify-content: space-between;
+}
+
+.ssr { color: #ff4747; font-weight: bold; text-shadow: 0 0 5px rgba(255,71,71,0.5); }
+.sr  { color: #ffb347; font-weight: bold; }
+/* ぐるぐるの見た目（CSS） */
+.loader {
+  border: 5px solid #333; /* 背景色（ダーク） */
+  border-top: 5px solid #ff8c00; /* 動く部分の色（オレンジ） */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
     </style>
 </head>
 <body>
-
-<!-- 全局共通ローディング -->
-<div id="global-loading">
-    <div class="loader"></div>
-    <p id="loading-text" style="color:var(--accent-orange); font-weight:bold; margin-top:10px;">処理中...</p>
-</div>
 
 <div id="pull-to-refresh">↓ 引っぱって更新</div>
 
@@ -148,171 +276,255 @@
 
 <div class="viewport">
     <div class="main-wrapper" id="master-container">
-        <!-- Section 0: Status -->
         <section class="page-section">
             <div class="card">
                 <h1><img id="st_icon_t1" height="24"> ステータス <img id="st_icon_t2" height="24"></h1>
                 <div class="card-body">
                     <div id="login-area">
-                        <p style="text-align: center;">Twitchでログインして<br>ステータスを確認しよう</p>
+                        <p style="font-weight: 700; text-align: center;">Twitchでログインして<br>ステータスを確認しよう</p>
                         <button class="login-btn" onclick="login()">Twitch ログイン 💜</button>
                     </div>
                     <div id="status-area" style="display:none;">
-                        <div id="vip-container"></div>
-                        <div class="status-item"><span>PLAYER</span> <span id="display-name" style="font-size:1.1rem;">---</span></div>
+                        <div class="status-item"><span>PLAYER</span> <span id="display-name" style="font-size:1.25rem;">---</span></div>
+                        <div class="status-item"><span>USER ID</span> <span id="display-id" style="font-size:0.8rem; color:#666;">---</span></div>
                         <div class="status-item"><span>RANK</span> <span id="display-rank">---</span></div>
                         <div class="exp-container">
                             <div class="level-header">
-                                <div><span style="font-size:0.7rem;">LEVEL</span> <span id="display-level">0</span></div>
-                                <div style="font-size:0.75rem; color:#888;"><span id="display-current-exp">0</span> / <span id="display-next">0</span></div>
+                                <div><span style="font-size:0.75rem; font-weight:800; color:#ff8c00;">LEVEL</span><span id="display-level">0</span></div>
+                                <div style="font-size:0.8rem; font-weight:750; color:#aaa;"><span id="display-current-exp">0</span> / <span id="display-next">0</span></div>
                             </div>
                             <div class="exp-outline"><div id="exp-bar" class="exp-fill"></div></div>
                         </div>
-                        <button onclick="playGacha('4')" class="login-btn" style="background: var(--accent-orange);">🎁 1日1回ログインガチャ</button>
+                        <button onclick="playGacha('4')" class="login-btn" style="background: #ff8c00;">🎁 1日1回ログインガチャ</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 1: Gacha -->
         <section class="page-section">
             <div class="card">
                 <h1>🎰 ガチャ 🎰</h1>
-                <button onclick="openPrizes()" class="list-item" style="width:100%; background:#fffaf0; border-color:#ffb347; font-weight:bold;">🎁 景品一覧を見る</button>
+                 <button onclick="openPrizes()" class="view-prizes-btn">
+  🎁 全ガチャの景品一覧を見る
+</button>
+                            <!-- ローディング画面（最初は非表示） -->
+<div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+  <div class="loader"></div>
+  <p style="color: #bf94ff; font-weight: bold;">処理中...</p> <!-- あなたの好きな「紫」系の色にしています -->
+</div>
                 <div class="card-body">
-                    <div class="gacha-box" style="border-color: #cd7f32;">
-                        <div style="font-size:0.9rem; margin-bottom:8px; color:#8b4513;">100円差し入れガチャ</div>
-                        <button class="draw-button btn-bronze" onclick="playGacha('bits', 100)">💎 200 で引く</button>
+                   
+                    <div class="gacha-box" style="border-color: #cd7f32; background: #fffaf5;">
+                        <div class="gacha-title" style="color: #a0522d;">100円差し入れガチャ</div>
+                        <button class="draw-button btn-bronze" onclick="playGacha('bits', 100)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 200</div>
+                        </button>
                     </div>
-                    <div class="gacha-box" style="border-color: #696969;">
-                        <div style="font-size:0.9rem; margin-bottom:8px; color:#555;">500円差し入れガチャ</div>
-                        <button class="draw-button btn-silver" onclick="playGacha('bits', 500)">💎 1000 で引く</button>
+                    <div class="gacha-box" style="border-color: #696969; background: #f5f5f5;">
+                        <div class="gacha-title" style="color: #708090;">500円差し入れガチャ</div>
+                        <button class="draw-button btn-silver" onclick="playGacha('bits', 500)">
+                            <div style="font-size:0.7rem; opacity:0.8;">1回引く</div><div>💎 1000</div>
+                        </button>
                     </div>
-                    
-                    <div id="tier-gacha-container">
-                        <!-- JSで生成、またはそのまま記述 -->
-                        <div style="color:var(--twitch-purple); font-size:0.8rem; font-weight:bold; margin:10px 0 5px;">TIER ガチャ</div>
-                        <div style="display:flex; gap:8px; margin-bottom:10px;">
-                            <button id="btn-t1-bg" class="draw-button" style="flex:1; height:60px; background-color:#333;" onclick="checkAndPlayTier(1, 1)">T1 最前列</button>
-                            <button id="btn-t1-bg-2" class="draw-button" style="flex:1; height:60px; background-color:#333;" onclick="checkAndPlayTier(1, 11)">T1 見守り</button>
+
+                    <div class="gacha-tier-group">
+                        <div class="gacha-title" style="color: var(--twitch-purple); font-weight: bold; margin-bottom: 5px;">TIER 1</div>
+                            <div style="display: flex; gap: 10px;">
+                              <div class="gacha-box" style="flex: 1;">
+                                <button id="btn-t1-bg" class="draw-button" style="width: 100%; background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier1()">
+                                  <div style="font-size:0.7rem;">最前列ガチャ</div><div><div style="font-size:0.6rem;"><img class="inv-icon icon-t1-class">1</div></div>
+                                </button>
+                                </button>
+                              </div>
+                              <div class="gacha-box" style="flex: 1;">
+                                 <button id="btn-t1-bg-2" class="draw-button" style="width: 100%; background-size: cover; background-position: center; border: 3px solid #ff47a3 !important; color: #000; box-shadow: 0 4px 0 #c2006b; height: 70px;" onclick="callTier11()">
+                                  <div style="font-size:0.7rem;">見守り隊ガチャ</div><div><div style="font-size:0.6rem;"><img class="inv-icon icon-t1-class">1</div></div>
+                                </button>
+                          </div>
                         </div>
-                        <!-- 他のTierも同様に配置可能 -->
-                    </div>
+                      </div>
+                    <div class="gacha-tier-group">
+    <div class="gacha-title" style="color: var(--twitch-purple); font-weight: bold; margin-bottom: 5px;">TIER 2</div>
+    <div style="display: flex; gap: 10px;">
+      <div class="gacha-box" style="flex: 1;">
+        <button id="btn-t2-bg" class="draw-button" style="width: 100%; background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000; box-shadow: 0 4px 0 #0044aa; height: 70px;" onclick="callTier2()">
+          <div style="font-size:0.7rem;">最前列ガチャ</div><div><div style="font-size:0.6rem;"><img class="inv-icon icon-t1-class">3 / <img class="inv-icon icon-t2-class">1</div></div>
+        </button>
+      </div>
+      <div class="gacha-box" style="flex: 1;">
+        <button id="btn-t2-bg-2" class="draw-button" style="width: 100%; background-size: cover; background-position: center; border: 3px solid #0066ff !important; color: #000; box-shadow: 0 4px 0 #0044aa; height: 70px;" onclick="callTier12()">
+          <div style="font-size:0.7rem;">見守り隊ガチャ</div><div><div style="font-size:0.6rem;"><img class="inv-icon icon-t1-class">3 / <img class="inv-icon icon-t2-class">1</div></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gacha-tier-group">
+    <div class="gacha-title" style="color: var(--twitch-purple); font-weight: bold; margin-bottom: 5px;">TIER 3</div>
+    <div style="display: flex; gap: 10px;">
+      <div class="gacha-box" style="flex: 1;">
+        <button id="btn-t3-bg" class="draw-button" style="width: 100%; background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier3()">
+          <div style="font-size:0.7rem;">最前列ガチャ</div><div><div style="font-size:0.6rem;"><img class="inv-icon icon-t1-class">9 / <img class="inv-icon icon-t2-class">3  </div><div style="font-size:0.6rem;"><img class="inv-icon icon-t3-class">1</div></div>
+        </button>
+      </div>
+      <div class="gacha-box" style="flex: 1;">
+        <button id="btn-t3-bg-2" class="draw-button" style="width: 100%; background-size: cover; background-position: center; border: 3px solid #cccc00 !important; color: #000; box-shadow: 0 4px 0 #888800; height: 70px;" onclick="callTier13()">
+          <div style="font-size:0.7rem;">見守り隊ガチャ</div><div><div style="font-size:0.6rem;"><img class="inv-icon icon-t1-class">9 / <img class="inv-icon icon-t2-class">3 </div><div style="font-size:0.6rem;"><img class="inv-icon icon-t3-class">1</div></div>
+        </button>
+      </div>
+    </div>
+  </div>
+            
+                    
                 </div>
             </div>
         </section>
+        <section class="page-section">
+    <div class="card">
+        <h1>🛒 ショップ 🛒</h1>
+                    <!-- ローディング画面（最初は非表示） -->
+<div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+  <div class="loader"></div>
+  <p style="color: #bf94ff; font-weight: bold;">処理中...</p> <!-- あなたの好きな「紫」系の色にしています -->
+</div>
+        <div class="card-body">
+            
+            
+            <div class="shop-item-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                <div class="shop-box" style="border: 2px solid #ffd700; background: #fffdf0; padding: 10px; border-radius: 12px; text-align: center;">
+                    <div class="shop-name" style="font-weight: bold; color: #b8860b;">👑 VIP 1ヶ月</div>
+                    <button class="draw-button" style="background: linear-gradient(135deg, #ffd700, #ffa500); box-shadow: 0 4px 0 #cc8400; width: 100%; margin-top: 5px;" onclick="buyShop('VIP 1ヶ月', 200)">
+                        <div style="font-size:0.6rem; opacity:0.9;">交換する</div><div>💎 200</div>
+                    </button>
+                </div>
+                <div class="shop-box" style="border: 2px solid #ff4500; background: #fff5f2; padding: 10px; border-radius: 12px; text-align: center;">
+                    <div class="shop-name" style="font-weight: bold; color: #d32f2f;">🚀 VIP 1年間</div>
+                    <button class="draw-button" style="background: linear-gradient(135deg, #ff6347, #ff4500); box-shadow: 0 4px 0 #b33000; width: 100%; margin-top: 5px;" onclick="buyShop('VIP 1年間', 2000)">
+                        <div style="font-size:0.6rem; opacity:0.9;">交換する</div><div>💎 2000</div>
+                    </button>
+                </div>
+            </div>
+            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
+            <div class="gift-section" style="background: #ffffff; border: 2px solid #ffb347; border-radius: 15px; padding: 15px; box-shadow: inset 0 0 10px rgba(255,179,71,0.1);">
+                <p style="font-size: 1.25rem; font-weight: 800; color: #e67e22; margin-bottom: 10px; text-align: center;">🎁 指定差し入れ（贅沢コース）</p>
+                
+                <input type="text" id="gift-note" class="note-input" placeholder="何にする？（例：スタバ券、入浴剤）" 
+                       style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; box-sizing: border-box;">
+                
+                <div class="gift-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button class="shop-btn-rich" style="background: #7f7fff;" onclick="buyShop('1000円', 2000, true)">
+                        <span>1,000円相当</span><br><b>💎2000</b>
+                    </button>
+                    <button class="shop-btn-rich" style="background: #99cc33;" onclick="buyShop('2500円', 5000, true)">
+                        <span>2,500円相当</span><br><b>💎5000</b>
+                    </button>
+                    <button class="shop-btn-rich" style="background: #ffbf7f;" onclick="buyShop('5000円', 10000, true)">
+                        <span>5,000円相当</span><br><b>💎10000</b>
+                    </button>
+                    <button class="shop-btn-rich" style="background: #ff7f7f;" onclick="buyShop('10000円', 20000, true)">
+                        <span>10,000円相当</span><br><b>💎20000</b>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <!-- Section 2: Shop -->
         <section class="page-section">
             <div class="card">
-                <h1>🛒 ショップ 🛒</h1>
+                <h1 style="color:var(--twitch-purple)">🏆 バトルパス 🏆</h1>
+                <div class="card-body" id="reward-list"></div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="card">
+                <h1 style="color:#2ecc71">📖 ガイド 📖</h1>
                 <div class="card-body">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <button class="list-item" style="border-color:#ffd700;" onclick="buyShop('VIP 1ヶ月', 200)">👑 VIP 1ヶ月<br>💎 200</button>
-                        <button class="list-item" style="border-color:#ff4500;" onclick="buyShop('VIP 1年間', 2000)">🚀 VIP 1年<br>💎 2000</button>
+                    <div class="list-item">
+                        <div style="font-weight:800; color:var(--accent-orange);">🔰 経験値の貯め方</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">1コメント＝1EXP</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">500チャンネルポイント＝100EXP</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">1ビッツ＝5EXP</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Sub Tier1＝1500EXP</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Sub Tier2＝3000EXP</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Sub Tier3＝10000EXP</div>
                     </div>
-                    <div class="list-item" style="border-color:var(--accent-orange); margin-top:15px;">
-                        <div style="text-align:center; font-weight:bold; color:var(--accent-orange); margin-bottom:10px;">🎁 指定差し入れ</div>
-                        <input type="text" id="gift-note" placeholder="例：スタバ券、入浴剤" style="width:100%; padding:8px; box-sizing:border-box; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
-                            <button class="draw-button" style="background:#7f7fff; font-size:0.7rem;" onclick="buyShop('1000円', 2000, true)">1000円相当<br>💎2000</button>
-                            <button class="draw-button" style="background:#ff7f7f; font-size:0.7rem;" onclick="buyShop('10000円', 20000, true)">10000円相当<br>💎20000</button>
-                        </div>
+                    <div class="list-item">
+                        <div style="font-weight:800; color:var(--accent-orange);">🔰 クリスタル入手方法</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">ビッツを贈ろう。1ビッツ＝1クリスタル</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">1000ビッツ以上でクリスタル1.1倍</div>
+                         <div style="font-size:0.75rem; margin-top:5px;">5000ビッツ以上でクリスタル1.2倍</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">10000ビッツ以上でクリスタル1.3倍</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">バトルパスやイベントで配布あり！？</div>
+                    </div>
+                     <div class="list-item">
+                        <div style="font-weight:800; color:var(--accent-orange);">🔰 上位の特典</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">毎月サブスクギフトとCheerの上位３名にはクリスタル贈呈！</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">１位💎３０</div>
+                         <div style="font-size:0.75rem; margin-top:5px;">２位💎２０</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">３位💎１０</div>
+                    </div>
+                    <div class="list-item">
+                        <div style="font-weight:800; color:var(--accent-orange);">🔰 必要EXPとRANK</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv1~10 100EXP 新顔さん</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv11~20 500EXP お馴染みさん</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv21~30 1000EXP 頼れる応援兵</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv31~40 1500EXP 中堅の柱</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv41~50 2000EXP 看板リスナー</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv51~60 3000EXP 殿堂入りサポーター</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv61~70 4000EXP 配信の守護役</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv71~80 5000EXP 古参の誇り</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv81~90 7000EXP 至高の貢献者</div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv91~100 9000EXP 配信の象徴 </div>
+                        <div style="font-size:0.75rem; margin-top:5px;">Lv100~無限 10000EXP 星の開拓者</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 3: Pass -->
-        <section class="page-section"><div class="card"><h1>🏆 パス 🏆</h1><div class="card-body" id="reward-list"></div></div></section>
-        <!-- Section 4: Guide -->
-        <section class="page-section"><div class="card"><h1>📖 ガイド 📖</h1><div class="card-body" id="guide-content"></div></div></section>
-        <!-- Section 5: Log -->
-        <section class="page-section"><div class="card"><h1>📜 履歴 📜</h1><div class="card-body" id="log-content">履歴はありません</div></div></section>
+        <section class="page-section">
+            <div class="card">
+                <h1 style="color:#7f8c8d">📜 履歴 📜</h1>
+                <div class="card-body" id="log-content">履歴はありません</div>
+            </div>
+        </section>
     </div>
 </div>
 
 <nav class="bottom-nav">
-    <button class="nav-item active" onclick="go(0)"><span class="nav-icon-emu">👤</span>ステータス</button>
-    <button class="nav-item" onclick="go(1)"><span class="nav-icon-emu">🎰</span>ガチャ</button>
-    <button class="nav-item" onclick="go(2)"><span class="nav-icon-emu">🛒</span>ショップ</button>
-    <button class="nav-item" onclick="go(3)"><span class="nav-icon-emu">🏆</span>パス</button>
-    <button class="nav-item" onclick="go(4)"><span class="nav-icon-emu">📖</span>ガイド</button>
-    <button class="nav-item" onclick="go(5)"><span class="nav-icon-emu">📜</span>履歴</button>
+    <button class="nav-item active" onclick="go(0)"><span class="nav-icon-emu">👤</span><span class="nav-text">ステータス</span></button>
+    <button class="nav-item" onclick="go(1)"><span class="nav-icon-emu">🎰</span><span class="nav-text">ガチャ</span></button>
+    <button class="nav-item" onclick="go(2)"><span class="nav-icon-emu">🛒</span><span class="nav-text">ショップ</span></button>
+    <button class="nav-item" onclick="go(3)"><span class="nav-icon-emu">🏆</span><span class="nav-text">パス</span></button>
+    <button class="nav-item" onclick="go(4)"><span class="nav-icon-emu">📖</span><span class="nav-text">ガイド</span></button>
+    <button class="nav-item" onclick="go(5)"><span class="nav-icon-emu">📜</span><span class="nav-text">履歴</span></button>
 </nav>
-
-<!-- 景品オーバーレイ -->
-<div id="prizesOverlay" class="prizes-overlay">
-    <div class="prizes-content">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding-bottom:10px;">
-            <h3 style="margin:0;">景品ラインナップ</h3>
-            <button onclick="closePrizes()" style="background:#eee; border-radius:50%; width:30px; height:30px;">×</button>
-        </div>
-        <div id="prizesData" style="margin-top:15px;"></div>
-    </div>
-</div>
 
 <script>
     const CLIENT_ID = 'ph9btmot6supkrkqodmv1ct9h62rse';
     const SHEET_ID = '14CnmqmOSGrLVvZcS-aeAA1pruGocgidtwC2ax7ArJhI';
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxzmcrLt0wcOQpAiL-EYJn3qsw4UPHtrONdON2Hr7oF3_Y8HKTo8Un_AfUmqUCrC-Jx/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwI9JHRGGhR1c_0p2JPcwPCzf3s1y0kVr9N1H_EVoeWWag0h8qecgbd25mmG072w4zy/exec';
     const REDIRECT_URI = window.location.origin + window.location.pathname;
 
     const IMAGES = {
         BG_MAIN: '525_20241011150841.png',
         ST_ICON_1: 'mypage1.png',
         ST_ICON_2: 'mypage2.png',
-        ICON_T1: 'tier1_.png', ICON_T2: 'tier_2_.png', ICON_T3: 'tier_3_.png',
-        GACHA_T1_BG: '582_20260307010950.png'
+        ICON_T1: 'tier1_.png',
+        ICON_T2: 'tier_2_.png',
+        ICON_T3: 'tier_3_.png',
+        GACHA_T1_BG: '582_20260307010950.png',
+        GACHA_T2_BG: '582_20260307010959.png',
+        GACHA_T3_BG: '582_20260307010955.png'
     };
 
     let loginID = "";
-    let inventory = { t1: 0, t2: 0, t3: 0 };
-
-    // --- ユーティリティ ---
-    function showLoading(text = "処理中...") {
-        document.getElementById('loading-text').innerText = text;
-        document.getElementById('global-loading').style.display = 'flex';
-    }
-    function hideLoading() {
-        document.getElementById('global-loading').style.display = 'none';
-    }
+    let globalT1 = 0, globalT2 = 0, globalT3 = 0;
 
     function go(idx) {
         document.getElementById('master-container').style.transform = `translateX(-${idx * 100}vw)`;
         document.querySelectorAll('.nav-item').forEach((n, i) => i === idx ? n.classList.add('active') : n.classList.remove('active'));
-    }
-
-    // --- 初期化 ---
-    window.onload = function() {
-        document.getElementById('img-t1-icon').src = IMAGES.ICON_T1;
-        document.getElementById('img-t2-icon').src = IMAGES.ICON_T2;
-        document.getElementById('img-t3-icon').src = IMAGES.ICON_T3;
-        document.body.style.backgroundImage = `url('${IMAGES.BG_MAIN}')`;
-
-        const params = new URLSearchParams(window.location.hash.substring(1));
-        const token = params.get('access_token');
-        if (token) {
-            getUserInfo(token);
-        }
-    };
-
-    async function getUserInfo(token) {
-        showLoading("ログイン中...");
-        try {
-            const res = await fetch('https://api.twitch.tv/helix/users', {
-                headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` }
-            });
-            const data = await res.json();
-            if (data.data && data.data[0]) {
-                loginID = data.data[0].login;
-                document.getElementById('login-area').style.display = 'none';
-                document.getElementById('status-area').style.display = 'block';
-                await fetchSheetData(loginID);
-                fetchLogs();
-            }
-        } catch (e) { alert("ログイン失敗"); }
-        finally { hideLoading(); }
     }
 
     function login() {
@@ -320,161 +532,453 @@
         window.location.assign(authUrl);
     }
 
-    // --- データ取得 ---
+    window.onload = function() {
+        document.getElementById('img-t1-icon').src = IMAGES.ICON_T1;
+        document.getElementById('img-t2-icon').src = IMAGES.ICON_T2;
+        document.getElementById('img-t3-icon').src = IMAGES.ICON_T3;
+        document.getElementById('btn-t1-bg').style.backgroundImage = `url('${IMAGES.GACHA_T1_BG}')`;
+        document.getElementById('btn-t2-bg').style.backgroundImage = `url('${IMAGES.GACHA_T2_BG}')`;
+        document.getElementById('btn-t3-bg').style.backgroundImage = `url('${IMAGES.GACHA_T3_BG}')`;
+         document.getElementById('btn-t1-bg-2').style.backgroundImage = `url('${IMAGES.GACHA_T1_BG}')`;
+        document.getElementById('btn-t2-bg-2').style.backgroundImage = `url('${IMAGES.GACHA_T2_BG}')`;
+        document.getElementById('btn-t3-bg-2').style.backgroundImage = `url('${IMAGES.GACHA_T3_BG}')`;
+        document.querySelectorAll('.icon-t1-class').forEach(img => img.src = IMAGES.ICON_T1);
+        document.querySelectorAll('.icon-t2-class').forEach(img => img.src = IMAGES.ICON_T2);
+        document.querySelectorAll('.icon-t3-class').forEach(img => img.src = IMAGES.ICON_T3);
+        document.getElementById('st_icon_t1').src = IMAGES.ST_ICON_1;
+        document.getElementById('st_icon_t2').src = IMAGES.ST_ICON_2;
+        document.body.style.backgroundImage = `url('${IMAGES.BG_MAIN}')`;
+
+        const params = new URLSearchParams(window.location.hash.substring(1));
+        const token = params.get('access_token');
+        if (token) {
+            document.getElementById('login-area').style.display = 'none';
+            document.getElementById('status-area').style.display = 'block';
+            getUserInfo(token);
+        }
+    };
+
+    async function getUserInfo(token) {
+        try {
+            const res = await fetch('https://api.twitch.tv/helix/users', {
+                headers: { 'Client-ID': CLIENT_ID, 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (data.data && data.data[0]) {
+                loginID = data.data[0].login;
+                fetchSheetData(loginID);
+                fetchLogs();
+            }
+        } catch (e) { console.error("Login Error", e); }
+    }
+    async function buyShop(itemName, cost, isGift = false) {
+        if (!loginID) { alert("ログインしてください"); return; }
+        let note = "";
+        if (isGift) {
+            note = document.getElementById('gift-note').value;
+            if (!note) { alert("差し入れの内容を入力してください！"); return; }
+        }
+        
+        if (!confirm(`${itemName} を 💎${cost} で購入しますか？`)) return;
+
+        const url = `${GAS_URL}?user=${encodeURIComponent(loginID)}&type=shop&itemName=${encodeURIComponent(itemName)}&cost=${cost}&note=${encodeURIComponent(note)}`;
+        
+        try {
+            const res = await fetch(url);
+            const msg = await res.text();
+         
+            alert(msg);
+            if (msg.includes("購入完了")) location.reload();
+        } catch (e) { alert("通信エラー"); }
+    }
+
     async function fetchSheetData(targetUser) {
         try {
             const userUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Users`;
-            const res = await fetch(userUrl);
-            const csv = await res.text();
-            const rows = csv.split('\n').map(r => r.split(',').map(c => c.replace(/"/g, '')));
-            const userData = rows.find(r => r[1] && r[1].toLowerCase().trim() === targetUser.toLowerCase());
+            const userRes = await fetch(userUrl);
+            const userCsv = await userRes.text();
+            const userRows = userCsv.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+            const userData = userRows.find(row => row[1] && row[1].toLowerCase().trim() === targetUser.toLowerCase());
+
+            const masterUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=MasterRewards`;
+            const masterRes = await fetch(masterUrl);
+            const masterCsv = await masterRes.text();
+            const masterRows = masterCsv.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '')));
+            const rewardsMaster = masterRows.slice(1);
 
             if (userData) {
                 document.getElementById('display-name').innerText = userData[0];
+                document.getElementById('display-id').innerText = "@" + userData[1];
                 document.getElementById('display-rank').innerText = userData[8] || "新顔さん";
+                document.getElementById('display-level').innerText = userData[7];
                 document.getElementById('inv-bits').innerText = userData[5];
                 document.getElementById('inv-t1').innerText = userData[2];
                 document.getElementById('inv-t2').innerText = userData[3];
                 document.getElementById('inv-t3').innerText = userData[4];
 
-                inventory.t1 = parseInt(userData[2]) || 0;
-                inventory.t2 = parseInt(userData[3]) || 0;
-                inventory.t3 = parseInt(userData[4]) || 0;
+                const totalExp = parseInt(userData[6]) || 0;
+                const progress = getLevelProgress(totalExp); 
 
-                const progress = getLevelProgress(parseInt(userData[6]) || 0);
-                document.getElementById('display-level').innerText = progress.level;
+                document.getElementById('display-level').innerText = progress.level; 
+               // --- ここから書き換え ---
                 document.getElementById('display-current-exp').innerText = progress.current;
                 document.getElementById('display-next').innerText = progress.next;
-                document.getElementById('exp-bar').style.width = Math.min((progress.current / progress.next) * 100, 100) + '%';
+                const percent = Math.min((progress.current / progress.next) * 100, 100);
+                setTimeout(() => { document.getElementById('exp-bar').style.width = percent + '%'; }, 500);
 
-                // VIP
-                if (userData[9]) {
-                    document.getElementById('vip-container').innerHTML = `
-                        <div class="status-item" style="border-left:4px solid #e91e63; padding-left:10px;">
-                            <span>VIP STATUS</span> <strong style="color:#e91e63;">👑 ${userData[9]}</strong>
-                            <div style="font-size:0.6rem; color:#888;">${userData[10]}まで</div>
+                // VIP情報をボタンの上に差し込む
+                if (userData[9]) { 
+                    const statusArea = document.getElementById('status-area');
+                    const vipHtml = `
+                        <div class="status-item" style="border-left: 4px solid #e91e63; padding-left: 10px;">
+                            <span>VIP STATUS</span>
+                            <span style="color:#e91e63; font-size:1rem; font-weight:900;">👑 ${userData[9]}</span>
+                            <span style="font-size:0.75rem; color:#888;">期限: ${userData[10]} まで</span>
                         </div>`;
+                    // ガチャボタンの直前にVIP情報を入れる
+                    statusArea.querySelector('.login-btn').insertAdjacentHTML('beforebegin', vipHtml);
                 }
-                // バトルパス
-                updateRewardList(userData, progress.level);
+                const rewardList = document.getElementById('reward-list');
+                rewardList.innerHTML = "";
+                rewardsMaster.forEach((reward) => {
+                    const lv = parseInt(reward[0]);
+                    const type = reward[1];
+                    const name = reward[2];
+                    const rUrl = reward[4];
+                    if(!lv) return;
+                    const flagColIndex = 11 + (lv / 10);
+                    const isClaimed = userData[flagColIndex] === "1";
+                    let statusHtml = "";
+                    if (progress.level < lv) {
+                        statusHtml = `<span style="color:#ccc;">🔒 Lv.${lv}</span>`;
+                    } else if (!isClaimed) {
+                        statusHtml = `<button onclick="claimReward(${lv})" style="background:#ff8c00; color:white; border-radius:8px; padding:6px 12px; font-weight:bold;">🎁 受取る</button>`;
+                    } else {
+                        if (type === "item" && rUrl) {
+                            statusHtml = `<button onclick="window.open('${rUrl}', '_blank')" style="background:#2ecc71; color:white; border-radius:8px; padding:6px 12px;">📖 見る</button>`;
+                        } else {
+                            statusHtml = `<span style="color:#2ecc71; font-weight:bold;">✅ 受取済み</span>`;
+                        }
+                    }
+                    rewardList.innerHTML += `
+                        <div class="list-item ${progress.level >= lv ? 'unlocked' : ''}" style="display:flex; justify-content:space-between; align-items:center;">
+                            <div><div style="font-size:0.7rem; color:#888;">Level ${lv}</div><div style="font-weight:900;">${name}</div></div>
+                            <div>${statusHtml}</div>
+                        </div>`;
+                });
+
+                globalT1 = parseInt(userData[2]) || 0;
+                globalT2 = parseInt(userData[3]) || 0;
+                globalT3 = parseInt(userData[4]) || 0;
             }
-        } catch (e) { console.error("Sheet Load Error", e); }
+        } catch (e) { console.error("Sheet Data Error", e); }
     }
 
+ async function claimReward(targetLv) {
+    if(!confirm(`Lv.${targetLv} の報酬を受け取りますか？`)) return;
+    
+    // loginIDが空でないか念のためチェック
+    if(!loginID) { alert("ログインが必要です"); return; }
+
+    const url = `${GAS_URL}?user=${encodeURIComponent(loginID)}&type=claimReward&targetLv=${targetLv}`;
+    
+    try {
+        const res = await fetch(url);
+        const text = await res.text();
+        
+        if (text.startsWith("SUCCESS")) {
+            const parts = text.split(":");
+            const rewardType = parts[1]; // fragment or item
+            const rewardUrl = parts[2];  // URL
+            
+            if (rewardType === "fragment") {
+                alert("報酬のクリスタルを受け取りました！");
+            } else if (rewardType === "item") {
+                alert("アイテム報酬をアンロックしました！");
+                if (rewardUrl) window.open(rewardUrl, '_blank');
+            } else {
+                alert("報酬を受け取りました！");
+            }
+
+            // 最後にデータを再読み込みして、表示を「受取済み」や「見る」に更新する
+            fetchSheetData(loginID);
+            
+        } else { 
+            alert("エラー: " + text); 
+        }
+    } catch (e) { 
+        alert("通信エラーが発生しました"); 
+    }
+}
+
+
+    function drawGacha(gachaId) {
+  // 1. ボタンを無効化（連打防止）し、ぐるぐるを表示
+  const gachaButton = document.getElementById("gachaButton");
+  const loadingDiv = document.getElementById("loading");
+  const resultDiv = document.getElementById("result");
+
+  gachaButton.disabled = true;
+  loadingDiv.style.display = "block";
+  resultDiv.innerText = ""; // 前の結果をクリア
+
+  // 2. GAS（サーバー）に通信
+  // URLにパラメータ（IDやユーザー名など）をくっつけて送る形にしています
+  const fetchUrl = `${GAS_URL}?id=${gachaId}&user=【リスナー名】`; 
+
+  fetch(fetchUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('ネットワーク応答が正常ではありません');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // 3. 結果が返ってきたら、ぐるぐるを隠して結果を表示
+      loadingDiv.style.display = "none";
+      gachaButton.disabled = false;
+
+      if (data.error) {
+        resultDiv.innerText = "エラー: " + data.error;
+      } else {
+        // GAS側で返している「item」を表示
+        resultDiv.innerText = "結果： " + data.item;
+      }
+    })
+    .catch(error => {
+      // エラー時もぐるぐるを消して、ボタンを戻す
+      loadingDiv.style.display = "none";
+      gachaButton.disabled = false;
+      console.error("通信エラー:", error);
+      resultDiv.innerText = "通信に失敗しました。";
+    });
+}
     function getLevelProgress(totalExp) {
         const cfg = [{l:10,c:100},{l:20,c:500},{l:30,c:1000},{l:40,c:1500},{l:50,c:2000},{l:60,c:3000},{l:70,c:4000},{l:80,c:5000},{l:90,c:7000},{l:100,c:9000}];
         let currentTotal = totalExp;
-        let lv = 1;
+        let calculatedLevel = 1;
         for (let r of cfg) {
-            let limit = r.l;
-            while (lv < limit) {
-                if (currentTotal >= r.c) { currentTotal -= r.c; lv++; }
-                else return { level: lv, current: currentTotal, next: r.c };
+            let levelsInThisTier = r.l - (calculatedLevel === 1 ? 1 : calculatedLevel);
+            for (let i = 0; i < levelsInThisTier; i++) {
+                if (currentTotal >= r.c) {
+                    currentTotal -= r.c;
+                    calculatedLevel++;
+                } else {
+                    return { level: calculatedLevel, current: currentTotal, next: r.c };
+                }
             }
         }
-        while (currentTotal >= 10000) { currentTotal -= 10000; lv++; }
-        return { level: lv, current: currentTotal, next: 10000 };
-    }
-
-    // --- ガチャ・ショップ実行 ---
-    async function playGacha(type, id) {
-        if (!loginID) return;
-        const gachaType = id || type;
-        if (!confirm(`ガチャを引きますか？`)) return;
-
-        showLoading("ガチャを回しています...");
-        try {
-            const res = await fetch(`${GAS_URL}?user=${encodeURIComponent(loginID)}&type=gacha&gachaType=${gachaType}`);
-            const msg = await res.text();
-            alert(msg);
-            if (!msg.includes("不足") && !msg.includes("エラー")) {
-                await fetchSheetData(loginID);
-                fetchLogs();
-            }
-        } catch (e) { alert("通信エラー"); }
-        finally { hideLoading(); }
-    }
-
-    function checkAndPlayTier(tierNum, gachaID) {
-        if (inventory[`t${tierNum}`] >= 1) {
-            playGacha('tier', gachaID);
-        } else {
-            alert("かけらが足りません！");
+        while (currentTotal >= 10000) {
+            currentTotal -= 10000;
+            calculatedLevel++;
         }
+        return { level: calculatedLevel, current: currentTotal, next: 10000 };
     }
 
-    async function buyShop(itemName, cost, isGift = false) {
-        if (!loginID) return;
-        let note = isGift ? document.getElementById('gift-note').value : "";
-        if (isGift && !note) { alert("内容を入力してください"); return; }
+async function playGacha(type, id) {
+    if (!loginID) { alert("先にログインしてください！"); return; }
+    const val = id || type;
+    // --- コスト確認 ---
+    if (val === 100) {
+        if (!confirm(`💎 200 クリスタルを消費してガチャを引きますか？`)) return;
+    } else if (val === 500) {
+        if (!confirm(`💎 1000 クリスタルを消費してガチャを引きますか？`)) return;
+    } else if (val === 4) {
+        // ログインガチャは確認なし、または専用メッセージ
+        if (!confirm(`ログインガチャを引きますか？`)) return;
+    }
+
+    // --- クエリパラメータの構築 ---
+    // valがそのままgachaType（4, 100, 500など）になります
+    let query = `?user=${encodeURIComponent(loginID)}&type=gacha&gachaType=${val}`;
+
+    try {
+        const res = await fetch(GAS_URL + query);
+        const msg = await res.text();
+        alert(msg);
         
-        if (!confirm(`${itemName} を購入しますか？`)) return;
-
-        showLoading("購入処理中...");
-        try {
-            const res = await fetch(`${GAS_URL}?user=${encodeURIComponent(loginID)}&type=shop&itemName=${encodeURIComponent(itemName)}&cost=${cost}&note=${encodeURIComponent(note)}`);
-            const msg = await res.text();
-            alert(msg);
-            if (msg.includes("完了")) await fetchSheetData(loginID);
-        } catch (e) { alert("通信エラー"); }
-        finally { hideLoading(); }
-    }
-
-    // --- 景品表示 ---
-    async function openPrizes() {
-        document.getElementById('prizesOverlay').style.display = 'flex';
-        const container = document.getElementById('prizesData');
-        container.innerHTML = "読み込み中...";
-        try {
-            const res = await fetch(`${GAS_URL}?type=getGachaList`);
-            const data = await res.json();
-            let html = "";
-            // ここでデータを整形してhtmlに追加
-            data.forEach(item => {
-                html += `<div style="padding:5px; border-bottom:1px solid #eee;">[${item.gacha}] ${item.result}</div>`;
-            });
-            container.innerHTML = html || "データがありません";
-        } catch (e) { container.innerHTML = "取得失敗"; }
-    }
-    function closePrizes() { document.getElementById('prizesOverlay').style.display = 'none'; }
-
-    // --- 履歴取得 ---
-    async function fetchLogs() {
-        try {
-            const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
-            const txt = await res.text();
-            const rows = txt.split('\n').map(r => r.split(',').map(c => c.replace(/"/g, '')));
-            const myLogs = rows.filter(r => r[2] && r[2].toLowerCase() === loginID.toLowerCase()).reverse().slice(0, 10);
-            
-            let html = "";
-            myLogs.forEach(l => {
-                html += `<div style="font-size:0.8rem; padding:8px; border-bottom:1px solid #eee;">
-                            <div style="color:#888; font-size:0.6rem;">${l[0]}</div>
-                            <div><strong>${l[4]}</strong> ${l[6] ? '('+l[6]+')' : ''}</div>
-                         </div>`;
-            });
-            document.getElementById('log-content').innerHTML = html || "履歴はありません";
-        } catch (e) { }
-    }
-
-    // --- 引っ張り更新 ---
-    let startY = 0;
-    const ptr = document.getElementById('pull-to-refresh');
-    window.addEventListener('touchstart', e => { if(window.scrollY===0) startY = e.touches[0].pageY; });
-    window.addEventListener('touchmove', e => {
-        const diff = e.touches[0].pageY - startY;
-        if(diff > 0 && diff < 100) {
-            ptr.style.transform = `translateY(${diff}px)`;
-            if(diff > 60) ptr.innerText = "離して更新";
-        }
-    });
-    window.addEventListener('touchend', () => {
-        if(ptr.style.transform.includes('70') || parseInt(ptr.style.transform.replace(/\D/g,'')) > 60) {
+        if (!msg.includes("今日はもう") && !msg.includes("不足") && !msg.includes("エラー")) {
             location.reload();
         }
-        ptr.style.transform = 'translateY(0)';
-    });
+    } catch (e) { 
+        alert("通信エラーが発生しました。"); 
+    }
+}
+    function callTier1() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 1); } else { alert("足りません"); } }
+    function callTier2() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
+    function callTier3() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
+    function callTier11() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 11); } else { alert("足りません"); } }
+    function callTier12() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 12); } else { alert("足りません"); } }
+    function callTier13() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 13); } else { alert("足りません"); } }
+    
+  async function fetchLogs() {
+    try {
+        const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=GachaLog`);
+        const txt = await res.text();
+        
+        const rows = txt.split(/\r?\n/);
+        const logs = rows
+            .map(row => {
+                const matches = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+                return matches ? matches.map(c => c.replace(/^"|"$/g, '')) : [];
+            })
+            .filter(r => r.length > 2 && r[2] && r[2].toLowerCase() === loginID.toLowerCase())
+            .reverse() 
+            .slice(0, 10);
+            
+            let html = "";
+        logs.forEach(l => {
+            const date = l[0] || "";
+            const itemName = l[4] || ""; // E列：アイテム名（1,000円分の差し入れ等）
+            const memo = l[6] || "";     // G列：入力内容（コーヒー等）
 
+            // メモがある場合は、( ) で囲って表示する
+            const displayContent = memo ? `${itemName} <span style="font-size: 0.8rem; color: #666; font-weight: normal;">(${memo})</span>` : itemName;
+
+            html += `
+                <div style="border-bottom: 1px solid #eee; padding: 12px 5px; display: flex; flex-direction: column; gap: 4px;">
+                  <div style="font-size: 0.65rem; color: #999; font-weight: bold;">📅 ${date}</div>
+                  <div style="font-size: 0.95rem; color: #2c3e50; font-weight: 800; line-height: 1.4;">
+                    ${displayContent}
+                  </div>
+                </div>`;
+        });    
+
+        document.getElementById('log-content').innerHTML = html || "履歴はありません";
+    } catch (e) { 
+        console.error("Log fetch error:", e); 
+    } 
+    }
+
+    /* --- 引っ張って更新のロジック --- */
+    let startY = 0;
+    let isPulling = false;
+    const ptr = document.getElementById('pull-to-refresh');
+
+    window.addEventListener('touchstart', (e) => {
+        if (window.scrollY === 0) {
+            startY = e.touches[0].pageY;
+            isPulling = true;
+        }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        if (!isPulling) return;
+        const currentY = e.touches[0].pageY;
+        const diff = currentY - startY;
+        if (diff > 0) {
+            const moveY = Math.min(diff * 0.4, 100); 
+            ptr.style.transform = `translateY(${moveY}px)`;
+            if (moveY > 60) {
+                ptr.innerHTML = '<div class="spinner"></div> 離して更新';
+                ptr.style.background = "#d0e0ff";
+            } else {
+                ptr.innerHTML = '↓ 引っぱって更新';
+                ptr.style.background = "rgba(224, 234, 252, 0.9)";
+            }
+        }
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+        if (!isPulling) return;
+        const style = window.getComputedStyle(ptr);
+        const matrix = new WebKitCSSMatrix(style.transform);
+        const currentDisplayY = matrix.m42;
+        if (currentDisplayY > 60) {
+            ptr.style.transform = 'translateY(70px)';
+            ptr.innerHTML = '<div class="spinner"></div> 更新中...';
+            setTimeout(() => { location.reload(); }, 800);
+        } else {
+            ptr.style.transform = 'translateY(0)';
+        }
+        isPulling = false;
+    });
+// 景品一覧表示の完成版
+async function openPrizes() {
+    // 1. 画面を表示状態にする
+    document.getElementById('prizesOverlay').style.display = 'flex';
+    // 2. データを流し込む場所を特定（IDは HTMLと合わせる）
+    const container = document.getElementById('prizesData'); 
+    container.innerHTML = '<div style="text-align:center; padding:20px;">読み込み中...</div>';
+
+    try {
+        // 3. GASから景品データを取ってくる
+        const url = `${GAS_URL}?type=getGachaList`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data || data.length === 0) {
+            container.innerHTML = "景品データがありません。";
+            return;
+        }
+
+        let html = "";
+        // ガチャの種類（100, 500など）を整理
+        const gachaTypes = [...new Set(data.map(item => item.gacha))].sort((a, b) => a - b);
+        
+        gachaTypes.forEach(type => {
+            const items = data.filter(item => item.gacha == type);
+            // 合計の重みを計算
+            const totalWeight = items.reduce((sum, item) => sum + Number(item.weight || 0), 0);
+            
+            let title = "";
+            if(type == 4) title = "1日1回 ログインガチャ";
+            else if(type == 100) title = "100円差し入れガチャ (200クリスタル)"; // コスト修正反映
+            else if(type == 500) title = "500円差し入れガチャ (1000クリスタル)"; // コスト修正反映
+            else if(type == 1 || type == 2 || type == 3) title = "Tier " + type + " 最前列ガチャ";
+            else if(type == 11) title = "Tier 1 見守り隊ガチャ";
+            else if(type == 12) title = "Tier 2 見守り隊ガチャ";
+            else if(type == 13) title = "Tier 3 見守り隊ガチャ";
+            else return; 
+
+            // ヘッダー部分のHTML生成
+            html += `<div style="background:#f0f4f8; padding:8px; font-weight:800; margin-top:15px; border-radius:5px; color:#2c3e50;">
+                        <span>🎁 ${title}</span>
+                     </div>`;
+            
+            // 各景品のHTML生成（確率計算付き）
+            items.forEach(item => {
+                let prizeName = item.result || "名称未設定";
+                let weight = Number(item.weight || 0);
+                let percent = totalWeight > 0 ? ((weight / totalWeight) * 100).toFixed(1) : 0;
+                
+                let style = "padding:8px; border-bottom:1px solid #eee; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; background:#fff;";
+                
+                if(prizeName.includes("SSR")) style += "color:#e91e63; font-weight:bold; background:#fff0f5;";
+                else if(prizeName.includes("SR")) style += "color:#ff8c00; font-weight:bold;";
+                
+                html += `
+                    <div style="${style}">
+                        <span>${prizeName}</span>
+                        <span style="font-family:monospace; color:#888; font-size:0.75rem;">${percent}%</span>
+                    </div>`;
+            });
+        });
+        
+        // 4. 完成したHTMLを画面に表示
+        container.innerHTML = html;
+
+    } catch (e) {
+        console.error("ラインナップ取得エラー:", e);
+        container.innerHTML = "データの取得に失敗しました。";
+    }
+}
+function closePrizes() {
+    document.getElementById('prizesOverlay').style.display = 'none';
+}
+
+    
 </script>
+    <div id="prizesOverlay" class="prizes-overlay"　style="display: none;">
+  <div class="prizes-content">
+    <div class="prizes-header">
+      <h3>ガチャ景品ラインナップ</h3>
+      <button class="close-overlay" onclick="closePrizes()">×</button>
+    </div>
+    <div id="prizesData" class="prizes-list-container">
+      <p style="text-align:center; padding:20px;">読み込み中...</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>

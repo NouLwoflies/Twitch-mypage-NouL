@@ -894,12 +894,12 @@ async function playGacha(type, id) {
         alert("通信エラーが発生しました。"); 
     }
 }
-    function callTier1() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 1); } else { alert("足りません"); } }
-    function callTier2() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("足りません"); } }
-    function callTier3() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("足りません"); } }
-    function callTier11() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 11); } else { alert("足りません"); } }
-    function callTier12() { if (globalT2 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 12); } else { alert("足りません"); } }
-    function callTier13() { if (globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 13); } else { alert("足りません"); } }
+    function callTier1() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 1); } else { alert("かけらが足りません（T1:1個が必要です）"); } }
+    function callTier2() { if (globalT1 >= 3 || globalT2 >= 1 ) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 2); } else { alert("かけらが足りません（T1:3個、T2:1個のいずれかが必要です）"); } }
+    function callTier3() { if (globalT1 >= 9 || globalT2 >= 3 || globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 3); } else { alert("かけらが足りません（T1:9個、T2:3個、T3:1個のいずれかが必要です）"); } }
+    function callTier11() { if (globalT1 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 11); } else { alert("かけらが足りません（T1:1個が必要です）"); } }
+    function callTier12() { if (globalT1 >= 3 || globalT2 >= 1 ) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 12); } else { alert("かけらが足りません（T1:3個、T2:1個のいずれかが必要です）"); } }
+    function callTier13() { if (globalT1 >= 9 || globalT2 >= 3 || globalT3 >= 1) { if(confirm("かけらを消費してガチャを引きますか？")) playGacha('tier', 13); } else { alert("かけらが足りません（T1:9個、T2:3個、T3:1個のいずれかが必要です）"); } }
     
   async function fetchLogs() {
     try {

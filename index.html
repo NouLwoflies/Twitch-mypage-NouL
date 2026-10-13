@@ -576,20 +576,25 @@
             </div>
         </section>
         <section class="page-section">
-            <div class="card">
+            <div class="card" style="overflow: hidden; padding: 12px;">
                 <h1>✨ 自己紹介 ✨</h1>
-                <div class="card-body">
-                    <div class="intro-container" onclick="nextIntroText()">
-                        <div class="avatar-wrapper">
-                            <!-- アバター画像 (必要に応じてパスを調整してください) -->
-                            <img id="intro-avatar" src="mypage1.png" alt="アバター">
+                <!-- カードの中身（縦長イラストを背景いっぱいに広げ、吹き出しを上に重ねるエリア） -->
+                <div class="card-body" style="padding: 0; overflow: hidden; border-radius: 16px; position: relative; height: 100%;">
+                    
+                    <div class="intro-container" onclick="nextIntroText()" style="position: relative; width: 100%; height: 100%; padding: 0; margin: 0; display: block; cursor: pointer; user-select: none;">
+                        
+                        <!-- 背景＆アバター画像（枠いっぱいに大きく表示し、角丸でクリッピング） -->
+                        <img id="intro-avatar" src="" alt="アバター" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 16px; border: 3px solid #7B42BC; box-shadow: 0 4px 15px rgba(0,0,0,0.2); box-sizing: border-box;" />
+
+                        <!-- 吹き出し（イラストの手前に重ねて配置） -->
+                        <div class="speech-bubble" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(5px); border: 3px solid #7B42BC; border-radius: 20px; padding: 12px 16px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); box-sizing: border-box; z-index: 10;">
+                            <div class="bubble-tag" id="bubble-tag" style="display: inline-block; background: #FF8C00; color: #fff; font-weight: bold; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; margin-bottom: 4px;">のうるより</div>
+                            <p id="bubble-text" style="font-size: 0.9rem; line-height: 1.4; color: #333; margin: 0; min-height: 2.8em; white-space: pre-wrap;">読み込み中...</p>
+                            <div class="tap-hint" id="tap-hint" style="text-align: right; font-size: 0.65rem; color: #666; margin-top: 4px; font-weight: bold;">つぎへ ➡</div>
                         </div>
-                        <div class="speech-bubble">
-                            <span class="bubble-tag" id="bubble-tag">のうるより</span>
-                            <p id="bubble-text">こんにょん！推し事の書へようこそ！ここをタップするといろんなことが聞けるよ！</p>
-                            <div class="tap-hint">つぎへ ➡</div>
-                        </div>
+
                     </div>
+
                 </div>
             </div>
         </section>
@@ -1187,21 +1192,22 @@ function closeTextRewardModal() {
 
 
 
+
 let introMessages = [];
 let currentIndex = 0;
 let isTyping = false;       
 let typingTimer = null;     
 let charIndex = 0;
 
+// 画像キャッシュ用
+let preloadedImages = {};
+
 // ページ読み込み時に実行
 window.addEventListener('DOMContentLoaded', () => {
-  // まず初期表示（保険）
   introMessages = [
-    { tag: "のうるより", text: "こんにょん！推し事の書へようこそ！ここをタップするといろんなことが聞けるよ！", openImgId: "", closeImgId: "" }
+    { tag: "のうるより", text: "こんにょん！推し事の書へようこそ！ここをタップするといろんなことが聞けるよ！", imgId: "" }
   ];
   showCurrentMessage();
-  
-  // スプシから直接取得
   fetchIntroFromSheet();
 });
 
@@ -1217,16 +1223,14 @@ async function fetchIntroFromSheet() {
     });
 
     const loadedMessages = [];
-    // 2行目（インデックス1）から最後まで読み込む
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
-      // B列(index 1: tag) と C列(index 2: text) があれば有効とする
+      // B列(tag: index 1), C列(text: index 2), D列(imgId: index 3)
       if (row.length >= 3 && row[2]) {
         loadedMessages.push({
           tag: row[1] || "のうるより",
           text: row[2] || "",
-          openImgId: row[3] || "", // D列
-          closeImgId: row[4] || ""  // E列
+          imgId: row[3] || "" // D列の画像ID
         });
       }
     }
@@ -1234,11 +1238,26 @@ async function fetchIntroFromSheet() {
     if (loadedMessages.length > 0) {
       introMessages = loadedMessages;
       currentIndex = 0;
+      
+      // 画像をすべて裏で先読みしておく
+      preloadAllImages();
+
       showCurrentMessage();
     }
   } catch (e) {
     console.error("Intro fetch error:", e);
   }
+}
+
+// 画像の先読み
+function preloadAllImages() {
+  introMessages.forEach(msg => {
+    if (msg.imgId && msg.imgId.trim() !== "") {
+      const img = new Image();
+      img.src = `https://lh3.googleusercontent.com/d/${msg.imgId.trim()}`;
+      preloadedImages[msg.imgId.trim()] = img;
+    }
+  });
 }
 
 // タップされた時の処理
@@ -1251,10 +1270,9 @@ function nextIntroText() {
     isTyping = false;
     const currentData = introMessages[currentIndex];
     document.getElementById("bubble-text").innerText = currentData.text;
-    setAvatarImage(false); 
     document.getElementById("tap-hint").innerText = "つぎへ ➡";
   } else {
-    // 次のメッセージへ進む
+    // 次のメッセージへ進む（ランダムにしたい場合はここをランダムにすることも可能です）
     currentIndex = (currentIndex + 1) % introMessages.length;
     showCurrentMessage();
   }
@@ -1275,8 +1293,8 @@ function showCurrentMessage() {
   charIndex = 0;
   isTyping = true;
   
-  // 口開き画像にする
-  setAvatarImage(true);
+  // そのセリフ用の画像に切り替える
+  setAvatarImage();
 
   if (typingTimer) clearInterval(typingTimer);
   typingTimer = setInterval(() => {
@@ -1286,26 +1304,20 @@ function showCurrentMessage() {
     } else {
       clearInterval(typingTimer);
       isTyping = false;
-      // 口閉じ画像に戻す
-      setAvatarImage(false);
       if (hintEl) hintEl.innerText = "つぎへ ➡";
     }
   }, 35); 
 }
 
 // 画像切り替え関数
-function setAvatarImage(isSpeaking) {
+function setAvatarImage() {
   const avatarImg = document.getElementById("intro-avatar");
   if (!avatarImg) return;
 
   const currentData = introMessages[currentIndex];
-  const imgId = isSpeaking ? currentData.openImgId : currentData.closeImgId;
-
-  if (imgId && imgId.trim() !== "") {
-    avatarImg.src = `https://lh3.googleusercontent.com/d/${imgId.trim()}`;
-    avatarImg.style.display = "block";
-  } else if (currentData.openImgId && currentData.openImgId.trim() !== "") {
-    avatarImg.src = `https://lh3.googleusercontent.com/d/${currentData.openImgId.trim()}`;
+  if (currentData.imgId && currentData.imgId.trim() !== "") {
+    const trimmedId = currentData.imgId.trim();
+    avatarImg.src = `https://lh3.googleusercontent.com/d/${trimmedId}`;
     avatarImg.style.display = "block";
   }
 }

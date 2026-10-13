@@ -46,15 +46,16 @@
         .inv-val { font-size: 0.8rem; font-weight: 900; color: #2c3e50; }
 
         .viewport {
-            width: 100vw; 
-            height: 100vh; 
-            overflow: hidden; 
-            position: relative;
-            padding-top: 70px; 
-            padding-bottom: 100px; 
-            box-sizing: border-box;
-            touch-action: pan-y; 
-        }
+    width: 100vw; 
+    height: 100vh;
+    height: 100dvh; 
+    overflow: hidden; 
+    position: relative;
+    padding-top: 60px;     /* 上の持ち物バー用 */
+    padding-bottom: 90px;  /* ★ここを少し広げて、下のアイコンバーと被らないようにする！ */
+    box-sizing: border-box;
+    touch-action: pan-y; 
+}
         .main-wrapper {
             display: flex; width: 500vw; height: 100%;
             transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);

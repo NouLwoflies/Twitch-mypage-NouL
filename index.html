@@ -1186,61 +1186,58 @@ function closeTextRewardModal() {
 // ---（既存のスクリプトはそのまま上に置いておいてOKです）---
 
 
+
 let introMessages = [];
 let currentIndex = 0;
-let currentData = null;
 let isTyping = false;       
 let typingTimer = null;     
 let charIndex = 0;
 
-// ページ読み込み時にスプレッドシートの「Intro」シートから直接CSVデータを取得する
+// ページ読み込み時に実行
 window.addEventListener('DOMContentLoaded', () => {
+  // まず初期表示（保険）
+  introMessages = [
+    { tag: "のうるより", text: "こんにょん！推し事の書へようこそ！ここをタップするといろんなことが聞けるよ！", openImgId: "", closeImgId: "" }
+  ];
+  showCurrentMessage();
+  
+  // スプシから直接取得
   fetchIntroFromSheet();
 });
 
 async function fetchIntroFromSheet() {
   try {
-    // シートIDとシート名「Intro」からCSVとしてデータを取得
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Intro`;
     const res = await fetch(url);
     const text = await res.text();
     
-    // CSVをパース（行ごとに分解）
     const rows = text.split(/\r?\n/).map(row => {
       const matches = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
       return matches ? matches.map(c => c.replace(/^"|"$/g, '')) : [];
     });
 
-    // 2行目から読み込み（1行目はヘッダー想定：id, tag, text, openImgId, closeImgId）
-    introMessages = [];
+    const loadedMessages = [];
+    // 2行目（インデックス1）から最後まで読み込む
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
-      if (row.length >= 3 && row[1]) {
-        introMessages.push({
-          tag: row[1] || "",
+      // B列(index 1: tag) と C列(index 2: text) があれば有効とする
+      if (row.length >= 3 && row[2]) {
+        loadedMessages.push({
+          tag: row[1] || "のうるより",
           text: row[2] || "",
-          openImgId: row[3] || "",
-          closeImgId: row[4] || ""
+          openImgId: row[3] || "", // D列
+          closeImgId: row[4] || ""  // E列
         });
       }
     }
 
-    if (introMessages.length > 0) {
-      showRandomMessage();
-    } else {
-      // データがない場合のデフォルト（リスナーさんに見えても自然なセリフ）
-      introMessages = [
-        { tag: "のうるより", text: "こんにょん！推し事の書へようこそ！ここをタップするといろんなことが聞けるよ！", openImgId: "", closeImgId: "" }
-      ];
-      showRandomMessage();
+    if (loadedMessages.length > 0) {
+      introMessages = loadedMessages;
+      currentIndex = 0;
+      showCurrentMessage();
     }
   } catch (e) {
     console.error("Intro fetch error:", e);
-    // エラー時のデフォルト（リスナーさんに見えても自然なセリフ）
-    introMessages = [
-      { tag: "のうるより", text: "こんにょん！今日も君に元気をわけちゃうぞ！", openImgId: "", closeImgId: "" }
-    ];
-    showRandomMessage();
   }
 }
 
@@ -1249,57 +1246,66 @@ function nextIntroText() {
   if (introMessages.length === 0) return;
 
   if (isTyping) {
-    // 文字表示中にタップされたら、一瞬で全文字を表示しきる
+    // 文字表示中にタップされたら全文字を即座に表示
     clearInterval(typingTimer);
     isTyping = false;
+    const currentData = introMessages[currentIndex];
     document.getElementById("bubble-text").innerText = currentData.text;
     setAvatarImage(false); 
     document.getElementById("tap-hint").innerText = "つぎへ ➡";
   } else {
-    // 次のランダムなセリフへ
-    showRandomMessage();
+    // 次のメッセージへ進む
+    currentIndex = (currentIndex + 1) % introMessages.length;
+    showCurrentMessage();
   }
 }
 
-// ランダムにメッセージを選んで表示を開始する関数
-function showRandomMessage() {
-  const randomIndex = Math.floor(Math.random() * introMessages.length);
-  currentData = introMessages[randomIndex];
-
-  document.getElementById("bubble-tag").innerText = currentData.tag;
-  document.getElementById("bubble-text").innerText = ""; 
-  document.getElementById("tap-hint").innerText = "おしゃべり中...";
+// メッセージ表示とタイプライター開始
+function showCurrentMessage() {
+  const currentData = introMessages[currentIndex];
+  
+  const tagEl = document.getElementById("bubble-tag");
+  const textEl = document.getElementById("bubble-text");
+  const hintEl = document.getElementById("tap-hint");
+  
+  if (tagEl) tagEl.innerText = currentData.tag;
+  if (textEl) textEl.innerText = ""; 
+  if (hintEl) hintEl.innerText = "おしゃべり中...";
 
   charIndex = 0;
   isTyping = true;
   
-  // 喋り始めたので「口開き画像」に切り替える
+  // 口開き画像にする
   setAvatarImage(true);
 
-  // タイプライター風に1文字ずつ表示していく
+  if (typingTimer) clearInterval(typingTimer);
   typingTimer = setInterval(() => {
     if (charIndex < currentData.text.length) {
-      document.getElementById("bubble-text").innerText += currentData.text.charAt(charIndex);
+      if (textEl) textEl.innerText += currentData.text.charAt(charIndex);
       charIndex++;
     } else {
       clearInterval(typingTimer);
       isTyping = false;
-      // 喋り終わったので「口閉じ画像」に戻す
+      // 口閉じ画像に戻す
       setAvatarImage(false);
-      document.getElementById("tap-hint").innerText = "つぎへ ➡";
+      if (hintEl) hintEl.innerText = "つぎへ ➡";
     }
   }, 35); 
 }
 
-// 画像を切り替える補助関数
+// 画像切り替え関数
 function setAvatarImage(isSpeaking) {
   const avatarImg = document.getElementById("intro-avatar");
   if (!avatarImg) return;
 
+  const currentData = introMessages[currentIndex];
   const imgId = isSpeaking ? currentData.openImgId : currentData.closeImgId;
 
-  if (imgId && imgId !== "") {
-    avatarImg.src = `https://lh3.googleusercontent.com/d/${imgId}`;
+  if (imgId && imgId.trim() !== "") {
+    avatarImg.src = `https://lh3.googleusercontent.com/d/${imgId.trim()}`;
+    avatarImg.style.display = "block";
+  } else if (currentData.openImgId && currentData.openImgId.trim() !== "") {
+    avatarImg.src = `https://lh3.googleusercontent.com/d/${currentData.openImgId.trim()}`;
     avatarImg.style.display = "block";
   }
 }

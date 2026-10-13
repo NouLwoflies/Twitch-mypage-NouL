@@ -1185,33 +1185,66 @@ function closeTextRewardModal() {
 
 // ---（既存のスクリプトはそのまま上に置いておいてOKです）---
 
+
 let introMessages = [];
+let currentIndex = 0;
 let currentData = null;
 let isTyping = false;       
 let typingTimer = null;     
 let charIndex = 0;
 
-// ページ読み込み時にスプシからイントロデータを取得
+// ページ読み込み時にスプレッドシートの「Intro」シートから直接CSVデータを取得する
 window.addEventListener('DOMContentLoaded', () => {
-  // すでに上で定義されている window.onload の邪魔をしないよう個別に呼ぶ
-  if (typeof google !== 'undefined' && google.script) {
-    google.script.run
-      .withSuccessHandler((data) => {
-        if (data && data.length > 0) {
-          introMessages = data;
-          showRandomMessage(); 
-        } else {
-          document.getElementById("bubble-text").innerText = "データを取得できませんでした。";
-        }
-      })
-      .withFailureHandler((error) => {
-        console.error("Intro load error:", error);
-      })
-      .getIntroMessages();
-  }
+  fetchIntroFromSheet();
 });
 
-// 【重要】HTML側（自己紹介セクション）で onclick="nextIntroText()" と紐付いているためこの名前に合わせます
+async function fetchIntroFromSheet() {
+  try {
+    // シートIDとシート名「Intro」からCSVとしてデータを取得
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Intro`;
+    const res = await fetch(url);
+    const text = await res.text();
+    
+    // CSVをパース（行ごとに分解）
+    const rows = text.split(/\r?\n/).map(row => {
+      const matches = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+      return matches ? matches.map(c => c.replace(/^"|"$/g, '')) : [];
+    });
+
+    // 2行目から読み込み（1行目はヘッダー想定：id, tag, text, openImgId, closeImgId）
+    introMessages = [];
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      if (row.length >= 3 && row[1]) {
+        introMessages.push({
+          tag: row[1] || "",
+          text: row[2] || "",
+          openImgId: row[3] || "",
+          closeImgId: row[4] || ""
+        });
+      }
+    }
+
+    if (introMessages.length > 0) {
+      showRandomMessage();
+    } else {
+      // データがない場合のデフォルト（リスナーさんに見えても自然なセリフ）
+      introMessages = [
+        { tag: "のうるより", text: "こんにょん！推し事の書へようこそ！ここをタップするといろんなことが聞けるよ！", openImgId: "", closeImgId: "" }
+      ];
+      showRandomMessage();
+    }
+  } catch (e) {
+    console.error("Intro fetch error:", e);
+    // エラー時のデフォルト（リスナーさんに見えても自然なセリフ）
+    introMessages = [
+      { tag: "のうるより", text: "こんにょん！今日も君に元気をわけちゃうぞ！", openImgId: "", closeImgId: "" }
+    ];
+    showRandomMessage();
+  }
+}
+
+// タップされた時の処理
 function nextIntroText() {
   if (introMessages.length === 0) return;
 
@@ -1258,9 +1291,8 @@ function showRandomMessage() {
   }, 35); 
 }
 
-// 画像を切り替える補助関数 (isSpeaking: trueなら口開き、falseなら口閉じ)
+// 画像を切り替える補助関数
 function setAvatarImage(isSpeaking) {
-  // HTML側（a3.txt）の画像ID「intro-avatar」に合わせます
   const avatarImg = document.getElementById("intro-avatar");
   if (!avatarImg) return;
 
@@ -1269,15 +1301,8 @@ function setAvatarImage(isSpeaking) {
   if (imgId && imgId !== "") {
     avatarImg.src = `https://lh3.googleusercontent.com/d/${imgId}`;
     avatarImg.style.display = "block";
-  } else {
-    // 画像IDが設定されていない場合のフォールバック
-    if (currentData.openImgId) {
-      avatarImg.src = `https://lh3.googleusercontent.com/d/${currentData.openImgId}`;
-    }
   }
 }
-
-    
 </script>
     <div id="prizesOverlay" class="prizes-overlay"　style="display: none;">
   <div class="prizes-content">

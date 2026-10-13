@@ -101,11 +101,11 @@
                 box-sizing: border-box;
             }
 
-            /* 通常ページ（ステータス・ガチャ等）は枠をしっかり出しつつ中身をスクロール可能に制限 */
+            /* 1. 通常ページ（ステータス、ガチャ、ショップ、パス、ガイド、履歴）：スクロールできるように高さを最大値に制限 */
             .card {
                 width: 100% !important;
-                height: 100% !important;
-                max-height: calc(100dvh - 130px) !important;
+                height: calc(100dvh - 130px) !important; /* スマホ画面内に収まる高さに固定 */
+                max-height: none !important;
                 display: flex;
                 flex-direction: column;
                 box-sizing: border-box;
@@ -113,13 +113,14 @@
 
             .card-body {
                 flex-grow: 1;
-                overflow-y: auto !important;
+                overflow-y: auto !important; /* ここでしっかりスクロールさせる */
                 -webkit-overflow-scrolling: touch;
                 padding-right: 5px;
             }
 
-            /* ★ 最後のページ（自己紹介セクション）だけは、スクロールをなくして背景いっぱいにフル表示させる */
+            /* 2. 最後のページ（自己紹介セクション）：ここだけスクロールをなしにして背景いっぱいにフル表示 */
             .page-section:last-of-type .card {
+                height: 100% !important;
                 max-height: none !important;
                 overflow: hidden !important;
                 padding: 12px !important;

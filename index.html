@@ -45,16 +45,34 @@
         .inv-icon { width: 16px !important; height: 16px !important; object-fit: contain !important; display: inline-block !important; }
         .inv-val { font-size: 0.8rem; font-weight: 900; color: #2c3e50; }
 
-        .viewport {
+        /* --- PC（または通常時）はこれまで通りの設定 --- */
+.viewport {
     width: 100vw; 
-    height: 100vh;
-    height: 100dvh; 
+    height: 100vh; 
     overflow: hidden; 
     position: relative;
-    padding-top: 60px;     /* 上の持ち物バー用 */
-    padding-bottom: 90px;  /* ★ここを少し広げて、下のアイコンバーと被らないようにする！ */
+    padding-top: 70px; 
+    padding-bottom: 100px; 
     box-sizing: border-box;
     touch-action: pan-y; 
+}
+
+/* --- 📱 スマホのとき（画面幅が 768px 以下の場合）だけ適用する調整 --- */
+@media screen and (max-width: 768px) {
+    .viewport {
+        padding-top: 60px;     
+        padding-bottom: 90px;  /* スマホの下部アイコンバーに被らないように余白を確保 */
+    }
+    
+    .card {
+        height: 100%;
+        max-height: calc(100dvh - 150px); /* スマホ画面からはみ出さないよう自動で高さを抑える */
+        box-sizing: border-box;
+    }
+
+    .card-body {
+        min-height: 0;
+    }
 }
         .main-wrapper {
             display: flex; width: 500vw; height: 100%;

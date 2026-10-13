@@ -10,10 +10,10 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            position: fixed;
+            /* PCではスクロールを禁止にせず、自動でスクロールできるようにする */
+            overflow: auto; 
+            position: static; 
             width: 100%;
-            overscroll-behavior-y: contain;
         }
         :root {
             --accent-orange: #ff8c00;
@@ -73,6 +73,12 @@
             height: 700px;
             display: flex; flex-direction: column;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1); box-sizing: border-box; position: relative;
+        }
+       .card-body {
+            flex-grow: 1;
+            overflow-y: auto !important; /* ★PCでもカード内がしっかり縦スクロールするようにする */
+            -webkit-overflow-scrolling: touch;
+            padding-right: 10px;
         }
 
         /* --- 📱 スマホのとき（画面幅が 768px 以下の場合）専用のレイアウト調整 --- */

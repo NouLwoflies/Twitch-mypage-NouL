@@ -1182,54 +1182,59 @@ function closeTextRewardModal() {
     if (overlay) overlay.style.display = 'none';
 }
     
+
+// ---（既存のスクリプトはそのまま上に置いておいてOKです）---
+
 let introMessages = [];
 let currentData = null;
-let isTyping = false;       // 文字列を表示中かどうかのフラグ
-let typingTimer = null;     // タイパーのタイマー
+let isTyping = false;       
+let typingTimer = null;     
 let charIndex = 0;
 
-// ページ読み込み時にスプシからデータを取得
+// ページ読み込み時にスプシからイントロデータを取得
 window.addEventListener('DOMContentLoaded', () => {
-  google.script.run
-    .withSuccessHandler((data) => {
-      if (data && data.length > 0) {
-        introMessages = data;
-        showRandomMessage(); // 最初はランダムに1つ表示
-      } else {
-        document.getElementById("bubble-text").innerText = "データを取得できませんでした。";
-      }
-    })
-    .withFailureHandler((error) => {
-      console.error("Intro load error:", error);
-    })
-    .getIntroMessages();
+  // すでに上で定義されている window.onload の邪魔をしないよう個別に呼ぶ
+  if (typeof google !== 'undefined' && google.script) {
+    google.script.run
+      .withSuccessHandler((data) => {
+        if (data && data.length > 0) {
+          introMessages = data;
+          showRandomMessage(); 
+        } else {
+          document.getElementById("bubble-text").innerText = "データを取得できませんでした。";
+        }
+      })
+      .withFailureHandler((error) => {
+        console.error("Intro load error:", error);
+      })
+      .getIntroMessages();
+  }
 });
 
-// タップされた時の処理
-function handleTap() {
+// 【重要】HTML側（自己紹介セクション）で onclick="nextIntroText()" と紐付いているためこの名前に合わせます
+function nextIntroText() {
   if (introMessages.length === 0) return;
 
   if (isTyping) {
-    // 【演出】文字が表示中のときにタップされたら、一瞬で全文字をパッと表示しきる
+    // 文字表示中にタップされたら、一瞬で全文字を表示しきる
     clearInterval(typingTimer);
     isTyping = false;
     document.getElementById("bubble-text").innerText = currentData.text;
-    setAvatarImage(false); // 表示し終わったので口を閉じる
-    document.getElementById("tap-hint").innerText = "画面をタップして次の話題へ ▶";
+    setAvatarImage(false); 
+    document.getElementById("tap-hint").innerText = "つぎへ ➡";
   } else {
-    // 文字表示が終わっている状態でタップされたら、次のランダムなセリフへ
+    // 次のランダムなセリフへ
     showRandomMessage();
   }
 }
 
 // ランダムにメッセージを選んで表示を開始する関数
 function showRandomMessage() {
-  // ランダムに配列から1つ選ぶ
   const randomIndex = Math.floor(Math.random() * introMessages.length);
   currentData = introMessages[randomIndex];
 
   document.getElementById("bubble-tag").innerText = currentData.tag;
-  document.getElementById("bubble-text").innerText = ""; // いったん空にする
+  document.getElementById("bubble-text").innerText = ""; 
   document.getElementById("tap-hint").innerText = "おしゃべり中...";
 
   charIndex = 0;
@@ -1238,37 +1243,40 @@ function showRandomMessage() {
   // 喋り始めたので「口開き画像」に切り替える
   setAvatarImage(true);
 
-  // タイプライター風に1文字ずつ表示していく（スピードはお好みで調整可能：例 35ミリ秒）
+  // タイプライター風に1文字ずつ表示していく
   typingTimer = setInterval(() => {
     if (charIndex < currentData.text.length) {
       document.getElementById("bubble-text").innerText += currentData.text.charAt(charIndex);
       charIndex++;
     } else {
-      // 全文字の表示が完了！
       clearInterval(typingTimer);
       isTyping = false;
       // 喋り終わったので「口閉じ画像」に戻す
       setAvatarImage(false);
-      document.getElementById("tap-hint").innerText = "画面をタップして次の話題へ ▶";
+      document.getElementById("tap-hint").innerText = "つぎへ ➡";
     }
   }, 35); 
 }
 
 // 画像を切り替える補助関数 (isSpeaking: trueなら口開き、falseなら口閉じ)
 function setAvatarImage(isSpeaking) {
-  const avatarImg = document.getElementById("avatar-img");
+  // HTML側（a3.txt）の画像ID「intro-avatar」に合わせます
+  const avatarImg = document.getElementById("intro-avatar");
+  if (!avatarImg) return;
+
   const imgId = isSpeaking ? currentData.openImgId : currentData.closeImgId;
 
   if (imgId && imgId !== "") {
     avatarImg.src = `https://lh3.googleusercontent.com/d/${imgId}`;
     avatarImg.style.display = "block";
   } else {
-    // 画像IDが設定されていない場合のフォールバック（片方しかない場合など）
+    // 画像IDが設定されていない場合のフォールバック
     if (currentData.openImgId) {
       avatarImg.src = `https://lh3.googleusercontent.com/d/${currentData.openImgId}`;
     }
   }
 }
+
     
 </script>
     <div id="prizesOverlay" class="prizes-overlay"　style="display: none;">

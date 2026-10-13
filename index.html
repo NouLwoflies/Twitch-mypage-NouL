@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>推し事の書</title>
     <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
-    <style>
+   <style>
         html, body {
             height: 100%;
             margin: 0;
@@ -45,8 +45,7 @@
         .inv-icon { width: 16px !important; height: 16px !important; object-fit: contain !important; display: inline-block !important; }
         .inv-val { font-size: 0.8rem; font-weight: 900; color: #2c3e50; }
 
-        /* --- PC（または通常時）はこれまで通りの設定 --- */
-/* --- PC（または通常時）はこれまで通りの設定 --- */
+        /* --- PC（または通常時）の基本設定 --- */
         .viewport {
             width: 100vw; 
             height: 100vh; 
@@ -57,8 +56,27 @@
             box-sizing: border-box;
             touch-action: pan-y; 
         }
-/* --- 📱 スマホのとき（画面幅が 768px 以下の場合）だけ適用する調整 --- */
-@media screen and (max-width: 768px) {
+
+        .main-wrapper {
+            display: flex; width: 500vw; height: 100%;
+            transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .page-section {
+            width: 100vw; height: 100%;
+            display: flex; justify-content: center; align-items: flex-start;
+            flex-shrink: 0; box-sizing: border-box; padding: 10px 15px;
+        }
+
+        .card {
+            background: var(--bg-glass); border-radius: 25px; border: 3px solid #ffb347;
+            padding: 12px; width: 100%; max-width: 350px;
+            height: 700px;
+            display: flex; flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1); box-sizing: border-box; position: relative;
+        }
+
+        /* --- 📱 スマホのとき（画面幅が 768px 以下の場合）専用のレイアウト調整 --- */
+        @media screen and (max-width: 768px) {
             html, body {
                 height: 100vh;
                 height: 100dvh;
@@ -70,7 +88,7 @@
                 height: 100vh;
                 height: 100dvh;
                 padding-top: 55px;
-                padding-bottom: 75px;  /* 下部アイコンバーに被らない限界の余白 */
+                padding-bottom: 75px;  /* 下部アイコンバーに被らない余白 */
                 box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
@@ -83,34 +101,42 @@
                 box-sizing: border-box;
             }
 
-            /* ★スマホではカードの高さを強制的に100%にして下まで引き伸ばす */
+            /* 通常ページ（ステータス・ガチャ等）は枠をしっかり出しつつ中身をスクロール可能に制限 */
             .card {
                 width: 100% !important;
                 height: 100% !important;
-                max-height: none !important;
+                max-height: calc(100dvh - 130px) !important;
                 display: flex;
                 flex-direction: column;
                 box-sizing: border-box;
             }
 
-            /* ★自己紹介セクションなどの画像・吹き出しエリアをめいっぱい広げる */
             .card-body {
+                flex-grow: 1;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+                padding-right: 5px;
+            }
+
+            /* ★ 最後のページ（自己紹介セクション）だけは、スクロールをなくして背景いっぱいにフル表示させる */
+            .page-section:last-of-type .card {
+                max-height: none !important;
+                overflow: hidden !important;
+                padding: 12px !important;
+            }
+
+            .page-section:last-of-type .card-body {
                 flex: 1 !important;
-                height: auto !important;
-                min-height: 0;
+                height: 100% !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+                border-radius: 16px;
+                position: relative;
             }
         }
-        /* スマホ（横幅が480px以下の時） */
-/* --- スマホ（横幅が480px以下の時） --- */
-@media screen and (max-width: 480px) {
-    .card {
-        height: 100% !important;     /* 高さをめいっぱい広げる */
-        max-height: none !important; /* 480pxの制限を外す！ */
-        padding: 12px;
-    }
-}
+
         .card h1 { font-family: 'Mochiy Pop One', sans-serif; flex-shrink: 0; margin-top: 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-bottom: 3px solid #ffb347; padding-bottom: 5px; color: #ff8c00; font-size: 1.4rem; margin-bottom: 15px; font-weight: 800; }
-        .card-body { flex-grow: 1; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-right: 10px; }
+        
         .card-body::-webkit-scrollbar { width: 6px; }
         .card-body::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 10px; }
 
@@ -123,22 +149,22 @@
             transform: skewX(-5deg); margin-left: 5px; padding: 2px 5px;
         }
         .shop-btn-rich {
-    border: none;
-    border-radius: 8px;
-    color: white;
-    padding: 10px 5px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: transform 0.1s;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-}
-.shop-btn-rich:active {
-    transform: translateY(3px);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
-}
-.shop-btn-rich b {
-    font-size: 0.85rem;
-}
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 10px 5px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+        }
+        .shop-btn-rich:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+        }
+        .shop-btn-rich b {
+            font-size: 0.85rem;
+        }
         .exp-container { text-align: left; margin: 20px 0; }
         .level-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px; }
         #display-level { font-size: 2.2rem; font-weight: 900; color: #ff8c00; line-height: 1; }
@@ -199,161 +225,140 @@
             margin-right: 10px;
         }
 
-
         @keyframes spin { to { transform: rotate(360deg); } }
+
         /* 景品一覧を開くボタン */
-.view-prizes-btn {
-    background: #ffb347; border: none; border-radius: 12px;
-    padding: 12px; width: 100%; font-weight: bold; color: #fff;
-    cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
+        .view-prizes-btn {
+            background: #ffb347; border: none; border-radius: 12px;
+            padding: 12px; width: 100%; font-weight: bold; color: #fff;
+            cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
 
-/* 最初は画面に表示しない設定 */
-.prizes-overlay {
-  display: none; /* JSの display='flex' で上書きされます */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.85); /* 背景を暗くして目立たせる */
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-}
+        .prizes-overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.85);
+          z-index: 9999;
+          justify-content: center;
+          align-items: center;
+        }
 
-/* 表示する時だけこのクラスをJSでつける、もしくは .style.display = 'flex' にする */
-.prizes-overlay.active {
-  display: flex;
-}
+        .prizes-overlay.active {
+          display: flex;
+        }
 
-/* 景品画面の本体 */
-.prizes-content {
-  background: white;
-  width: 90%;
-  max-width: 400px;
-  max-height: 80vh;
-  border-radius: 15px;
-  overflow-y: auto; /* 中身が長い時にスクロールできるようにする */
-  padding: 20px;
-  position: relative;
-}
+        .prizes-content {
+          background: white;
+          width: 90%;
+          max-width: 400px;
+          max-height: 80vh;
+          border-radius: 15px;
+          overflow-y: auto;
+          padding: 20px;
+          position: relative;
+        }
 
-.prizes-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #f0f4f8;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-}
+        .prizes-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 2px solid #f0f4f8;
+          padding-bottom: 10px;
+          margin-bottom: 10px;
+        }
 
-.prizes-list-container {
-    flex: 1; overflow-y: auto; padding: 20px; text-align: left;
-}
+        .prizes-list-container {
+            flex: 1; overflow-y: auto; padding: 20px; text-align: left;
+        }
 
-.close-overlay {
-  background: #eee;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  line-height: 30px;
-}
+        .close-overlay {
+          background: #eee;
+          border: none;
+          font-size: 24px;
+          cursor: pointer;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          line-height: 30px;
+        }
 
-/* 景品ごとの見た目 */
-.gacha-title {
-    color: #ffb347; border-bottom: 2px solid #ffb347;
-    margin: 20px 0 10px; padding-bottom: 5px; font-size: 1.1em;
-}
+        .loader {
+          border: 5px solid #333;
+          border-top: 5px solid #ff8c00;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          animation: spin 1s linear infinite;
+          display: inline-block;
+        }
 
-.prize-row {
-    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.9em; display: flex; justify-content: space-between;
-}
+        .intro-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          cursor: pointer;
+          padding: 15px;
+          max-width: 480px;
+          margin: 0 auto;
+          user-select: none;
+          -webkit-tap-highlight-color: transparent;
+        }
 
-.ssr { color: #ff4747; font-weight: bold; text-shadow: 0 0 5px rgba(255,71,71,0.5); }
-.sr  { color: #ffb347; font-weight: bold; }
-/* ぐるぐるの見た目（CSS） */
-.loader {
-  border: 5px solid #333; /* 背景色（ダーク） */
-  border-top: 5px solid #ff8c00; /* 動く部分の色（オレンジ） */
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  display: inline-block;
-}
+        .avatar-wrapper img {
+          width: 180px;
+          height: auto;
+          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+          transition: transform 0.1s ease;
+        }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.intro-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  padding: 15px;
-  max-width: 480px;
-  margin: 0 auto;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
+        .intro-container:active .avatar-wrapper img {
+          transform: scale(0.97);
+        }
 
-.avatar-wrapper img {
-  width: 180px;
-  height: auto;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
-  transition: transform 0.1s ease;
-}
+        .speech-bubble {
+          position: relative;
+          background: #ffffff;
+          border: 3px solid #7B42BC;
+          border-radius: 20px;
+          padding: 16px 20px;
+          width: 100%;
+          box-shadow: 0 4px 15px rgba(123, 66, 188, 0.15);
+          box-sizing: border-box;
+        }
 
-.intro-container:active .avatar-wrapper img {
-  transform: scale(0.97);
-}
+        .bubble-tag {
+          display: inline-block;
+          background: #FF8C00;
+          color: #fff;
+          font-weight: 700;
+          font-size: 0.8rem;
+          padding: 3px 10px;
+          border-radius: 10px;
+          margin-bottom: 6px;
+          letter-spacing: 0.05em;
+        }
 
-.speech-bubble {
-  position: relative;
-  background: #ffffff;
-  border: 3px solid #7B42BC;
-  border-radius: 20px;
-  padding: 16px 20px;
-  width: 100%;
-  box-shadow: 0 4px 15px rgba(123, 66, 188, 0.15);
-  box-sizing: border-box;
-}
+        #bubble-text {
+          font-size: 0.95rem;
+          line-height: 1.5;
+          color: #333;
+          margin: 0;
+          min-height: 3em;
+          white-space: pre-wrap;
+        }
 
-.bubble-tag {
-  display: inline-block;
-  background: #FF8C00;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.8rem;
-  padding: 3px 10px;
-  border-radius: 10px;
-  margin-bottom: 6px;
-    letter-spacing: 0.05em;
-}
-
-#bubble-text {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #333;
-  margin: 0;
-  min-height: 3em;
-  white-space: pre-wrap; /* 改行やスペースを維持 */
-}
-
-.tap-hint {
-  text-align: right;
-  font-size: 0.7rem;
-  color: #888;
-  margin-top: 8px;
-}   
-    </style>
+        .tap-hint {
+          text-align: right;
+          font-size: 0.7rem;
+          color: #888;
+          margin-top: 8px;
+        }   
+</style>
 </head>
 <body>
 

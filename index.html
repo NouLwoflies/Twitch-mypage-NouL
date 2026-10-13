@@ -1193,6 +1193,7 @@ function closeTextRewardModal() {
 
 
 
+
 let introMessages = [];
 let currentIndex = 0;
 let isTyping = false;       
@@ -1207,7 +1208,7 @@ window.addEventListener('DOMContentLoaded', () => {
   introMessages = [
     { tag: "のうるより", text: "こんにょん！推し事の書へようこそ！ここをタップするといろんなことが聞けるよ！", imgId: "" }
   ];
-  showCurrentMessage();
+  showRandomMessage(); // 最初はランダムに1つ表示
   fetchIntroFromSheet();
 });
 
@@ -1225,7 +1226,6 @@ async function fetchIntroFromSheet() {
     const loadedMessages = [];
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
-      // B列(tag: index 1), C列(text: index 2), D列(imgId: index 3)
       if (row.length >= 3 && row[2]) {
         loadedMessages.push({
           tag: row[1] || "のうるより",
@@ -1237,12 +1237,9 @@ async function fetchIntroFromSheet() {
 
     if (loadedMessages.length > 0) {
       introMessages = loadedMessages;
-      currentIndex = 0;
-      
-      // 画像をすべて裏で先読みしておく
       preloadAllImages();
-
-      showCurrentMessage();
+      // スプシから読み込んだ直後にもう一度ランダム表示を更新
+      showRandomMessage();
     }
   } catch (e) {
     console.error("Intro fetch error:", e);
@@ -1272,14 +1269,22 @@ function nextIntroText() {
     document.getElementById("bubble-text").innerText = currentData.text;
     document.getElementById("tap-hint").innerText = "つぎへ ➡";
   } else {
-    // 次のメッセージへ進む（ランダムにしたい場合はここをランダムにすることも可能です）
-    currentIndex = (currentIndex + 1) % introMessages.length;
-    showCurrentMessage();
+    // 【ランダムに変更】次に表示するメッセージをランダムに選ぶ（直前と同じセリフが連続しないように配慮）
+    if (introMessages.length > 1) {
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * introMessages.length);
+      } while (newIndex === currentIndex);
+      currentIndex = newIndex;
+    } else {
+      currentIndex = 0;
+    }
+    showRandomMessage();
   }
 }
 
 // メッセージ表示とタイプライター開始
-function showCurrentMessage() {
+function showRandomMessage() {
   const currentData = introMessages[currentIndex];
   
   const tagEl = document.getElementById("bubble-tag");

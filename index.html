@@ -46,49 +46,59 @@
         .inv-val { font-size: 0.8rem; font-weight: 900; color: #2c3e50; }
 
         /* --- PC（または通常時）はこれまで通りの設定 --- */
-.viewport {
-    width: 100vw; 
-    height: 100vh; 
-    overflow: hidden; 
-    position: relative;
-    padding-top: 70px; 
-    padding-bottom: 100px; 
-    box-sizing: border-box;
-    touch-action: pan-y; 
-}
-
+/* --- PC（または通常時）はこれまで通りの設定 --- */
+        .viewport {
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            position: relative;
+            padding-top: 70px; 
+            padding-bottom: 100px; 
+            box-sizing: border-box;
+            touch-action: pan-y; 
+        }
 /* --- 📱 スマホのとき（画面幅が 768px 以下の場合）だけ適用する調整 --- */
 @media screen and (max-width: 768px) {
-    .viewport {
-        padding-top: 60px;     
-        padding-bottom: 90px;  /* スマホの下部アイコンバーに被らないように余白を確保 */
-    }
-    
-    .card {
-        height: 100%;
-        max-height: calc(100dvh - 150px); /* スマホ画面からはみ出さないよう自動で高さを抑える */
-        box-sizing: border-box;
-    }
+            html, body {
+                height: 100vh;
+                height: 100dvh;
+                overflow: hidden;
+            }
 
-    .card-body {
-        min-height: 0;
-    }
-}
-        .main-wrapper {
-            display: flex; width: 500vw; height: 100%;
-            transition: transform 0.45s cubic-bezier(0.2, 1, 0.3, 1);
-        }
-        .page-section {
-            width: 100vw; height: 100%;
-            display: flex; justify-content: center; align-items: flex-start;
-            flex-shrink: 0; box-sizing: border-box; padding: 10px 15px;
-        }
-        .card {
-            background: var(--bg-glass); border-radius: 25px; border: 3px solid #ffb347;
-            padding: 12px; width: 100%; max-width: 350px;
-            height: 700px;
-            display: flex; flex-direction: column;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1); box-sizing: border-box; position: relative;
+            .viewport {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                padding-top: 55px;
+                padding-bottom: 75px;  /* 下部アイコンバーに被らない限界の余白 */
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .page-section {
+                flex: 1;
+                height: 100%;
+                padding: 5px 10px;
+                box-sizing: border-box;
+            }
+
+            /* ★スマホではカードの高さを強制的に100%にして下まで引き伸ばす */
+            .card {
+                width: 100% !important;
+                height: 100% !important;
+                max-height: none !important;
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box;
+            }
+
+            /* ★自己紹介セクションなどの画像・吹き出しエリアをめいっぱい広げる */
+            .card-body {
+                flex: 1 !important;
+                height: auto !important;
+                min-height: 0;
+            }
         }
         /* スマホ（横幅が480px以下の時） */
 @media screen and (max-width: 480px) {
